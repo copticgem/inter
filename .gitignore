@@ -30,5 +30,5 @@
 
 # VS Files
 *.suo
-*/bin/*
-
+bin/
+obj/
