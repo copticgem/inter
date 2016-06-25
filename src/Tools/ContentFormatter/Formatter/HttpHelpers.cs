@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 
@@ -43,11 +45,12 @@ namespace Formatter
                 length: startIndex - 1);
 
             // Replace paragraphs
-            page = page.Replace(Constants.Paragraph, Constants.Replacements.Paragraph);
-            page = page.Replace("</p>", string.Empty);
+            page = Regex.Replace(
+                input: page,
+                pattern: "<p [^>]*>",
+                replacement: Constants.Replacements.Paragraph);
 
-            // Remove special characters
-            page = page.Replace("\n\t", string.Empty);
+            page = page.Replace("</p>", string.Empty);
 
             // Replace bold characters
             page = page.Replace(Constants.BoldStart, Constants.Replacements.BoldStart);
@@ -56,10 +59,33 @@ namespace Formatter
             // Replace quote
             page = page.Replace("&quot;", ":");
 
+            // Replace subtitles
+            page = Regex.Replace(
+               input: page,
+               pattern: "<h2[^>]*>",
+               replacement: "{{t}}");
+
+            page = Regex.Replace(
+                input: page,
+                pattern: "</h2>",
+                replacement: "{{/t}}");
+
+            // Replace divider
+            page = Regex.Replace(
+               input: page,
+               pattern: "<img border=\"0\" src=\"../../../../Pix/Priests/divider-3.jpg\"[^>]*>",
+               replacement: "{{d}}");
+
+            // Add Verse identifier
+            page = ReplaceVerseIdentifier(page);
+
+            // Remove markups
+            page = RemoveMarkups(page);
+
             return page;
         }
 
-        public static string GetPage(string url)
+        private static string GetPage(string url)
         {
             HttpClient client = new HttpClient();
 
@@ -76,6 +102,116 @@ namespace Formatter
             {
                 return reader.ReadToEnd();
             }
+        }
+
+        private static string ReplaceVerseIdentifier(string page)
+        {
+            HashSet<int> verses = new HashSet<int>();
+
+            MatchCollection matchCollection = Regex.Matches(page, "<a name=\"(?<numberGroup>[0-9]+)\">[0-9]*</a>", RegexOptions.IgnoreCase);
+            foreach (Match match in matchCollection)
+            {
+                if (match.Success)
+                {
+                    int verseNumber = int.Parse(match.Groups["numberGroup"].Value);
+                    if (verses.Contains(verseNumber))
+                    {
+                        // Repeated identifier
+                        continue;
+                    }
+
+                    page = page.Replace(
+                        oldValue: match.Value,
+                        newValue: "{{v" + verseNumber + "}}");
+
+                    verses.Add(verseNumber);
+                }
+            }
+
+            //// Remove all remaining identifiers
+            // Multiple verse refs
+            page = Regex.Replace(
+                input: page,
+                pattern: "<a name=\"([0-9]|\\-)+\">([0-9]|\\-)*</a>",
+                replacement: string.Empty);
+
+            // Links to other chapters/topics
+            page = ReplaceTag(page, "a", string.Empty);
+            
+            return page;
+        }
+
+        private static string RemoveMarkups(string page)
+        {
+            // Remove special characters
+            page = page.Replace("\n", string.Empty);
+            page = page.Replace("\r", "{{l}}");
+            page = page.Replace("\t", string.Empty);
+
+            // Remove span
+            page = ReplaceTag(page, "span", string.Empty);
+
+            // Remove &nbsp;
+            page = Regex.Replace(
+                input: page,
+                pattern: "&nbsp;",
+                replacement: string.Empty);
+
+            // Remove newlines
+            page = ReplaceTag(page, "br", string.Empty);
+
+            // Remove blockquotes
+            page = ReplaceTag(page, "blockquote", string.Empty);
+
+            // Remove tables with images 
+            // http://stackoverflow.com/questions/406230/regular-expression-to-match-line-that-doesnt-contain-a-word
+            page = Regex.Replace(
+                input: page,
+                pattern: "<table[^>]*>((?!</table>).)*<img[^>]*>((?!</table>).)*</table>",
+                replacement: string.Empty);
+
+            // Remove more info 
+            page = Regex.Replace(
+                input: page,
+                pattern: "(انظر المزيد عن هذا الموضوع هنا في<font color=\"#000000\">موقع الأنبا تكلا</font> في أقسام المقالات والتفاسير الأخرى)",
+                replacement: string.Empty);
+
+            // Remove other images
+            page = ReplaceTag(page, "img", string.Empty);
+
+            // Remove font
+            page = ReplaceTag(page, "font", string.Empty);
+
+            // Remove vml 
+            page = page.Replace("<![if!vml]><![endif]>", string.Empty);
+
+            // Remove table, tr, td
+            page = ReplaceTag(page, "table", string.Empty);
+            page = ReplaceTag(page, "tr", string.Empty);
+            page = ReplaceTag(page, "td", string.Empty);
+
+            // Remove div
+            page = ReplaceTag(page, "div", string.Empty);
+
+            return page;
+        }
+
+        private static string ReplaceTag(
+            string page, 
+            string tagName, 
+            string replacement)
+        {
+            page = Regex.Replace(
+                input: page,
+                pattern: "<" + tagName + "[^>]*>",
+                replacement: replacement);
+
+            page = Regex.Replace(
+                input: page,
+                pattern: "</" + tagName + ">",
+                replacement: replacement);
+
+            return page;
         }
     }
 }
