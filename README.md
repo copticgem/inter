@@ -1,2 +1,0 @@
-# inter
-Arabic gospel interpretation
