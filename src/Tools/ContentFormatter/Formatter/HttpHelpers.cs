@@ -57,7 +57,10 @@ namespace Formatter
             page = page.Replace(Constants.BoldEnd, Constants.Replacements.BoldEnd);
 
             // Replace quote
-            page = page.Replace("&quot;", ":");
+            page = page.Replace("&quot;", "\"");
+
+            // Replace &
+            page = page.Replace("&amp;", "&");
 
             // Replace subtitles
             page = Regex.Replace(
@@ -108,7 +111,7 @@ namespace Formatter
         {
             HashSet<int> verses = new HashSet<int>();
 
-            MatchCollection matchCollection = Regex.Matches(page, "<a name=\"(?<numberGroup>[0-9]+)\">[0-9]*</a>", RegexOptions.IgnoreCase);
+            MatchCollection matchCollection = Regex.Matches(page, "<a name=\"(?<numberGroup>[0-9]+)\">(?<visibleNumber>[0-9]*)</a>", RegexOptions.IgnoreCase);
             foreach (Match match in matchCollection)
             {
                 if (match.Success)
@@ -122,7 +125,7 @@ namespace Formatter
 
                     page = page.Replace(
                         oldValue: match.Value,
-                        newValue: "{{v" + verseNumber + "}}");
+                        newValue: "{{v" + verseNumber + "}}" + match.Groups["visibleNumber"].Value);
 
                     verses.Add(verseNumber);
                 }
@@ -151,11 +154,11 @@ namespace Formatter
             // Remove span
             page = ReplaceTag(page, "span", string.Empty);
 
-            // Remove &nbsp;
+            // Replace &nbsp;
             page = Regex.Replace(
                 input: page,
-                pattern: "&nbsp;",
-                replacement: string.Empty);
+                pattern: "(&nbsp;)+",
+                replacement: " ");
 
             // Remove newlines
             page = ReplaceTag(page, "br", string.Empty);
@@ -193,6 +196,13 @@ namespace Formatter
             // Remove div
             page = ReplaceTag(page, "div", string.Empty);
 
+            // Remove empty tags
+            page = page.Replace("{{b}}{{/b}}", string.Empty);
+            page = page.Replace("{{t}}{{/t}}", string.Empty);
+
+            // Remove {{b}} from inside {{t}}
+            page = page.Replace("{{t}}{{b}}", "{{t}}");
+            page = page.Replace("{{/b}}{{/t}}", "{{/t}}");
             return page;
         }
 

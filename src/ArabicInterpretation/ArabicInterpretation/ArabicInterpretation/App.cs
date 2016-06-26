@@ -11,19 +11,9 @@ namespace ArabicInterpretation
     {
         public App()
         {
-            // The root page of your application
-            MainPage = new ContentPage
+            this.MainPage = new NavigationPage(new HomePage())
             {
-                Content = new StackLayout
-                {
-                    VerticalOptions = LayoutOptions.Center,
-                    Children = {
-                        new Label {
-                            HorizontalTextAlignment = TextAlignment.Center,
-                            Text = "Welcome to Xamarin Forms!"
-                        }
-                    }
-                }
+                BarBackgroundColor = Color.White
             };
         }
 
