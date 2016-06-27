@@ -148,7 +148,7 @@ namespace Formatter
         {
             // Remove special characters
             page = page.Replace("\n", string.Empty);
-            page = page.Replace("\r", "{{l}}");
+            page = page.Replace("\r", string.Empty);
             page = page.Replace("\t", string.Empty);
 
             // Remove span

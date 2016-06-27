@@ -20,16 +20,12 @@ namespace ArabicInterpretation.Helpers
 
             StringBuilder builder = new StringBuilder();
 
-            FormattedString formattedString = new FormattedString();
             Label label = new Label
             {
                 HorizontalTextAlignment = TextAlignment.End,
-                FormattedText = formattedString
             };
 
             labels.Add(label);
-
-            Span span = new Span();
 
             foreach (string token in tokens)
             {
@@ -46,42 +42,50 @@ namespace ArabicInterpretation.Helpers
                     }
                     else if (token == "{{t}}")
                     {
-                        span.Text = builder.ToString();
-                        formattedString.Spans.Add(span);
+                        label.Text = builder.ToString();
+                        labels.Add(label);
 
                         builder = new StringBuilder();
                         builder.Append("\r\n");
-                        span = new Span
+                        label = new Label
                         {
+                            HorizontalTextAlignment = TextAlignment.End,
                             FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label))
                         };
                     }
                     else if (token == "{{/t}}")
                     {
-                        span.Text = builder.ToString();
-                        formattedString.Spans.Add(span);
+                        label.Text = builder.ToString();
+                        labels.Add(label);
 
                         builder = new StringBuilder();
-                        span = new Span();
+                        label = new Label
+                        {
+                            HorizontalTextAlignment = TextAlignment.End,
+                        };
                     }
                     else if (token == "{{b}}")
                     {
-                        span.Text = builder.ToString();
-                        formattedString.Spans.Add(span);
+                        label.Text = builder.ToString();
+                        labels.Add(label);
 
                         builder = new StringBuilder();
-                        span = new Span
+                        label = new Label
                         {
+                            HorizontalTextAlignment = TextAlignment.End,
                             FontAttributes = FontAttributes.Bold
                         };
                     }
                     else if (token == "{{/b}}")
                     {
-                        span.Text = builder.ToString();
-                        formattedString.Spans.Add(span);
+                        label.Text = builder.ToString();
+                        labels.Add(label);
 
                         builder = new StringBuilder();
-                        span = new Span();
+                        label = new Label
+                        {
+                            HorizontalTextAlignment = TextAlignment.End,
+                        };
                     }
                     else if (token == "{{l}}")
                     {
@@ -101,7 +105,7 @@ namespace ArabicInterpretation.Helpers
                     builder.Append(token);
                 }
             }
-
+            
             return labels;
         }
     }
