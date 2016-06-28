@@ -85,7 +85,99 @@ namespace Formatter
             // Remove markups
             page = RemoveMarkups(page);
 
+            // Validate no nested tags
+            page = ValidateTags(page);
+
             return page;
+        }
+
+        private static string ValidateTags(string page)
+        {
+            List<string> newString = new List<string>();
+
+            string[] tokens = Regex.Split(
+                input: page,
+                pattern: @"({{/*\w+}})");
+
+            string endToken = null;
+            foreach (string token in tokens)
+            {
+                newString.Add(token);
+
+                if (token.StartsWith("{{"))
+                {
+                    if (endToken != null)
+                    {
+                        if (token.StartsWith("{{v"))
+                        {
+                            // We don't want verse tag in the middle since it's a separate label
+                            // Move up till it's not nested
+                            ReplaceVerseTag(newString, endToken.Replace("/", string.Empty));
+                            continue;
+                        }
+
+                        if (token != endToken)
+                        {
+                            // Remove {{b}} from inside {{t}}
+                            if (endToken == "{{/t}}" && (token == "{{b}}" || token == "{{/b}}"))
+                            {
+                                newString.RemoveAt(newString.Count - 1);
+                                continue;
+                            }
+
+                            throw new InvalidOperationException(
+                                string.Format(
+                                    "Nested tags detected, outer tag '{0}', inner tag '{1}'",
+                                    endToken,
+                                    token));
+                        }
+                        else
+                        {
+                            endToken = null;
+                            continue;
+                        }
+                    }
+
+                    if (token == "{{l}}" ||
+                        token == "{{p}}" ||
+                        token == "{{d}}" ||
+                        token.StartsWith("{{v"))
+                    {
+                        continue;
+                    }
+
+                    if (token.StartsWith("{{/"))
+                    {
+                        // An end tag with no match, delete
+                        newString.RemoveAt(newString.Count - 1);
+                        continue;
+                    }
+
+                    endToken = token.Insert(2, "/");
+                }
+            }
+
+            return string.Join(string.Empty, newString);
+        }
+
+        private static void ReplaceVerseTag(
+            List<string> tags,
+            string openTag)
+        {
+            string verseTag = tags.Last();
+            tags.RemoveAt(tags.Count - 1);
+
+            for (int i = tags.Count - 1; i >= 0; i--)
+            {
+                if (tags[i] == openTag)
+                {
+                    // Insert the verse before the openTag
+                    tags.Insert(i, verseTag);
+                    return;
+                }
+            }
+
+            throw new InvalidOperationException("Unable to find a spot for tag: " + verseTag);
         }
 
         private static string GetPage(string url)
@@ -140,7 +232,7 @@ namespace Formatter
 
             // Links to other chapters/topics
             page = ReplaceTag(page, "a", string.Empty);
-            
+
             return page;
         }
 
@@ -200,15 +292,18 @@ namespace Formatter
             page = page.Replace("{{b}}{{/b}}", string.Empty);
             page = page.Replace("{{t}}{{/t}}", string.Empty);
 
-            // Remove {{b}} from inside {{t}}
-            page = page.Replace("{{t}}{{b}}", "{{t}}");
-            page = page.Replace("{{/b}}{{/t}}", "{{/t}}");
+            // Remove {{b}} surrounding {{d}}
+            page = Regex.Replace(
+                input: page,
+                pattern: "{{b}} *{{d}}{{/b}}",
+                replacement: "{{d}}");
+
             return page;
         }
 
         private static string ReplaceTag(
-            string page, 
-            string tagName, 
+            string page,
+            string tagName,
             string replacement)
         {
             page = Regex.Replace(
