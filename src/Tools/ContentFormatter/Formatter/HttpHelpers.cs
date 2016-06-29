@@ -125,6 +125,14 @@ namespace Formatter
                                 continue;
                             }
 
+                            if (endToken == "{{/b}}" && token == "{{p}}")
+                            {
+                                // Split {{b}} tag
+                                newString.Insert(newString.Count - 1, endToken);
+                                newString.Add("{{b}}");
+                                continue;
+                            }
+
                             throw new InvalidOperationException(
                                 string.Format(
                                     "Nested tags detected, outer tag '{0}', inner tag '{1}'",
@@ -225,6 +233,7 @@ namespace Formatter
 
             //// Remove all remaining identifiers
             // Multiple verse refs
+            // TODO: this doesn't work
             page = Regex.Replace(
                 input: page,
                 pattern: "<a name=\"([0-9]|\\-)+\">([0-9]|\\-)*</a>",
@@ -277,8 +286,14 @@ namespace Formatter
             // Remove font
             page = ReplaceTag(page, "font", string.Empty);
 
-            // Remove vml 
-            page = page.Replace("<![if!vml]><![endif]>", string.Empty);
+            // Remove if tags 
+            page = ReplaceTag(page, "!\\[", string.Empty);
+
+            // Remove word related tags
+            page = ReplaceTag(page, "o:p", string.Empty);
+
+            // Remove dir
+            page = ReplaceTag(page, "dir", string.Empty);
 
             // Remove table, tr, td
             page = ReplaceTag(page, "table", string.Empty);

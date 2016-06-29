@@ -12,21 +12,15 @@ namespace ArabicInterpretation.Helpers
     {
         public static List<Label> FormatContent(string content)
         {
+            Dictionary<int, Label> verses = new Dictionary<int, Label>();
+
             List<Label> labels = new List<Label>();
 
             string[] tokens = Regex.Split(
                 input: content,
                 pattern: @"({{/*\w+}})");
 
-            StringBuilder builder = new StringBuilder();
-
-            Label label = new Label
-            {
-                HorizontalTextAlignment = TextAlignment.End,
-            };
-
-            labels.Add(label);
-
+            Label openLabel = null;
             foreach (string token in tokens)
             {
                 if (token == string.Empty)
@@ -37,76 +31,148 @@ namespace ArabicInterpretation.Helpers
                 {
                     if (token.StartsWith("{{v"))
                     {
-                        // TODO
-                        continue;
+                        int endIndex = token.IndexOf("}");
+                        int verseNumber = int.Parse(token.Substring(3, endIndex - 3));
+                        Label verseLabel = CreateLabel(StringType.Verse);
+                        labels.Add(verseLabel);
+                        if (!verses.ContainsKey(verseNumber))
+                        {
+                            verses.Add(verseNumber, verseLabel);
+                        }
                     }
                     else if (token == "{{t}}")
                     {
-                        label.Text = builder.ToString();
-                        labels.Add(label);
-
-                        builder = new StringBuilder();
-                        builder.Append("\r\n");
-                        label = new Label
-                        {
-                            HorizontalTextAlignment = TextAlignment.End,
-                            FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label))
-                        };
+                        openLabel = CreateLabel(StringType.Subtitle);
                     }
                     else if (token == "{{/t}}")
                     {
-                        label.Text = builder.ToString();
-                        labels.Add(label);
-
-                        builder = new StringBuilder();
-                        label = new Label
-                        {
-                            HorizontalTextAlignment = TextAlignment.End,
-                        };
+                        labels.Add(openLabel);
+                        openLabel = null;
                     }
                     else if (token == "{{b}}")
                     {
-                        label.Text = builder.ToString();
-                        labels.Add(label);
-
-                        builder = new StringBuilder();
-                        label = new Label
-                        {
-                            HorizontalTextAlignment = TextAlignment.End,
-                            FontAttributes = FontAttributes.Bold
-                        };
+                        openLabel = CreateLabel(StringType.BoldText);
                     }
                     else if (token == "{{/b}}")
                     {
-                        label.Text = builder.ToString();
-                        labels.Add(label);
-
-                        builder = new StringBuilder();
-                        label = new Label
-                        {
-                            HorizontalTextAlignment = TextAlignment.End,
-                        };
+                        MergeBoldText(openLabel, labels);
+                        openLabel = null;
                     }
                     else if (token == "{{l}}")
                     {
-                        builder.Append("\r\n");
+                        labels.Add(CreateLabel(StringType.NewLine));
                     }
                     else if (token == "{{p}}")
                     {
-                        builder.Append("\r\n\r\n");
+                        labels.Add(CreateLabel(StringType.NewParagraph));
                     }
                     else if (token == "{{d}}")
                     {
-                        builder.Append("\r\n-------\r\n");
+                        labels.Add(CreateLabel(StringType.Divider));
                     }
                 }
                 else
                 {
-                    builder.Append(token);
+                    if (openLabel != null)
+                    {
+                        // It's part of an open tag, add it.
+                        openLabel.Text = token;
+                    }
+                    else
+                    {
+                        Label lastLabel = labels.LastOrDefault();
+                        if (lastLabel != null && lastLabel.FormattedText != null)
+                        {
+                            // Last label was bold, this needs to be on the same line
+                            Span span = CreateSpan(CreateLabel(StringType.Text));
+                            span.Text = token;
+                            lastLabel.FormattedText.Spans.Add(span);
+                        }
+                        else
+                        {
+                            Label textLabel = CreateLabel(StringType.Text);
+                            textLabel.Text = token;
+                            labels.Add(textLabel);
+                        }
+                    }
                 }
             }
-            
+
             return labels;
+        }
+
+        private static Label CreateLabel(StringType type)
+        {
+            Label label = new Label
+            {
+                HorizontalTextAlignment = TextAlignment.End
+            };
+
+            switch (type)
+            {
+                case StringType.Verse:
+                    label.IsVisible = false;
+                    break;
+                case StringType.Subtitle:
+                    label.FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label));
+                    break;
+                case StringType.NewLine:
+                    break;
+                case StringType.NewParagraph:
+                    // label.Text = "";
+                    break;
+                case StringType.Divider:
+                    label.Text = "\r\n-------\r\n";
+                    break;
+                case StringType.BoldText:
+                    label.FontAttributes = FontAttributes.Bold;
+                    break;
+                case StringType.Text:
+                    break;
+                default:
+                    throw new InvalidOperationException("unsupported type: " + type);
+            }
+
+            return label;
+        }
+
+        private static void MergeBoldText(Label boldLabel, List<Label> labels)
+        {
+            if (!labels.Any())
+            {
+                labels.Add(boldLabel);
+            }
+
+            Span boldSpan = CreateSpan(boldLabel);
+            Label lastLabel = labels.Last();
+            if (lastLabel.FormattedText != null)
+            {
+                // it already has spans
+                lastLabel.FormattedText.Spans.Add(boldSpan);
+            }
+            else
+            {
+                // Convert last text to span
+                labels.Remove(lastLabel);
+                Label label = CreateLabel(StringType.Text);
+                label.FormattedText = new FormattedString();
+                label.FormattedText.Spans.Add(CreateSpan(lastLabel));
+                label.FormattedText.Spans.Add(boldSpan);
+                labels.Add(label);
+            }
+        }
+
+        private static Span CreateSpan(Label label)
+        {
+            return new Span
+            {
+                Text = label.Text,
+                FontAttributes = label.FontAttributes,
+                BackgroundColor = label.BackgroundColor,
+                FontFamily = label.FontFamily,
+                FontSize = label.FontSize,
+                ForegroundColor = label.TextColor
+            };
         }
     }
 }
