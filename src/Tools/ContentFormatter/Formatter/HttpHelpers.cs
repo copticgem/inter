@@ -13,7 +13,7 @@ namespace Formatter
 {
     public static class HttpHelpers
     {
-        public static string GetPageContent(string url)
+        public static string GetFormattedPage(string url)
         {
             string page = GetPage(url);
 
@@ -188,7 +188,7 @@ namespace Formatter
             throw new InvalidOperationException("Unable to find a spot for tag: " + verseTag);
         }
 
-        private static string GetPage(string url)
+        public static string GetPage(string url)
         {
             HttpClient client = new HttpClient();
 
@@ -234,10 +234,10 @@ namespace Formatter
             //// Remove all remaining identifiers
             // Multiple verse refs
             // TODO: this doesn't work
-            page = Regex.Replace(
-                input: page,
-                pattern: "<a name=\"([0-9]|\\-)+\">([0-9]|\\-)*</a>",
-                replacement: string.Empty);
+            //page = Regex.Replace(
+            //    input: page,
+            //    pattern: "<a name=\"([0-9]|\\-)+\">([0-9]|\\-)*</a>",
+            //    replacement: string.Empty);
 
             // Links to other chapters/topics
             page = ReplaceTag(page, "a", string.Empty);
