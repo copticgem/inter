@@ -10,7 +10,8 @@ namespace Formatter
 {
     public static class ContentDownloader
     {
-        const string Author = "Father-Antonious-Fekry";
+        // const string Author = "Father-Antonious-Fekry";
+        const string Author = "Father-Tadros-Yacoub-Malaty";
 
         public static void DownloadAll()
         {
@@ -19,7 +20,7 @@ namespace Formatter
             bool isNT = false;
             string baseDirectory = @"F:\git\inter\src\Data\Original";
 
-            for(int i = 24; i < lines.Count; i++)
+            for(int i = 0; i < lines.Count; i++)
             {
                 string line = lines[i];
                 string urlPrefix;
