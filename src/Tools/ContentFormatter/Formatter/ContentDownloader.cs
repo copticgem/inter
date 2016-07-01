@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -67,7 +68,7 @@ namespace Formatter
         {
             // Introduction
             string url = urlPrefix + "__00-introduction.html";
-            string content = HttpHelpers.GetPage(url);
+            string content = ContentDownloader.GetPage(url);
             File.WriteAllText(baseDirectory + @"\0.html", content, Encoding.UTF8);
 
             // Chapters
@@ -83,7 +84,7 @@ namespace Formatter
                 Thread.Sleep(TimeSpan.FromSeconds(1));
 
                 url = urlPrefix + "__01-Chapter-" + chapterNumber + ".html";
-                content = HttpHelpers.GetPage(url);
+                content = ContentDownloader.GetPage(url);
 
                 if (content.Contains("404 File Not Found!"))
                 {
@@ -115,6 +116,25 @@ namespace Formatter
             }
 
             File.WriteAllLines(@"Metadata\BookIds.txt", asfar);
+        }
+
+        private static string GetPage(string url)
+        {
+            HttpClient client = new HttpClient();
+
+            HttpResponseMessage response = client.GetAsync(url).Result;
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new InvalidOperationException("Invalid status code received: " + response.StatusCode);
+            }
+
+            Stream stream = response.Content.ReadAsStreamAsync().Result;
+
+            stream.Position = 0;
+            using (StreamReader reader = new StreamReader(stream, Encoding.GetEncoding("windows-1256")))
+            {
+                return reader.ReadToEnd();
+            }
         }
     }
 }

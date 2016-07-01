@@ -13,36 +13,28 @@ namespace Formatter
 {
     public static class HttpHelpers
     {
-        public static string GetFormattedPage(string url)
+        public static void FormatAll()
         {
-            string page = GetPage(url);
+            string author = "Father-Antonious-Fekry";
+            string baseDirectory = @"F:\git\inter\src\Data\Original";
+            baseDirectory = Path.Combine(baseDirectory, author, "ot");
 
-            // Remove header
-            int startIndex = page.IndexOf(Constants.Divider);
-            if (startIndex <= 0)
+            string[] files = Directory.GetFiles(baseDirectory, "*", SearchOption.AllDirectories);
+            foreach (string file in files)
             {
-                throw new InvalidOperationException("First divider not found");
+                string page = File.ReadAllText(file);
+                string formattedPage = GetFormattedPage(page);
+
+                if (formattedPage.Contains(">") || formattedPage.Contains("<"))
+                {
+                    throw new InvalidOperationException("Content still contains html tags");
+                }
             }
+        }
 
-            int endIndex = page.IndexOf('>', startIndex);
-            page = page.Substring(endIndex + 1);
-
-            startIndex = page.IndexOf(Constants.DividerSuffix);
-            if (startIndex == 0)
-            {
-                page = page.Substring(Constants.DividerSuffix.Length);
-            }
-
-            // Remove footer
-            startIndex = page.LastIndexOf(Constants.Divider);
-            if (startIndex <= 0)
-            {
-                throw new InvalidOperationException("Last divider not found");
-            }
-
-            page = page.Substring(
-                startIndex: 0,
-                length: startIndex - 1);
+        public static string GetFormattedPage(string page)
+        {
+            page = RemoveHeaderAndFooter(page);
 
             // Replace paragraphs
             page = Regex.Replace(
@@ -87,6 +79,57 @@ namespace Formatter
 
             // Validate no nested tags
             page = ValidateTags(page);
+
+            return page;
+        }
+
+        private static string RemoveHeaderAndFooter(string page)
+        {
+            // Remove header
+            int startIndex;
+            int endIndex;
+            if (page.Contains("اذهب مباشرةً لتفسير الآية"))
+            {
+                // In this case, we look for the first divider
+                startIndex = page.IndexOf(Constants.Divider);
+                if (startIndex <= 0)
+                {
+                    throw new InvalidOperationException("First divider not found");
+                }
+
+                endIndex = page.IndexOf('>', startIndex);
+                page = page.Substring(endIndex + 1);
+
+                startIndex = page.IndexOf(Constants.DividerSuffix);
+                if (startIndex == 0)
+                {
+                    page = page.Substring(Constants.DividerSuffix.Length);
+                }
+            }
+            else
+            {
+                // We look for the options
+                startIndex = page.IndexOf("<form name=\"commentaries1\">");
+                if (startIndex <= 0)
+                {
+                    throw new InvalidOperationException("Commentaries form not found");
+                }
+
+                string endTag = "</form>";
+                endIndex = page.IndexOf(endTag, startIndex);
+                page = page.Substring(endIndex + endTag.Length);
+            }
+
+            // Remove footer
+            startIndex = page.LastIndexOf(Constants.Divider);
+            if (startIndex <= 0)
+            {
+                throw new InvalidOperationException("Last divider not found");
+            }
+
+            page = page.Substring(
+                startIndex: 0,
+                length: startIndex - 1);
 
             return page;
         }
@@ -188,25 +231,6 @@ namespace Formatter
             throw new InvalidOperationException("Unable to find a spot for tag: " + verseTag);
         }
 
-        public static string GetPage(string url)
-        {
-            HttpClient client = new HttpClient();
-
-            HttpResponseMessage response = client.GetAsync(url).Result;
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new InvalidOperationException("Invalid status code received: " + response.StatusCode);
-            }
-
-            Stream stream = response.Content.ReadAsStreamAsync().Result;
-
-            stream.Position = 0;
-            using (StreamReader reader = new StreamReader(stream, Encoding.GetEncoding("windows-1256")))
-            {
-                return reader.ReadToEnd();
-            }
-        }
-
         private static string ReplaceVerseIdentifier(string page)
         {
             HashSet<int> verses = new HashSet<int>();
@@ -294,6 +318,11 @@ namespace Formatter
 
             // Remove dir
             page = ReplaceTag(page, "dir", string.Empty);
+
+            // TODO: Remove tags for now
+            page = ReplaceTag(page, "u", string.Empty);
+            page = ReplaceTag(page, "i", string.Empty);
+            page = ReplaceTag(page, "sup", string.Empty);
 
             // Remove table, tr, td
             page = ReplaceTag(page, "table", string.Empty);
