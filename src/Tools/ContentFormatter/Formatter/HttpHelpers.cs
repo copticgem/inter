@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Diagnostics;
 
 namespace Formatter
 {
@@ -17,7 +18,7 @@ namespace Formatter
         {
             string author = "Father-Antonious-Fekry";
             string baseDirectory = @"F:\git\inter\src\Data\Original";
-            baseDirectory = Path.Combine(baseDirectory, author, "ot");
+            baseDirectory = Path.Combine(baseDirectory, author, "nt");
 
             int goodFiles = 0;
             string[] files = Directory.GetFiles(baseDirectory, "*", SearchOption.AllDirectories);
@@ -25,6 +26,10 @@ namespace Formatter
 
             foreach (string file in files)
             {
+                if (goodFiles == 193)
+                {
+                }
+
                 string page = File.ReadAllText(file);
                 string formattedPage = GetFormattedPage(page);
 
@@ -217,7 +222,7 @@ namespace Formatter
                                 continue;
                             }
 
-                            if (endToken == "{{/b}}" && token == "{{p}}")
+                            if (endToken == "{{/b}}" && (token == "{{p}}" || token == "{{d}}"))
                             {
                                 // Split {{b}} tag
                                 newString.Insert(newString.Count - 1, endToken);
@@ -422,6 +427,10 @@ namespace Formatter
             // Remove empty tags
             page = page.Replace("{{b}}{{/b}}", string.Empty);
             page = page.Replace("{{t}}{{/t}}", string.Empty);
+
+            // TODO: Move to specialCases original
+            page = page.Replace("{{t}}{{b}}    {{d}}{{/b}}{{/t}}", "{{d}}");
+            page = page.Replace("<sub>&#8592;</sub>&#8593;", string.Empty);
 
             // Remove {{b}} surrounding {{d}}
             page = Regex.Replace(

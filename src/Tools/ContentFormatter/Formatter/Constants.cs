@@ -22,5 +22,11 @@ namespace Formatter
             public const string BoldStart = "{{b}}";
             public const string BoldEnd = "{{/b}}";
         }
+
+        public static class Authors
+        {
+            public const string FrAntonious = "Father-Antonious-Fekry";
+            public const string FrTadros = "Father-Tadros-Yacoub-Malaty";
+        }
     }
 }

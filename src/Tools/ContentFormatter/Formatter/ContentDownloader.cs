@@ -11,8 +11,7 @@ namespace Formatter
 {
     public static class ContentDownloader
     {
-        // const string Author = "Father-Antonious-Fekry";
-        const string Author = "Father-Tadros-Yacoub-Malaty";
+        const string Author = Constants.Authors.FrAntonious;
 
         public static void DownloadAll()
         {
@@ -21,7 +20,7 @@ namespace Formatter
             bool isNT = false;
             string baseDirectory = @"F:\git\inter\src\Data\Original";
 
-            for (int i = 0; i < lines.Count; i++)
+            for (int i = 58; i < lines.Count; i++)
             {
                 string line = lines[i];
                 string urlPrefix;
@@ -57,12 +56,14 @@ namespace Formatter
                 Directory.CreateDirectory(directory);
 
                 DownloadBook(
+                    bookNumber,
                     urlPrefix,
                     directory);
             }
         }
 
         private static void DownloadBook(
+            int bookNumber,
             string urlPrefix,
             string baseDirectory)
         {
@@ -103,6 +104,9 @@ namespace Formatter
                 {
                     break;
                 }
+
+                // Apply special cases
+                content = SpecialCases.Original(url, content);
 
                 File.WriteAllText(fileName, content, Encoding.UTF8);
             }
