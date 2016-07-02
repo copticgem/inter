@@ -19,6 +19,7 @@ namespace Formatter
             string baseDirectory = @"F:\git\inter\src\Data\Original";
             baseDirectory = Path.Combine(baseDirectory, author, "ot");
 
+            int goodFiles = 0;
             string[] files = Directory.GetFiles(baseDirectory, "*", SearchOption.AllDirectories);
             foreach (string file in files)
             {
@@ -29,6 +30,8 @@ namespace Formatter
                 {
                     throw new InvalidOperationException("Content still contains html tags");
                 }
+
+                goodFiles++;
             }
         }
 
@@ -42,9 +45,15 @@ namespace Formatter
                 pattern: "<p [^>]*>",
                 replacement: Constants.Replacements.Paragraph);
 
+            page = page.Replace("<p>", "{{p}}");
             page = page.Replace("</p>", string.Empty);
 
             // Replace bold characters
+            page = Regex.Replace(
+                input: page,
+                pattern: "<b [^>]*>",
+                replacement: Constants.Replacements.BoldStart);
+
             page = page.Replace(Constants.BoldStart, Constants.Replacements.BoldStart);
             page = page.Replace(Constants.BoldEnd, Constants.Replacements.BoldEnd);
 
@@ -57,12 +66,12 @@ namespace Formatter
             // Replace subtitles
             page = Regex.Replace(
                input: page,
-               pattern: "<h2[^>]*>",
+               pattern: "<h\\d[^>]*>",
                replacement: "{{t}}");
 
             page = Regex.Replace(
                 input: page,
-                pattern: "</h2>",
+                pattern: "</h\\d>",
                 replacement: "{{/t}}");
 
             // Replace divider
@@ -73,6 +82,12 @@ namespace Formatter
 
             // Add Verse identifier
             page = ReplaceVerseIdentifier(page);
+
+            // Replace hr with divider
+            page = Regex.Replace(
+               input: page,
+               pattern: "<hr[^>]*>",
+               replacement: "{{d}}");
 
             // Remove markups
             page = RemoveMarkups(page);
@@ -121,10 +136,19 @@ namespace Formatter
             }
 
             // Remove footer
-            startIndex = page.LastIndexOf(Constants.Divider);
+            string references = "<a name=\"الحواشي_والمراجع";
+            if (page.Contains(references))
+            {
+                startIndex = page.IndexOf(references);
+            }
+            else
+            {
+                startIndex = page.LastIndexOf(Constants.Divider);
+            }
+
             if (startIndex <= 0)
             {
-                throw new InvalidOperationException("Last divider not found");
+                throw new InvalidOperationException("Footer not found");
             }
 
             page = page.Substring(
@@ -165,6 +189,14 @@ namespace Formatter
                             if (endToken == "{{/t}}" && (token == "{{b}}" || token == "{{/b}}"))
                             {
                                 newString.RemoveAt(newString.Count - 1);
+                                continue;
+                            }
+
+                            // Remove {{b}} from outside {{t}}
+                            if (endToken == "{{/b}}" && token == "{{t}}")
+                            {
+                                newString.RemoveAt(newString.LastIndexOf("{{b}}"));
+                                endToken = "{{/t}}";
                                 continue;
                             }
 
@@ -304,8 +336,23 @@ namespace Formatter
                 pattern: "(انظر المزيد عن هذا الموضوع هنا في<font color=\"#000000\">موقع الأنبا تكلا</font> في أقسام المقالات والتفاسير الأخرى)",
                 replacement: string.Empty);
 
+            page = Regex.Replace(
+                input: page,
+                pattern: @"http://st-takla.org/(\w*\-*_*/*)+.html",
+                replacement: string.Empty);
+
+            // Remove body
+            page = ReplaceTag(page, "body", string.Empty);
+
             // Remove other images
             page = ReplaceTag(page, "img", string.Empty);
+
+            // Remove list
+            page = ReplaceTag(page, "li", string.Empty);
+            page = ReplaceTag(page, "ul", string.Empty);
+
+            // Remove bstyle
+            page = ReplaceTag(page, "bstyle", string.Empty);
 
             // Remove font
             page = ReplaceTag(page, "font", string.Empty);
@@ -315,6 +362,21 @@ namespace Formatter
 
             // Remove word related tags
             page = ReplaceTag(page, "o:p", string.Empty);
+            page = ReplaceTag(page, "!--", string.Empty);
+            page = Regex.Replace(
+                input: page,
+                pattern: "<o:[^>]*>",
+                replacement: string.Empty);
+
+            page = Regex.Replace(
+               input: page,
+               pattern: "<v:[^>]*>",
+               replacement: string.Empty);
+
+            page = Regex.Replace(
+               input: page,
+               pattern: "</v:[^>]*>",
+               replacement: string.Empty);
 
             // Remove dir
             page = ReplaceTag(page, "dir", string.Empty);
