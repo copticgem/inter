@@ -11,13 +11,12 @@ namespace Formatter
 {
     public static class ContentDownloader
     {
-        const string Author = Constants.Authors.FrAntonious;
+        const string Author = Constants.Authors.FrTadros;
 
         public static void DownloadAll()
         {
             List<string> lines = File.ReadAllLines(@"Metadata\BookIds.txt").ToList();
 
-            bool isNT = false;
             string baseDirectory = @"F:\git\inter\src\Data\Original";
 
             for (int i = 0; i < lines.Count; i++)
@@ -27,13 +26,12 @@ namespace Formatter
 
                 if (line == string.Empty)
                 {
-                    isNT = true;
                     continue;
                 }
 
                 int bookNumber = int.Parse(line.Substring(0, 2));
                 string directory;
-                if (isNT)
+                if (i > 46)
                 {
                     directory = Path.Combine(baseDirectory, Author, "nt", bookNumber.ToString());
                     urlPrefix =
@@ -71,10 +69,40 @@ namespace Formatter
 
             // Introduction
             string url = urlPrefix + "__00-introduction.html";
-            if (isMazameer && Author == "Father-Antonious-Fekry")
+            if (isMazameer && Author == Constants.Authors.FrAntonious)
             {
                 // Special case
                 url = urlPrefix + "__00-introduction-2-Intro.html";
+            }
+            else if (Author == Constants.Authors.FrTadros && url.Contains("23-Resalet-Youhanna-1/Tafseer-Resalat-You7anna-1"))
+            {
+                urlPrefix = urlPrefix.Replace(
+                    "23-Resalet-Youhanna-1/Tafseer-Resalat-You7anna-1", 
+                    "23-Resalat-Youhanna-Al-Oula/Tafsir-Resalat-Youhana-I");
+
+                url = url.Replace(
+                    "23-Resalet-Youhanna-1/Tafseer-Resalat-You7anna-1", 
+                    "23-Resalat-Youhanna-Al-Oula/Tafsir-Resalat-Youhana-I");
+            }
+            else if (Author == Constants.Authors.FrTadros && url.Contains("24-Resalet-Youhana-2/Tafseer-Resalat-Yo7ana-2"))
+            {
+                urlPrefix = urlPrefix.Replace(
+                    "24-Resalet-Youhana-2/Tafseer-Resalat-Yo7ana-2",
+                    "24-Risalat-Yohana-Al-Thania/Tafseer-John-II");
+
+                url = url.Replace(
+                    "24-Resalet-Youhana-2/Tafseer-Resalat-Yo7ana-2",
+                    "24-Risalat-Yohana-Al-Thania/Tafseer-John-II");
+            }
+            else if (Author == Constants.Authors.FrTadros && url.Contains("25-Resalet-Yohanna-3/Tafseer-Resalat-Yo7ana-3"))
+            {
+                urlPrefix = urlPrefix.Replace(
+                    "25-Resalet-Yohanna-3/Tafseer-Resalat-Yo7ana-3",
+                    "25-Risalat-Uohana-El-Thaletha/Tafseer-John-III");
+
+                url = url.Replace(
+                    "25-Resalet-Yohanna-3/Tafseer-Resalat-Yo7ana-3",
+                    "25-Risalat-Uohana-El-Thaletha/Tafseer-John-III");
             }
 
             string content = ContentDownloader.GetPage(url);

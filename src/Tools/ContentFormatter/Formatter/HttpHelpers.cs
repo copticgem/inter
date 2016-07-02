@@ -16,9 +16,9 @@ namespace Formatter
     {
         public static void FormatAll()
         {
-            string author = "Father-Antonious-Fekry";
+            string author = Constants.Authors.FrTadros;
             string baseDirectory = @"F:\git\inter\src\Data\Original";
-            baseDirectory = Path.Combine(baseDirectory, author, "nt");
+            baseDirectory = Path.Combine(baseDirectory, author);
 
             int goodFiles = 0;
             string[] files = Directory.GetFiles(baseDirectory, "*", SearchOption.AllDirectories);
@@ -415,6 +415,7 @@ namespace Formatter
             page = ReplaceTag(page, "u", string.Empty);
             page = ReplaceTag(page, "i", string.Empty);
             page = ReplaceTag(page, "sup", string.Empty);
+            page = ReplaceTag(page, "sub", string.Empty);
 
             // Remove table, tr, td
             page = ReplaceTag(page, "table", string.Empty);
@@ -449,12 +450,14 @@ namespace Formatter
             page = Regex.Replace(
                 input: page,
                 pattern: "<" + tagName + "[^>]*>",
-                replacement: replacement);
+                replacement: replacement,
+                options: RegexOptions.IgnoreCase);
 
             page = Regex.Replace(
                 input: page,
                 pattern: "</" + tagName + ">",
-                replacement: replacement);
+                replacement: replacement,
+                options: RegexOptions.IgnoreCase);
 
             return page;
         }
