@@ -14,9 +14,9 @@ namespace Formatter
 {
     public static class HttpHelpers
     {
-        public static void FormatAll()
+        public static void FormatAll(bool save = true)
         {
-            string author = Constants.Authors.FrTadros;
+            string author = Constants.Authors.FrAntonious;
             string baseDirectory = @"F:\git\inter\src\Data\Original";
             baseDirectory = Path.Combine(baseDirectory, author);
 
@@ -36,6 +36,17 @@ namespace Formatter
                 if (formattedPage.Contains(">") || formattedPage.Contains("<"))
                 {
                     throw new InvalidOperationException("Content still contains html tags");
+                }
+
+                if (save)
+                {
+                    string newPath = file.Replace(
+                        @"Data\Original\", 
+                        @"ArabicInterpretation\ArabicInterpretation\Core\Resources\");
+
+                    newPath = Path.ChangeExtension(newPath, ".txt");
+                    Directory.CreateDirectory(Path.GetDirectoryName(newPath));
+                    File.WriteAllText(newPath, formattedPage, Encoding.UTF8);
                 }
 
                 goodFiles++;
