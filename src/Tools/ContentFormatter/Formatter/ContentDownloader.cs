@@ -20,7 +20,7 @@ namespace Formatter
             bool isNT = false;
             string baseDirectory = @"F:\git\inter\src\Data\Original";
 
-            for (int i = 58; i < lines.Count; i++)
+            for (int i = 0; i < lines.Count; i++)
             {
                 string line = lines[i];
                 string urlPrefix;
