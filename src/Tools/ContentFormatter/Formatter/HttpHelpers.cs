@@ -21,6 +21,8 @@ namespace Formatter
 
             int goodFiles = 0;
             string[] files = Directory.GetFiles(baseDirectory, "*", SearchOption.AllDirectories);
+            files = files.OrderBy(f => f).ToArray();
+
             foreach (string file in files)
             {
                 string page = File.ReadAllText(file);
@@ -45,8 +47,17 @@ namespace Formatter
                 pattern: "<p [^>]*>",
                 replacement: Constants.Replacements.Paragraph);
 
-            page = page.Replace("<p>", "{{p}}");
-            page = page.Replace("</p>", string.Empty);
+            page = Regex.Replace(
+                input: page,
+                pattern: "<p>",
+                replacement: "{{p}}",
+                options: RegexOptions.IgnoreCase);
+
+            page = Regex.Replace(
+                input: page,
+                pattern: "</p>",
+                replacement: "{{p}}",
+                options: RegexOptions.IgnoreCase);
 
             // Replace bold characters
             page = Regex.Replace(
@@ -56,6 +67,9 @@ namespace Formatter
 
             page = page.Replace(Constants.BoldStart, Constants.Replacements.BoldStart);
             page = page.Replace(Constants.BoldEnd, Constants.Replacements.BoldEnd);
+
+            page = page.Replace("<strong>", "{{b}}");
+            page = page.Replace("</strong>", "{{/b}}");
 
             // Replace quote
             page = page.Replace("&quot;", "\"");
@@ -146,6 +160,9 @@ namespace Formatter
                 startIndex = page.LastIndexOf(Constants.Divider);
             }
 
+            startIndex = page.LastIndexOf(Constants.Divider);
+
+
             if (startIndex <= 0)
             {
                 throw new InvalidOperationException("Footer not found");
@@ -205,6 +222,13 @@ namespace Formatter
                                 // Split {{b}} tag
                                 newString.Insert(newString.Count - 1, endToken);
                                 newString.Add("{{b}}");
+                                continue;
+                            }
+
+                            if (endToken == "{{/b}}" && token == "{{b}}")
+                            {
+                                // {{b}} inside {{b}}, remove the inner one, closing tag will be removed
+                                newString.Remove(newString.Last());
                                 continue;
                             }
 
@@ -350,6 +374,7 @@ namespace Formatter
             // Remove list
             page = ReplaceTag(page, "li", string.Empty);
             page = ReplaceTag(page, "ul", string.Empty);
+            page = ReplaceTag(page, "ol", string.Empty);
 
             // Remove bstyle
             page = ReplaceTag(page, "bstyle", string.Empty);

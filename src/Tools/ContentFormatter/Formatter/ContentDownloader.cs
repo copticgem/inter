@@ -21,7 +21,7 @@ namespace Formatter
             bool isNT = false;
             string baseDirectory = @"F:\git\inter\src\Data\Original";
 
-            for(int i = 0; i < lines.Count; i++)
+            for (int i = 0; i < lines.Count; i++)
             {
                 string line = lines[i];
                 string urlPrefix;
@@ -66,15 +66,28 @@ namespace Formatter
             string urlPrefix,
             string baseDirectory)
         {
+            bool isMazameer = urlPrefix.Contains("Tafseer-Sefr-El-Mazamir");
+
             // Introduction
             string url = urlPrefix + "__00-introduction.html";
+            if (isMazameer && Author == "Father-Antonious-Fekry")
+            {
+                // Special case
+                url = urlPrefix + "__00-introduction-2-Intro.html";
+            }
+
             string content = ContentDownloader.GetPage(url);
             File.WriteAllText(baseDirectory + @"\0.html", content, Encoding.UTF8);
 
             // Chapters
-            for (int i = 1; i < 100; i++)
+            for (int i = 1; i < 200; i++)
             {
                 string chapterNumber = i.ToString("D2");
+                if (isMazameer)
+                {
+                    chapterNumber = i.ToString("D3");
+                }
+
                 string fileName = baseDirectory + @"\" + i + ".html";
                 if (File.Exists(fileName))
                 {
