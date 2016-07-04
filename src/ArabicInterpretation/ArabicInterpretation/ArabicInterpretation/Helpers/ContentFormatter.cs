@@ -243,7 +243,7 @@ namespace ArabicInterpretation.Helpers
             Grid grid = new Grid { ColumnSpacing = 1, RowSpacing = 1 };
             for (int i = 0; i < rowCount; i++)
             {
-                grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+                grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(3, GridUnitType.Auto) });
             }
 
             for (int i = 0; i < columnCount; i++)
@@ -255,7 +255,17 @@ namespace ArabicInterpretation.Helpers
             {
                 Label label = CreateLabel(StringType.Text);
                 label.Text = tuple.Item1;
-                grid.Children.Add(label, columnCount - tuple.Item3, tuple.Item2);
+
+                if (gridTuples.Where(t => t.Item2 == tuple.Item2).Count() == 1)
+                {
+                    // Only one, span all columns
+                    grid.Children.Add(label, 0, tuple.Item2);
+                    Grid.SetColumnSpan(label, columnCount + 1);
+                }
+                else
+                {
+                    grid.Children.Add(label, columnCount - tuple.Item3, tuple.Item2);
+                }
             }
 
             return grid;
