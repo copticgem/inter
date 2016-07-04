@@ -16,7 +16,7 @@ namespace Formatter
     {
         public static void FormatAll(bool save = true)
         {
-            string author = Constants.Authors.FrAntonious;
+            string author = Constants.Authors.FrTadros;
             string baseDirectory = @"F:\git\inter\src\Data\Original";
             baseDirectory = Path.Combine(baseDirectory, author);
 
@@ -26,8 +26,9 @@ namespace Formatter
 
             foreach (string file in files)
             {
-                if (goodFiles == 193)
+                if (goodFiles == 232)
                 {
+                    continue;
                 }
 
                 string page = File.ReadAllText(file);
@@ -41,7 +42,7 @@ namespace Formatter
                 if (save)
                 {
                     string newPath = file.Replace(
-                        @"Data\Original\", 
+                        @"Data\Original\",
                         @"ArabicInterpretation\ArabicInterpretation\Core\Resources\");
 
                     newPath = Path.ChangeExtension(newPath, ".txt");
@@ -56,6 +57,18 @@ namespace Formatter
         public static string GetFormattedPage(string page)
         {
             page = RemoveHeaderAndFooter(page);
+
+            // Remove special characters
+            page = page.Replace("\n", string.Empty);
+            page = page.Replace("\r", string.Empty);
+            page = page.Replace("\t", string.Empty);
+
+            // Remove tables with images 
+            // http://stackoverflow.com/questions/406230/regular-expression-to-match-line-that-doesnt-contain-a-word
+            page = Regex.Replace(
+                input: page,
+                pattern: "<table[^>]*>((?!</table>).)*<img[^>]*>((?!</table>).)*</table>",
+                replacement: string.Empty);
 
             // Replace paragraphs
             page = Regex.Replace(
@@ -92,6 +105,9 @@ namespace Formatter
 
             // Replace &
             page = page.Replace("&amp;", "&");
+            
+            // Replace symbols
+            page = page.Replace("&#8595;", "↓");
 
             // Replace subtitles
             page = Regex.Replace(
@@ -118,6 +134,37 @@ namespace Formatter
                input: page,
                pattern: "<hr[^>]*>",
                replacement: "{{d}}");
+
+            // Replace tables
+            page = Regex.Replace(
+               input: page,
+               pattern: "<table[^>]*>",
+               replacement: "{{g}}");
+
+            page = Regex.Replace(
+               input: page,
+               pattern: "</table>",
+               replacement: "{{/g}}");
+
+            page = Regex.Replace(
+               input: page,
+               pattern: "<tr[^>]*>",
+               replacement: "{{gr}}");
+
+            page = Regex.Replace(
+               input: page,
+               pattern: "</tr>",
+               replacement: "{{/gr}}");
+
+            page = Regex.Replace(
+               input: page,
+               pattern: "<td[^>]*>",
+               replacement: "{{gc}}");
+
+            page = Regex.Replace(
+               input: page,
+               pattern: "</td>",
+               replacement: "{{/gc}}");
 
             // Remove markups
             page = RemoveMarkups(page);
@@ -200,8 +247,9 @@ namespace Formatter
                 pattern: @"({{/*\w+}})");
 
             string endToken = null;
-            foreach (string token in tokens)
+            for (int i = 0; i < tokens.Length; i++)
             {
+                string token = tokens[i];
                 newString.Add(token);
 
                 if (token.StartsWith("{{"))
@@ -276,6 +324,21 @@ namespace Formatter
                         continue;
                     }
 
+                    if (token == "{{g}}")
+                    {
+                        // Handle grid separately
+                        int gridEndIndex;
+                        string grid = TableFormatter.GetGrid(
+                            tokens: tokens.ToList(),
+                            gridStartIndex: i,
+                            gridEndIndex: out gridEndIndex);
+
+                        i = gridEndIndex;
+                        newString.RemoveAt(newString.Count - 1);
+                        newString.Add(grid);
+                        continue;
+                    }
+
                     endToken = token.Insert(2, "/");
                 }
             }
@@ -343,11 +406,6 @@ namespace Formatter
 
         private static string RemoveMarkups(string page)
         {
-            // Remove special characters
-            page = page.Replace("\n", string.Empty);
-            page = page.Replace("\r", string.Empty);
-            page = page.Replace("\t", string.Empty);
-
             // Remove span
             page = ReplaceTag(page, "span", string.Empty);
 
@@ -362,13 +420,6 @@ namespace Formatter
 
             // Remove blockquotes
             page = ReplaceTag(page, "blockquote", string.Empty);
-
-            // Remove tables with images 
-            // http://stackoverflow.com/questions/406230/regular-expression-to-match-line-that-doesnt-contain-a-word
-            page = Regex.Replace(
-                input: page,
-                pattern: "<table[^>]*>((?!</table>).)*<img[^>]*>((?!</table>).)*</table>",
-                replacement: string.Empty);
 
             // Remove more info 
             page = Regex.Replace(
@@ -427,11 +478,6 @@ namespace Formatter
             page = ReplaceTag(page, "i", string.Empty);
             page = ReplaceTag(page, "sup", string.Empty);
             page = ReplaceTag(page, "sub", string.Empty);
-
-            // Remove table, tr, td
-            page = ReplaceTag(page, "table", string.Empty);
-            page = ReplaceTag(page, "tr", string.Empty);
-            page = ReplaceTag(page, "td", string.Empty);
 
             // Remove div
             page = ReplaceTag(page, "div", string.Empty);

@@ -11,7 +11,7 @@ namespace Formatter
 {
     public static class ContentDownloader
     {
-        const string Author = Constants.Authors.FrTadros;
+        const string Author = Constants.Authors.FrAntonious;
 
         public static void DownloadAll()
         {
@@ -25,6 +25,11 @@ namespace Formatter
                 string urlPrefix;
 
                 if (line == string.Empty)
+                {
+                    continue;
+                }
+
+                if (i != 70)
                 {
                     continue;
                 }
@@ -77,11 +82,11 @@ namespace Formatter
             else if (Author == Constants.Authors.FrTadros && url.Contains("23-Resalet-Youhanna-1/Tafseer-Resalat-You7anna-1"))
             {
                 urlPrefix = urlPrefix.Replace(
-                    "23-Resalet-Youhanna-1/Tafseer-Resalat-You7anna-1", 
+                    "23-Resalet-Youhanna-1/Tafseer-Resalat-You7anna-1",
                     "23-Resalat-Youhanna-Al-Oula/Tafsir-Resalat-Youhana-I");
 
                 url = url.Replace(
-                    "23-Resalet-Youhanna-1/Tafseer-Resalat-You7anna-1", 
+                    "23-Resalet-Youhanna-1/Tafseer-Resalat-You7anna-1",
                     "23-Resalat-Youhanna-Al-Oula/Tafsir-Resalat-Youhana-I");
             }
             else if (Author == Constants.Authors.FrTadros && url.Contains("24-Resalet-Youhana-2/Tafseer-Resalat-Yo7ana-2"))
@@ -120,7 +125,7 @@ namespace Formatter
                 string fileName = baseDirectory + @"\" + i + ".html";
                 if (File.Exists(fileName))
                 {
-                    continue;
+                    // continue;
                 }
 
                 Thread.Sleep(TimeSpan.FromSeconds(1));

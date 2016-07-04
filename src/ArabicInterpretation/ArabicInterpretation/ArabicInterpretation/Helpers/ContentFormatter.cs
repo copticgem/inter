@@ -10,19 +10,20 @@ namespace ArabicInterpretation.Helpers
 {
     static class ContentFormatter
     {
-        public static List<Label> FormatContent(string content)
+        public static List<View> FormatContent(string content)
         {
             Dictionary<int, Label> verses = new Dictionary<int, Label>();
 
-            List<Label> labels = new List<Label>();
+            List<View> views = new List<View>();
 
             string[] tokens = Regex.Split(
                 input: content,
                 pattern: @"({{/*\w+}})");
 
             Label openLabel = null;
-            foreach (string token in tokens)
+            for (int i = 0; i < tokens.Length; i++)
             {
+                string token = tokens[i];
                 if (token == string.Empty)
                 {
                     continue;
@@ -34,7 +35,7 @@ namespace ArabicInterpretation.Helpers
                         int endIndex = token.IndexOf("}");
                         int verseNumber = int.Parse(token.Substring(3, endIndex - 3));
                         Label verseLabel = CreateLabel(StringType.Verse);
-                        labels.Add(verseLabel);
+                        views.Add(verseLabel);
                         if (!verses.ContainsKey(verseNumber))
                         {
                             verses.Add(verseNumber, verseLabel);
@@ -46,7 +47,7 @@ namespace ArabicInterpretation.Helpers
                     }
                     else if (token == "{{/t}}")
                     {
-                        labels.Add(openLabel);
+                        views.Add(openLabel);
                         openLabel = null;
                     }
                     else if (token == "{{b}}")
@@ -55,20 +56,31 @@ namespace ArabicInterpretation.Helpers
                     }
                     else if (token == "{{/b}}")
                     {
-                        MergeBoldText(openLabel, labels);
+                        MergeBoldText(openLabel, views);
                         openLabel = null;
                     }
                     else if (token == "{{l}}")
                     {
-                        labels.Add(CreateLabel(StringType.NewLine));
+                        views.Add(CreateLabel(StringType.NewLine));
                     }
                     else if (token == "{{p}}")
                     {
-                        labels.Add(CreateLabel(StringType.NewParagraph));
+                        views.Add(CreateLabel(StringType.NewParagraph));
                     }
                     else if (token == "{{d}}")
                     {
-                        labels.Add(CreateLabel(StringType.Divider));
+                        views.Add(CreateLabel(StringType.Divider));
+                    }
+                    else if (token == "{{g}}")
+                    {
+                        int gridEndIndex;
+                        views.Add(GetGrid(
+                            tokens.ToList(),
+                            i,
+                            out gridEndIndex));
+
+                        // Skip the grid
+                        i = gridEndIndex;
                     }
                 }
                 else
@@ -80,7 +92,7 @@ namespace ArabicInterpretation.Helpers
                     }
                     else
                     {
-                        Label lastLabel = labels.LastOrDefault();
+                        Label lastLabel = views.LastOrDefault() as Label;
                         if (lastLabel != null && lastLabel.FormattedText != null)
                         {
                             // Last label was bold, this needs to be on the same line
@@ -92,13 +104,13 @@ namespace ArabicInterpretation.Helpers
                         {
                             Label textLabel = CreateLabel(StringType.Text);
                             textLabel.Text = token;
-                            labels.Add(textLabel);
+                            views.Add(textLabel);
                         }
                     }
                 }
             }
 
-            return labels;
+            return views;
         }
 
         private static Label CreateLabel(StringType type)
@@ -136,16 +148,24 @@ namespace ArabicInterpretation.Helpers
             return label;
         }
 
-        private static void MergeBoldText(Label boldLabel, List<Label> labels)
+        private static void MergeBoldText(Label boldLabel, List<View> views)
         {
-            if (!labels.Any())
+            if (!views.Any())
             {
-                labels.Add(boldLabel);
+                views.Add(boldLabel);
             }
 
             Span boldSpan = CreateSpan(boldLabel);
-            Label lastLabel = labels.Last();
-            if (lastLabel.FormattedText != null)
+            Label lastLabel = views.Last() as Label;
+            if (lastLabel == null)
+            {
+                // Not a label, add bold as separate label
+                Label label = CreateLabel(StringType.Text);
+                label.FormattedText = new FormattedString();
+                label.FormattedText.Spans.Add(boldSpan);
+                views.Add(label);
+            }
+            else if (lastLabel.FormattedText != null)
             {
                 // it already has spans
                 lastLabel.FormattedText.Spans.Add(boldSpan);
@@ -153,12 +173,12 @@ namespace ArabicInterpretation.Helpers
             else
             {
                 // Convert last text to span
-                labels.Remove(lastLabel);
+                views.Remove(lastLabel);
                 Label label = CreateLabel(StringType.Text);
                 label.FormattedText = new FormattedString();
                 label.FormattedText.Spans.Add(CreateSpan(lastLabel));
                 label.FormattedText.Spans.Add(boldSpan);
-                labels.Add(label);
+                views.Add(label);
             }
         }
 
@@ -173,6 +193,71 @@ namespace ArabicInterpretation.Helpers
                 FontSize = label.FontSize,
                 ForegroundColor = label.TextColor
             };
+        }
+
+        private static Grid GetGrid(
+            List<string> tokens,
+            int gridStartIndex,
+            out int gridEndIndex)
+        {
+            gridEndIndex = tokens.IndexOf("{{/g}}", gridStartIndex);
+            if (gridEndIndex <= 0)
+            {
+                throw new InvalidOperationException("End grid not found!");
+            }
+
+            int rowCount = 0;
+            int columnCount = 0;
+            int rowIndex = -1;
+            int columnIndex = -1;
+            List<Tuple<string, int, int>> gridTuples = new List<Tuple<string, int, int>>();
+            for (int i = gridStartIndex + 1; i < gridEndIndex; i++)
+            {
+                string token = tokens[i];
+                if (token == string.Empty)
+                {
+                    continue;
+                }
+
+                if (token.StartsWith("{{"))
+                {
+                    if (token == "{{gr}}")
+                    {
+                        rowIndex++;
+                        rowCount = Math.Max(rowCount, rowIndex);
+                        columnIndex = -1;
+                    }
+                    else if (token == "{{gc}}")
+                    {
+                        columnIndex++;
+                        columnCount = Math.Max(columnCount, columnIndex);
+                    }
+                }
+                else
+                {
+                    gridTuples.Add(new Tuple<string, int, int>(token, rowIndex, columnIndex));
+                }
+            }
+
+            Grid grid = new Grid { ColumnSpacing = 1, RowSpacing = 1 };
+            for (int i = 0; i < rowCount; i++)
+            {
+                grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+            }
+
+            for (int i = 0; i < columnCount; i++)
+            {
+                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            }
+
+            foreach (var tuple in gridTuples)
+            {
+                Label label = CreateLabel(StringType.Text);
+                label.Text = tuple.Item1;
+                grid.Children.Add(label, columnCount - tuple.Item3, tuple.Item2);
+            }
+
+            return grid;
         }
     }
 }

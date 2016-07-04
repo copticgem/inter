@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Formatter
@@ -20,6 +21,13 @@ namespace Formatter
 
                 index = page.LastIndexOf(Constants.Divider);
                 page = page.Remove(index);
+            }
+            else if (url == "http://st-takla.org/pub_Bible-Interpretations/Holy-Bible-Tafsir-02-New-Testament/Father-Antonious-Fekry/24-Resalet-Youhana-2/Tafseer-Resalat-Yo7ana-2__01-Chapter-01.html")
+            {
+                // Close missing </b>
+                string segment = "<font FACE=\"Times New Roman\" SIZE=\"5\" COLOR=\"#000000\"><b>";
+                int index = page.IndexOf(segment);
+                page = page.Insert(index + segment.Length, "</b>");
             }
 
             return page;

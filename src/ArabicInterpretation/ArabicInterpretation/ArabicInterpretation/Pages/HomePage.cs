@@ -11,8 +11,6 @@ namespace ArabicInterpretation
 {
     public class HomePage : ContentPage
     {
-        ScrollView scrollView;
-
         public HomePage()
         {
             StackLayout layout = new StackLayout
@@ -22,11 +20,11 @@ namespace ArabicInterpretation
                 HorizontalOptions = LayoutOptions.End,
             };
 
-            string content = FileHelper.GetFile(Author.FrAntonios, true, 1, 2).Result;
-            List<Label> labels = ContentFormatter.FormatContent(content);
-            foreach (Label label in labels)
+            string content = FileHelper.GetFile(Author.FrAntonios, true, 3, 17).Result;
+            List<View> views = ContentFormatter.FormatContent(content);
+            foreach (View view in views)
             {
-                layout.Children.Add(label);
+                layout.Children.Add(view);
             }
 
             this.Content = new ScrollView
