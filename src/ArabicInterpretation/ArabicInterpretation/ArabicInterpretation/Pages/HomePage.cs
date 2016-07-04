@@ -20,7 +20,7 @@ namespace ArabicInterpretation
                 HorizontalOptions = LayoutOptions.End,
             };
 
-            string content = FileHelper.GetFile(Author.FrAntonios, true, 3, 17).Result;
+            string content = FileHelper.GetFile(Author.FrAntonios, true, 1, 3).Result;
             List<View> views = ContentFormatter.FormatContent(content);
             foreach (View view in views)
             {

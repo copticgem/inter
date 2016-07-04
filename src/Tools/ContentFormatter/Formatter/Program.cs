@@ -11,7 +11,9 @@ namespace Formatter
     {
         static void Main(string[] args)
         {
-            HttpHelpers.FormatAll(true);
+            // HttpHelpers.FormatOne(Constants.Authors.FrAntonious, true, 1, 3, true);
+            
+            HttpHelpers.FormatAll(Constants.Authors.FrAntonious, true);
             // ContentDownloader.DownloadAll();
         }
     }

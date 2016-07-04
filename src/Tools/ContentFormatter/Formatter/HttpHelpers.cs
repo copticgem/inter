@@ -9,14 +9,50 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Diagnostics;
+using Formatter.Formatters;
 
 namespace Formatter
 {
     public static class HttpHelpers
     {
-        public static void FormatAll(bool save = true)
+        public static void FormatOne(
+            string author,
+            bool isNT,
+            int bookNumber,
+            int chapterNumber,
+            bool save = true)
         {
-            string author = Constants.Authors.FrTadros;
+            string file = @"F:\git\inter\src\Data\Original";
+            string type = isNT ? "nt" : "ot";
+            file = Path.Combine(
+                file, 
+                author, 
+                type,
+                bookNumber.ToString(), 
+                chapterNumber + ".html");
+
+            string page = File.ReadAllText(file);
+            string formattedPage = GetFormattedPage(page);
+
+            if (formattedPage.Contains(">") || formattedPage.Contains("<"))
+            {
+                throw new InvalidOperationException("Content still contains html tags");
+            }
+
+            if (save)
+            {
+                string newPath = file.Replace(
+                    @"Data\Original\",
+                    @"ArabicInterpretation\ArabicInterpretation\Core\Resources\");
+
+                newPath = Path.ChangeExtension(newPath, ".txt");
+                Directory.CreateDirectory(Path.GetDirectoryName(newPath));
+                File.WriteAllText(newPath, formattedPage, Encoding.UTF8);
+            }
+        }
+
+        public static void FormatAll(string author, bool save = true)
+        {
             string baseDirectory = @"F:\git\inter\src\Data\Original";
             baseDirectory = Path.Combine(baseDirectory, author);
 
@@ -166,11 +202,17 @@ namespace Formatter
                pattern: "</td>",
                replacement: "{{/gc}}");
 
+            // Replace numbers
+            page = NumbersFormatter.ReplaceNumbers(page);
+
             // Remove markups
             page = RemoveMarkups(page);
 
             // Validate no nested tags
-            page = ValidateTags(page);
+            page = Validation.ValidateTags(page);
+
+            // Format spaces
+            page = SpacingFormatter.FormatSpaces(page);
 
             return page;
         }
@@ -236,134 +278,6 @@ namespace Formatter
                 length: startIndex - 1);
 
             return page;
-        }
-
-        private static string ValidateTags(string page)
-        {
-            List<string> newString = new List<string>();
-
-            string[] tokens = Regex.Split(
-                input: page,
-                pattern: @"({{/*\w+}})");
-
-            string endToken = null;
-            for (int i = 0; i < tokens.Length; i++)
-            {
-                string token = tokens[i];
-                newString.Add(token);
-
-                if (token.StartsWith("{{"))
-                {
-                    if (endToken != null)
-                    {
-                        if (token.StartsWith("{{v"))
-                        {
-                            // We don't want verse tag in the middle since it's a separate label
-                            // Move up till it's not nested
-                            ReplaceVerseTag(newString, endToken.Replace("/", string.Empty));
-                            continue;
-                        }
-
-                        if (token != endToken)
-                        {
-                            // Remove {{b}} from inside {{t}}
-                            if (endToken == "{{/t}}" && (token == "{{b}}" || token == "{{/b}}"))
-                            {
-                                newString.RemoveAt(newString.Count - 1);
-                                continue;
-                            }
-
-                            // Remove {{b}} from outside {{t}}
-                            if (endToken == "{{/b}}" && token == "{{t}}")
-                            {
-                                newString.RemoveAt(newString.LastIndexOf("{{b}}"));
-                                endToken = "{{/t}}";
-                                continue;
-                            }
-
-                            if (endToken == "{{/b}}" && (token == "{{p}}" || token == "{{d}}"))
-                            {
-                                // Split {{b}} tag
-                                newString.Insert(newString.Count - 1, endToken);
-                                newString.Add("{{b}}");
-                                continue;
-                            }
-
-                            if (endToken == "{{/b}}" && token == "{{b}}")
-                            {
-                                // {{b}} inside {{b}}, remove the inner one, closing tag will be removed
-                                newString.Remove(newString.Last());
-                                continue;
-                            }
-
-                            throw new InvalidOperationException(
-                                string.Format(
-                                    "Nested tags detected, outer tag '{0}', inner tag '{1}'",
-                                    endToken,
-                                    token));
-                        }
-                        else
-                        {
-                            endToken = null;
-                            continue;
-                        }
-                    }
-
-                    if (token == "{{l}}" ||
-                        token == "{{p}}" ||
-                        token == "{{d}}" ||
-                        token.StartsWith("{{v"))
-                    {
-                        continue;
-                    }
-
-                    if (token.StartsWith("{{/"))
-                    {
-                        // An end tag with no match, delete
-                        newString.RemoveAt(newString.Count - 1);
-                        continue;
-                    }
-
-                    if (token == "{{g}}")
-                    {
-                        // Handle grid separately
-                        int gridEndIndex;
-                        string grid = TableFormatter.GetGrid(
-                            tokens: tokens.ToList(),
-                            gridStartIndex: i,
-                            gridEndIndex: out gridEndIndex);
-
-                        i = gridEndIndex;
-                        newString.RemoveAt(newString.Count - 1);
-                        newString.Add(grid);
-                        continue;
-                    }
-
-                    endToken = token.Insert(2, "/");
-                }
-            }
-
-            return string.Join(string.Empty, newString);
-        }
-
-        private static void ReplaceVerseTag(
-            List<string> tags,
-            string openTag)
-        {
-            string verseTag = tags.Last();
-            tags.RemoveAt(tags.Count - 1);
-
-            for (int i = tags.Count - 1; i >= 0; i--)
-            {
-                if (tags[i] == openTag)
-                {
-                    // Insert the verse before the openTag
-                    tags.Insert(i, verseTag);
-                    return;
-                }
-            }
-
-            throw new InvalidOperationException("Unable to find a spot for tag: " + verseTag);
         }
 
         private static string ReplaceVerseIdentifier(string page)

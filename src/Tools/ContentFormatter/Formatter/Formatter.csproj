@@ -45,11 +45,14 @@
   <ItemGroup>
     <Compile Include="Constants.cs" />
     <Compile Include="ContentDownloader.cs" />
+    <Compile Include="Formatters\NumbersFormatter.cs" />
+    <Compile Include="Formatters\SpacingFormatter.cs" />
+    <Compile Include="Formatters\Validation.cs" />
     <Compile Include="HttpHelpers.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SpecialCases.cs" />
-    <Compile Include="TableFormatter.cs" />
+    <Compile Include="Formatters\SpecialCases.cs" />
+    <Compile Include="Formatters\TableFormatter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

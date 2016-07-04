@@ -69,7 +69,7 @@ namespace ArabicInterpretation.Helpers
                     }
                     else if (token == "{{d}}")
                     {
-                        views.Add(CreateLabel(StringType.Divider));
+                        views.Add(new BoxView() { Color = Color.White, HeightRequest = 1 });
                     }
                     else if (token == "{{g}}")
                     {
@@ -132,6 +132,7 @@ namespace ArabicInterpretation.Helpers
                     break;
                 case StringType.NewParagraph:
                     // label.Text = "";
+                    label.ClassId = "p";
                     break;
                 case StringType.Divider:
                     label.Text = "\r\n-------\r\n";
@@ -157,7 +158,7 @@ namespace ArabicInterpretation.Helpers
 
             Span boldSpan = CreateSpan(boldLabel);
             Label lastLabel = views.Last() as Label;
-            if (lastLabel == null)
+            if (lastLabel == null || lastLabel.ClassId == "p")
             {
                 // Not a label, add bold as separate label
                 Label label = CreateLabel(StringType.Text);
