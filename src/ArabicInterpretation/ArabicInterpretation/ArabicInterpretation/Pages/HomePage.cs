@@ -1,9 +1,6 @@
 ﻿using ArabicInterpretation.Helpers;
 using Core;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -11,6 +8,9 @@ namespace ArabicInterpretation
 {
     public class HomePage : ContentPage
     {
+        ScrollView scrollView;
+        Dictionary<int, Label> verses;
+
         public HomePage()
         {
             StackLayout layout = new StackLayout
@@ -20,17 +20,27 @@ namespace ArabicInterpretation
                 HorizontalOptions = LayoutOptions.End,
             };
 
-            string content = FileHelper.GetFile(Author.FrAntonios, true, 1, 2).Result;
-            List<View> views = ContentFormatter.FormatContent(content);
+            string content = FileHelper.GetFile(Author.FrAntonios, true, 2, 13).Result;
+
+            List<View> views = ContentFormatter.FormatContent(content, out verses);
             foreach (View view in views)
             {
-                layout.Children.Add(view);
+                // layout.Children.Add(view);
             }
 
-            this.Content = new ScrollView
+            layout.Children.Add(new BookChooser(true));
+
+            scrollView = new ScrollView
             {
                 Content = layout,
             };
+
+            this.Content = scrollView;
+        }
+
+        private async Task OnFontButtonClicked(NamedSize newSize)
+        {
+            await scrollView.ScrollToAsync(verses[3], ScrollToPosition.MakeVisible, true);
         }
     }
 }

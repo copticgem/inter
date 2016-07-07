@@ -10,9 +10,9 @@ namespace ArabicInterpretation.Helpers
 {
     static class ContentFormatter
     {
-        public static List<View> FormatContent(string content)
+        public static List<View> FormatContent(string content, out Dictionary<int, Label> verses)
         {
-            Dictionary<int, Label> verses = new Dictionary<int, Label>();
+            verses = new Dictionary<int, Label>();
 
             List<View> views = new List<View>();
 
