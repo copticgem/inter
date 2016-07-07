@@ -28,14 +28,12 @@ namespace ArabicInterpretation
                 // layout.Children.Add(view);
             }
 
-            layout.Children.Add(new BookChooser(false));
-
             scrollView = new ScrollView
             {
-                Content = layout,
+                // Content = new BookChooser(),
             };
 
-            this.Content = scrollView;
+            this.Content = new BookChooser();
         }
 
         private async Task OnFontButtonClicked(NamedSize newSize)

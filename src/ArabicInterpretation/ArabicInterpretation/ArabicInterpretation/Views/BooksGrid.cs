@@ -9,9 +9,9 @@ using Xamarin.Forms;
 
 namespace ArabicInterpretation
 {
-    public class BookChooser : Grid
+    public class BooksGrid : Grid
     {
-        public BookChooser(bool isNT)
+        public BooksGrid(bool isNT)
         {
             this.HorizontalOptions = LayoutOptions.FillAndExpand;
             this.ColumnDefinitions = new ColumnDefinitionCollection

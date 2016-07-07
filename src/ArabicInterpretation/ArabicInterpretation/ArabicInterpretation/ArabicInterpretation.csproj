@@ -45,7 +45,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Books.resx</DependentUpon>
     </Compile>
-    <Compile Include="View\BookChooser.cs" />
+    <Compile Include="Views\BookChooser.cs" />
+    <Compile Include="Views\BooksGrid.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
