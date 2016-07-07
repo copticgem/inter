@@ -46,6 +46,18 @@ namespace Core
 
             path = DefaultPrefix + path + "_" + bookNumber + "." + chapterNumber + ".txt";
 
+            return await ReadFile(path);
+        }
+
+        public static Task<string> GetIndex(bool isNT)
+        {
+            string fileName = isNT ? "nt" : "ot";
+            string path = DefaultPrefix + fileName + ".txt";
+            return ReadFile(path);
+        }
+
+        private static async Task<string> ReadFile(string path)
+        {
             var assembly = typeof(FileHelper).GetTypeInfo().Assembly;
             using (Stream stream = assembly.GetManifestResourceStream(path))
             {

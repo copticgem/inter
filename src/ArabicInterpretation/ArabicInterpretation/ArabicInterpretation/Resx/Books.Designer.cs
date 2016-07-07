@@ -98,15 +98,6 @@ namespace ArabicInterpretation.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to تكوين.
-        /// </summary>
-        public static string Book119 {
-            get {
-                return ResourceManager.GetString("Book119", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to تك.
         /// </summary>
         public static string Book11Short {
@@ -121,78 +112,6 @@ namespace ArabicInterpretation.Resx {
         public static string Book12 {
             get {
                 return ResourceManager.GetString("Book12", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to تكوين.
-        /// </summary>
-        public static string Book120 {
-            get {
-                return ResourceManager.GetString("Book120", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to تكوين.
-        /// </summary>
-        public static string Book121 {
-            get {
-                return ResourceManager.GetString("Book121", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to تكوين.
-        /// </summary>
-        public static string Book122 {
-            get {
-                return ResourceManager.GetString("Book122", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to تكوين.
-        /// </summary>
-        public static string Book123 {
-            get {
-                return ResourceManager.GetString("Book123", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to تكوين.
-        /// </summary>
-        public static string Book124 {
-            get {
-                return ResourceManager.GetString("Book124", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to تكوين.
-        /// </summary>
-        public static string Book125 {
-            get {
-                return ResourceManager.GetString("Book125", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to تكوين.
-        /// </summary>
-        public static string Book126 {
-            get {
-                return ResourceManager.GetString("Book126", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to تكوين.
-        /// </summary>
-        public static string Book127 {
-            get {
-                return ResourceManager.GetString("Book127", resourceCulture);
             }
         }
         
@@ -325,99 +244,18 @@ namespace ArabicInterpretation.Resx {
         /// <summary>
         ///   Looks up a localized string similar to تك.
         /// </summary>
+        public static string Book19Short {
+            get {
+                return ResourceManager.GetString("Book19Short", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تك.
+        /// </summary>
         public static string Book1Short {
             get {
                 return ResourceManager.GetString("Book1Short", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to تك.
-        /// </summary>
-        public static string Book1Short18 {
-            get {
-                return ResourceManager.GetString("Book1Short18", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to تك.
-        /// </summary>
-        public static string Book1Short19 {
-            get {
-                return ResourceManager.GetString("Book1Short19", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to تك.
-        /// </summary>
-        public static string Book1Short20 {
-            get {
-                return ResourceManager.GetString("Book1Short20", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to تك.
-        /// </summary>
-        public static string Book1Short21 {
-            get {
-                return ResourceManager.GetString("Book1Short21", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to تك.
-        /// </summary>
-        public static string Book1Short22 {
-            get {
-                return ResourceManager.GetString("Book1Short22", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to تك.
-        /// </summary>
-        public static string Book1Short23 {
-            get {
-                return ResourceManager.GetString("Book1Short23", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to تك.
-        /// </summary>
-        public static string Book1Short24 {
-            get {
-                return ResourceManager.GetString("Book1Short24", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to تك.
-        /// </summary>
-        public static string Book1Short25 {
-            get {
-                return ResourceManager.GetString("Book1Short25", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to تك.
-        /// </summary>
-        public static string Book1Short26 {
-            get {
-                return ResourceManager.GetString("Book1Short26", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to تك.
-        /// </summary>
-        public static string Book1Short27 {
-            get {
-                return ResourceManager.GetString("Book1Short27", resourceCulture);
             }
         }
         
@@ -427,6 +265,186 @@ namespace ArabicInterpretation.Resx {
         public static string Book2 {
             get {
                 return ResourceManager.GetString("Book2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تكوين.
+        /// </summary>
+        public static string Book20 {
+            get {
+                return ResourceManager.GetString("Book20", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تك.
+        /// </summary>
+        public static string Book20Short {
+            get {
+                return ResourceManager.GetString("Book20Short", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تكوين.
+        /// </summary>
+        public static string Book21 {
+            get {
+                return ResourceManager.GetString("Book21", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تك.
+        /// </summary>
+        public static string Book21Short {
+            get {
+                return ResourceManager.GetString("Book21Short", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تكوين.
+        /// </summary>
+        public static string Book22 {
+            get {
+                return ResourceManager.GetString("Book22", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تك.
+        /// </summary>
+        public static string Book22Short {
+            get {
+                return ResourceManager.GetString("Book22Short", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تكوين.
+        /// </summary>
+        public static string Book23 {
+            get {
+                return ResourceManager.GetString("Book23", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تك.
+        /// </summary>
+        public static string Book23Short {
+            get {
+                return ResourceManager.GetString("Book23Short", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تكوين.
+        /// </summary>
+        public static string Book24 {
+            get {
+                return ResourceManager.GetString("Book24", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تك.
+        /// </summary>
+        public static string Book24Short {
+            get {
+                return ResourceManager.GetString("Book24Short", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تكوين.
+        /// </summary>
+        public static string Book25 {
+            get {
+                return ResourceManager.GetString("Book25", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تك.
+        /// </summary>
+        public static string Book25Short {
+            get {
+                return ResourceManager.GetString("Book25Short", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تكوين.
+        /// </summary>
+        public static string Book26 {
+            get {
+                return ResourceManager.GetString("Book26", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تك.
+        /// </summary>
+        public static string Book26Short {
+            get {
+                return ResourceManager.GetString("Book26Short", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تكوين.
+        /// </summary>
+        public static string Book27 {
+            get {
+                return ResourceManager.GetString("Book27", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تك.
+        /// </summary>
+        public static string Book27Short {
+            get {
+                return ResourceManager.GetString("Book27Short", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تكوين.
+        /// </summary>
+        public static string Book28 {
+            get {
+                return ResourceManager.GetString("Book28", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تك.
+        /// </summary>
+        public static string Book28Short {
+            get {
+                return ResourceManager.GetString("Book28Short", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تكوين.
+        /// </summary>
+        public static string Book29 {
+            get {
+                return ResourceManager.GetString("Book29", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تك.
+        /// </summary>
+        public static string Book29Short {
+            get {
+                return ResourceManager.GetString("Book29Short", resourceCulture);
             }
         }
         
@@ -445,6 +463,24 @@ namespace ArabicInterpretation.Resx {
         public static string Book3 {
             get {
                 return ResourceManager.GetString("Book3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تكوين.
+        /// </summary>
+        public static string Book30 {
+            get {
+                return ResourceManager.GetString("Book30", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تك.
+        /// </summary>
+        public static string Book30Short {
+            get {
+                return ResourceManager.GetString("Book30Short", resourceCulture);
             }
         }
         

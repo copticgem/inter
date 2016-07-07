@@ -1,4 +1,5 @@
 ﻿using ArabicInterpretation.Resx;
+using Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,17 +27,19 @@ namespace ArabicInterpretation
                 new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }
             };
 
+            string index = FileHelper.GetIndex(isNT).Result;
+            string[] books = index.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+
             int booksPerRow = 4;
             int left = 3;
-            for (int i = 1; i < 7; i++)
+            for (int i = 1; i <= books.Length; i++)
             {
-                string bookName = Books.ResourceManager.GetString("Book" + i);
-                string bookShortName = Books.ResourceManager.GetString("Book" + i + "Short");
+                string[] tokens = books[i - 1].Split(':');
 
                 Button button = new Button
                 {
                     FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button)),
-                    Text = bookName + "\r\n\r\n(" + bookShortName + ")"
+                    Text = tokens[0] + "\r\n\r\n(" + tokens[1] + ")"
                 };
 
                 button.HeightRequest = button.Width;
@@ -51,11 +54,5 @@ namespace ArabicInterpretation
                 }
             }
         }
-
-        private List<string> bookNames = new List<string>
-        {
-            "",
-            ""
-        };
     }
 }

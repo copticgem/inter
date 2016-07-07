@@ -35,7 +35,10 @@
     <Compile Include="Model\Author.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\nt.txt" />
+    <EmbeddedResource Include="Resources\ot.txt" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Father-Antonious-Fekry\nt\10\0.txt" />
     <EmbeddedResource Include="Resources\Father-Antonious-Fekry\nt\10\1.txt" />

@@ -129,122 +129,134 @@
   <data name="Book11" xml:space="preserve">
     <value>ا أخبار الأيام</value>
   </data>
-  <data name="Book112" xml:space="preserve">
-    <value>تكوين</value>
-  </data>
-  <data name="Book113" xml:space="preserve">
-    <value>تكوين</value>
-  </data>
-  <data name="Book114" xml:space="preserve">
-    <value>تكوين</value>
-  </data>
-  <data name="Book115" xml:space="preserve">
-    <value>تكوين</value>
-  </data>
-  <data name="Book116" xml:space="preserve">
-    <value>تكوين</value>
-  </data>
-  <data name="Book117" xml:space="preserve">
-    <value>تكوين</value>
-  </data>
-  <data name="Book118" xml:space="preserve">
-    <value>تكوين</value>
-  </data>
-  <data name="Book119" xml:space="preserve">
-    <value>تكوين</value>
-  </data>
   <data name="Book11Short" xml:space="preserve">
     <value>تك</value>
   </data>
   <data name="Book12" xml:space="preserve">
     <value>تكوين</value>
   </data>
-  <data name="Book120" xml:space="preserve">
+  <data name="Book12Short" xml:space="preserve">
+    <value>تك</value>
+  </data>
+  <data name="Book13" xml:space="preserve">
     <value>تكوين</value>
   </data>
-  <data name="Book121" xml:space="preserve">
+  <data name="Book13Short" xml:space="preserve">
+    <value>تك</value>
+  </data>
+  <data name="Book14" xml:space="preserve">
     <value>تكوين</value>
   </data>
-  <data name="Book122" xml:space="preserve">
+  <data name="Book14Short" xml:space="preserve">
+    <value>تك</value>
+  </data>
+  <data name="Book15" xml:space="preserve">
     <value>تكوين</value>
   </data>
-  <data name="Book123" xml:space="preserve">
+  <data name="Book15Short" xml:space="preserve">
+    <value>تك</value>
+  </data>
+  <data name="Book16" xml:space="preserve">
     <value>تكوين</value>
   </data>
-  <data name="Book124" xml:space="preserve">
+  <data name="Book16Short" xml:space="preserve">
+    <value>تك</value>
+  </data>
+  <data name="Book17" xml:space="preserve">
     <value>تكوين</value>
   </data>
-  <data name="Book125" xml:space="preserve">
+  <data name="Book17Short" xml:space="preserve">
+    <value>تك</value>
+  </data>
+  <data name="Book18" xml:space="preserve">
     <value>تكوين</value>
   </data>
-  <data name="Book126" xml:space="preserve">
+  <data name="Book18Short" xml:space="preserve">
+    <value>تك</value>
+  </data>
+  <data name="Book19" xml:space="preserve">
     <value>تكوين</value>
   </data>
-  <data name="Book127" xml:space="preserve">
-    <value>تكوين</value>
+  <data name="Book19Short" xml:space="preserve">
+    <value>تك</value>
   </data>
   <data name="Book1Short" xml:space="preserve">
     <value>تك</value>
   </data>
-  <data name="Book1Short11" xml:space="preserve">
-    <value>تك</value>
-  </data>
-  <data name="Book1Short12" xml:space="preserve">
-    <value>تك</value>
-  </data>
-  <data name="Book1Short13" xml:space="preserve">
-    <value>تك</value>
-  </data>
-  <data name="Book1Short14" xml:space="preserve">
-    <value>تك</value>
-  </data>
-  <data name="Book1Short15" xml:space="preserve">
-    <value>تك</value>
-  </data>
-  <data name="Book1Short16" xml:space="preserve">
-    <value>تك</value>
-  </data>
-  <data name="Book1Short17" xml:space="preserve">
-    <value>تك</value>
-  </data>
-  <data name="Book1Short18" xml:space="preserve">
-    <value>تك</value>
-  </data>
-  <data name="Book1Short19" xml:space="preserve">
-    <value>تك</value>
-  </data>
-  <data name="Book1Short20" xml:space="preserve">
-    <value>تك</value>
-  </data>
-  <data name="Book1Short21" xml:space="preserve">
-    <value>تك</value>
-  </data>
-  <data name="Book1Short22" xml:space="preserve">
-    <value>تك</value>
-  </data>
-  <data name="Book1Short23" xml:space="preserve">
-    <value>تك</value>
-  </data>
-  <data name="Book1Short24" xml:space="preserve">
-    <value>تك</value>
-  </data>
-  <data name="Book1Short25" xml:space="preserve">
-    <value>تك</value>
-  </data>
-  <data name="Book1Short26" xml:space="preserve">
-    <value>تك</value>
-  </data>
-  <data name="Book1Short27" xml:space="preserve">
-    <value>تك</value>
-  </data>
   <data name="Book2" xml:space="preserve">
     <value>خروج</value>
+  </data>
+  <data name="Book20" xml:space="preserve">
+    <value>تكوين</value>
+  </data>
+  <data name="Book20Short" xml:space="preserve">
+    <value>تك</value>
+  </data>
+  <data name="Book21" xml:space="preserve">
+    <value>تكوين</value>
+  </data>
+  <data name="Book21Short" xml:space="preserve">
+    <value>تك</value>
+  </data>
+  <data name="Book22" xml:space="preserve">
+    <value>تكوين</value>
+  </data>
+  <data name="Book22Short" xml:space="preserve">
+    <value>تك</value>
+  </data>
+  <data name="Book23" xml:space="preserve">
+    <value>تكوين</value>
+  </data>
+  <data name="Book23Short" xml:space="preserve">
+    <value>تك</value>
+  </data>
+  <data name="Book24" xml:space="preserve">
+    <value>تكوين</value>
+  </data>
+  <data name="Book24Short" xml:space="preserve">
+    <value>تك</value>
+  </data>
+  <data name="Book25" xml:space="preserve">
+    <value>تكوين</value>
+  </data>
+  <data name="Book25Short" xml:space="preserve">
+    <value>تك</value>
+  </data>
+  <data name="Book26" xml:space="preserve">
+    <value>تكوين</value>
+  </data>
+  <data name="Book26Short" xml:space="preserve">
+    <value>تك</value>
+  </data>
+  <data name="Book27" xml:space="preserve">
+    <value>تكوين</value>
+  </data>
+  <data name="Book27Short" xml:space="preserve">
+    <value>تك</value>
+  </data>
+  <data name="Book28" xml:space="preserve">
+    <value>تكوين</value>
+  </data>
+  <data name="Book28Short" xml:space="preserve">
+    <value>تك</value>
+  </data>
+  <data name="Book29" xml:space="preserve">
+    <value>تكوين</value>
+  </data>
+  <data name="Book29Short" xml:space="preserve">
+    <value>تك</value>
   </data>
   <data name="Book2Short" xml:space="preserve">
     <value>خر</value>
   </data>
   <data name="Book3" xml:space="preserve">
     <value>لاويين</value>
+  </data>
+  <data name="Book30" xml:space="preserve">
+    <value>تكوين</value>
+  </data>
+  <data name="Book30Short" xml:space="preserve">
+    <value>تك</value>
   </data>
   <data name="Book3Short" xml:space="preserve">
     <value>لا</value>

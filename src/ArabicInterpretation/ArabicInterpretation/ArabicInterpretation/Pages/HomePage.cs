@@ -28,7 +28,7 @@ namespace ArabicInterpretation
                 // layout.Children.Add(view);
             }
 
-            layout.Children.Add(new BookChooser(true));
+            layout.Children.Add(new BookChooser(false));
 
             scrollView = new ScrollView
             {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Formatter.Formatters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,9 +13,11 @@ namespace Formatter
         static void Main(string[] args)
         {
             // HttpHelpers.FormatOne(Constants.Authors.FrAntonious, true, 1, 3, true);
-            
-            HttpHelpers.FormatAll(Constants.Authors.FrAntonious, true);
+
+            // HttpHelpers.FormatAll(Constants.Authors.FrAntonious, true);
             // ContentDownloader.DownloadAll();
+
+            BookNumbers.Format();
         }
     }
 }

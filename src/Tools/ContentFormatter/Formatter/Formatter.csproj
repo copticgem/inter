@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Constants.cs" />
     <Compile Include="ContentDownloader.cs" />
+    <Compile Include="Formatters\BookNumbers.cs" />
     <Compile Include="Formatters\NumbersFormatter.cs" />
     <Compile Include="Formatters\SpacingFormatter.cs" />
     <Compile Include="Formatters\Validation.cs" />
