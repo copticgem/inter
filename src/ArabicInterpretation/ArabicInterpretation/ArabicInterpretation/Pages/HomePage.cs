@@ -33,12 +33,9 @@ namespace ArabicInterpretation
                 // Content = new BookChooser(),
             };
 
-            this.Content = new BookChooser();
-        }
-
-        private async Task OnFontButtonClicked(NamedSize newSize)
-        {
-            await scrollView.ScrollToAsync(verses[3], ScrollToPosition.MakeVisible, true);
+            BookChooser bookChooser = new BookChooser();
+            bookChooser.Initialize(false).Wait();
+            this.Content = bookChooser;
         }
     }
 }

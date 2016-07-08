@@ -10,8 +10,8 @@ namespace ArabicInterpretation
     public class BookChooser : StackLayout
     {
         bool isNT = false;
-        ScrollView ntBooks = null;
-        ScrollView otBooks = null;
+        BooksGrid ntGrid = null;
+        BooksGrid otGrid = null;
 
         public BookChooser()
         {
@@ -26,9 +26,9 @@ namespace ArabicInterpretation
                 Text = "العهد الجديد",
             };
 
-            ntButton.Clicked += async (sender, e) =>
+            ntButton.Clicked += (sender, e) =>
             {
-                await this.OnTestamentSwitchClicked(true);
+                this.OnTestamentSwitchClicked(true);
             };
 
             Button otButton = new Button
@@ -36,9 +36,9 @@ namespace ArabicInterpretation
                 Text = "العهد القديم"
             };
 
-            otButton.Clicked += async (sender, e) =>
+            otButton.Clicked += (sender, e) =>
             {
-                await this.OnTestamentSwitchClicked(false);
+                this.OnTestamentSwitchClicked(false);
             };
 
             testamentSwitch.Children.Add(ntButton);
@@ -48,40 +48,45 @@ namespace ArabicInterpretation
             this.HorizontalOptions = LayoutOptions.CenterAndExpand;
             this.Children.Add(testamentSwitch);
 
-
-            this.otBooks = new ScrollView
+            this.ntGrid = new BooksGrid(true);
+            this.ntGrid.IsVisible = false;
+            ScrollView ntScrollView = new ScrollView
             {
-                Content = new BooksGrid(isNT),
+                Content = this.ntGrid
             };
 
-            this.Children.Add(this.otBooks);
+            this.otGrid = new BooksGrid(false);
+            this.otGrid.IsVisible = false;
+            ScrollView otScrollView = new ScrollView
+            {
+                Content = this.otGrid
+            };
+
+            this.Children.Add(ntScrollView);
+            this.Children.Add(otScrollView);
         }
 
-        private async Task OnTestamentSwitchClicked(bool isNTClicked)
+        public async Task Initialize(bool isNT)
         {
-            if (isNTClicked && !this.isNT)
-            {
-                this.otBooks.IsVisible = false;
-                if (this.ntBooks == null)
-                {
-                    this.ntBooks = new ScrollView { Content = new BooksGrid(true) };
-                    this.Children.Add(this.ntBooks);
-                }
+            // TODO: Load only the first one
+            await this.otGrid.LoadBooks();
+            await this.ntGrid.LoadBooks();
 
-                this.ntBooks.IsVisible = true;
-                this.isNT = true;
+            this.OnTestamentSwitchClicked(isNT);
+        }
+
+        private void OnTestamentSwitchClicked(bool isNTClicked)
+        {
+            this.isNT = isNTClicked;
+            if (isNTClicked)
+            {
+                this.otGrid.IsVisible = false;
+                this.ntGrid.IsVisible = true;
             }
-            else if (!isNTClicked && this.isNT)
+            else
             {
-                this.ntBooks.IsVisible = false;
-                if (this.otBooks == null)
-                {
-                    this.otBooks = new ScrollView { Content = new BooksGrid(false) };
-                    this.Children.Add(this.otBooks);
-                }
-
-                this.otBooks.IsVisible = true;
-                this.isNT = false;
+                this.ntGrid.IsVisible = false;
+                this.otGrid.IsVisible = true;
             }
         }
     }

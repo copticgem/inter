@@ -1,9 +1,5 @@
-﻿using ArabicInterpretation.Resx;
-using Core;
+﻿using Core;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -11,8 +7,12 @@ namespace ArabicInterpretation
 {
     public class BooksGrid : Grid
     {
+        bool isNT;
+
         public BooksGrid(bool isNT)
         {
+            this.isNT = isNT;
+
             this.HorizontalOptions = LayoutOptions.FillAndExpand;
             this.ColumnDefinitions = new ColumnDefinitionCollection
             {
@@ -26,8 +26,11 @@ namespace ArabicInterpretation
             {
                 new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }
             };
+        }
 
-            string index = FileHelper.GetIndex(isNT).Result;
+        public async Task LoadBooks()
+        {
+            string index = await FileHelper.GetIndex(this.isNT);
             string[] books = index.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
 
             int booksPerRow = 4;
