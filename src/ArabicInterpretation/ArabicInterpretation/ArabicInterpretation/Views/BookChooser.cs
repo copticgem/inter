@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,10 +11,11 @@ namespace ArabicInterpretation
     public class BookChooser : StackLayout
     {
         bool isNT = false;
-        BooksGrid ntGrid = null;
-        BooksGrid otGrid = null;
 
-        public BookChooser()
+        ScrollView ntScrollView;
+        ScrollView otScrollView;
+
+        public BookChooser(Author author)
         {
             StackLayout testamentSwitch = new StackLayout
             {
@@ -48,29 +50,29 @@ namespace ArabicInterpretation
             this.HorizontalOptions = LayoutOptions.CenterAndExpand;
             this.Children.Add(testamentSwitch);
 
-            this.ntGrid = new BooksGrid(true);
-            this.ntGrid.IsVisible = false;
-            ScrollView ntScrollView = new ScrollView
+            BooksGrid ntGrid = new BooksGrid(author, true);
+            this.ntScrollView = new ScrollView
             {
-                Content = this.ntGrid
+                Content = ntGrid,
+                IsVisible = false
             };
 
-            this.otGrid = new BooksGrid(false);
-            this.otGrid.IsVisible = false;
-            ScrollView otScrollView = new ScrollView
+            BooksGrid otGrid = new BooksGrid(author, false);
+            this.otScrollView = new ScrollView
             {
-                Content = this.otGrid
+                Content = otGrid,
+                IsVisible = false
             };
 
-            this.Children.Add(ntScrollView);
-            this.Children.Add(otScrollView);
+            this.Children.Add(this.ntScrollView);
+            this.Children.Add(this.otScrollView);
         }
 
         public async Task Initialize(bool isNT)
         {
             // TODO: Load only the first one
-            await this.otGrid.LoadBooks();
-            await this.ntGrid.LoadBooks();
+            await ((BooksGrid)this.otScrollView.Content).LoadBooks();
+            await ((BooksGrid)this.ntScrollView.Content).LoadBooks();
 
             this.OnTestamentSwitchClicked(isNT);
         }
@@ -80,13 +82,13 @@ namespace ArabicInterpretation
             this.isNT = isNTClicked;
             if (isNTClicked)
             {
-                this.otGrid.IsVisible = false;
-                this.ntGrid.IsVisible = true;
+                this.otScrollView.IsVisible = false;
+                this.ntScrollView.IsVisible = true;
             }
             else
             {
-                this.ntGrid.IsVisible = false;
-                this.otGrid.IsVisible = true;
+                this.ntScrollView.IsVisible = false;
+                this.otScrollView.IsVisible = true;
             }
         }
     }

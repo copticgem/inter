@@ -1,4 +1,5 @@
-﻿using Core;
+﻿using ArabicInterpretation.Pages;
+using Core;
 using System;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -8,10 +9,12 @@ namespace ArabicInterpretation
     public class BooksGrid : Grid
     {
         bool isNT;
+        Author author;
 
-        public BooksGrid(bool isNT)
+        public BooksGrid(Author author, bool isNT)
         {
             this.isNT = isNT;
+            this.author = author;
 
             this.HorizontalOptions = LayoutOptions.FillAndExpand;
             this.ColumnDefinitions = new ColumnDefinitionCollection
@@ -39,6 +42,7 @@ namespace ArabicInterpretation
             {
                 string[] tokens = books[i - 1].Split(':');
 
+                int chaptersCount = int.Parse(tokens[2]);
                 Button button = new Button
                 {
                     FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button)),
@@ -46,6 +50,10 @@ namespace ArabicInterpretation
                 };
 
                 button.HeightRequest = button.Width;
+                button.Clicked += async (sender, e) =>
+                {
+                    await this.OnBookClicked(this.author, this.isNT, i, chaptersCount);
+                };
 
                 int top = (i - 1) / booksPerRow;
                 this.Children.Add(button, left, top);
@@ -56,6 +64,15 @@ namespace ArabicInterpretation
                     left = 3;
                 }
             }
+        }
+
+        private async Task OnBookClicked(
+            Author author,
+            bool isNT, 
+            int bookNumber,
+            int chaptersCount)
+        {
+            await this.Navigation.PushAsync(new ChapterChooserPage(author, isNT, bookNumber, chaptersCount));
         }
     }
 }

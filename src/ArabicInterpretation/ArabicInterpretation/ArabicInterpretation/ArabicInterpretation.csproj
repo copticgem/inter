@@ -37,7 +37,9 @@
   <ItemGroup>
     <Compile Include="App.cs" />
     <Compile Include="Helpers\ContentFormatter.cs" />
+    <Compile Include="Helpers\NumbersHelper.cs" />
     <Compile Include="Helpers\StringType.cs" />
+    <Compile Include="Pages\ChapterChooserPage.cs" />
     <Compile Include="Pages\HomePage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resx\Books.Designer.cs">
@@ -47,6 +49,7 @@
     </Compile>
     <Compile Include="Views\BookChooser.cs" />
     <Compile Include="Views\BooksGrid.cs" />
+    <Compile Include="Views\ChaptersGrid.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">

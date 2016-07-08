@@ -33,7 +33,7 @@ namespace ArabicInterpretation
                 // Content = new BookChooser(),
             };
 
-            BookChooser bookChooser = new BookChooser();
+            BookChooser bookChooser = new BookChooser(Author.FrAntonios);
             bookChooser.Initialize(false).Wait();
             this.Content = bookChooser;
         }
