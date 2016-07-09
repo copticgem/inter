@@ -41,6 +41,7 @@
     <Compile Include="Helpers\StringType.cs" />
     <Compile Include="Pages\ChapterChooserPage.cs" />
     <Compile Include="Pages\HomePage.cs" />
+    <Compile Include="Pages\ReadingPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resx\Books.Designer.cs">
       <AutoGen>True</AutoGen>

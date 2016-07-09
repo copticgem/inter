@@ -50,9 +50,11 @@ namespace ArabicInterpretation
                 };
 
                 button.HeightRequest = button.Width;
+
+                int bookNumber = i;
                 button.Clicked += async (sender, e) =>
                 {
-                    await this.OnBookClicked(this.author, this.isNT, i, chaptersCount);
+                    await this.OnBookClicked(this.author, this.isNT, bookNumber, chaptersCount);
                 };
 
                 int top = (i - 1) / booksPerRow;

@@ -1,4 +1,5 @@
 ﻿using ArabicInterpretation.Helpers;
+using ArabicInterpretation.Pages;
 using Core;
 using System;
 using System.Collections.Generic;
@@ -11,22 +12,12 @@ namespace ArabicInterpretation.Views
 {
     public class ChaptersGrid : Grid
     {
-        private Author author;
-        private bool isNT;
-        private int bookNumber;
-        private int chaptersCount;
-
         public ChaptersGrid(
             Author author,
             bool isNT,
             int bookNumber,
             int chaptersCount)
         {
-            this.author = author;
-            this.isNT = isNT;
-            this.bookNumber = bookNumber;
-            this.chaptersCount = chaptersCount;
-
             this.HorizontalOptions = LayoutOptions.FillAndExpand;
 
             int buttonsPerRow = 5;
@@ -50,6 +41,15 @@ namespace ArabicInterpretation.Views
                 Text = "مقدمة"
             };
 
+            introButton.Clicked += async (sender, e) =>
+            {
+                await this.OnChapterClicked(
+                    author: author,
+                    isNT: isNT, 
+                    bookNumber: bookNumber,
+                    chapterNumber: 0);
+            };
+
             this.Children.Add(introButton, buttonsPerRow - 1, 0);
 
             int left = buttonsPerRow - 1;
@@ -58,13 +58,20 @@ namespace ArabicInterpretation.Views
                 Button button = new Button
                 {
                     FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button)),
-                    Text = NumbersHelper.TranslateNumber(i)
+                    Text = NumbersHelper.TranslateNumber(i),
+                    
                 };
 
                 button.HeightRequest = button.Width;
+
+                int chapterNumber = i;
                 button.Clicked += async (sender, e) =>
                 {
-                    await this.OnChapterClicked(false, i, chaptersCount);
+                    await this.OnChapterClicked(
+                        author: author,
+                        isNT: isNT,
+                        bookNumber: bookNumber,
+                        chapterNumber: chapterNumber);
                 };
 
                 int top = (i - 1) / buttonsPerRow;
@@ -79,10 +86,12 @@ namespace ArabicInterpretation.Views
         }
 
         private async Task OnChapterClicked(
+            Author author,
             bool isNT,
             int bookNumber,
-            int chaptersCount)
+            int chapterNumber)
         {
+            await this.Navigation.PushAsync(new ReadingPage(author, isNT, bookNumber, chapterNumber));
         }
     }
 }
