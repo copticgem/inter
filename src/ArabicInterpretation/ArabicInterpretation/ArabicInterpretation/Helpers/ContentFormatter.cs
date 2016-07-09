@@ -117,6 +117,7 @@ namespace ArabicInterpretation.Helpers
         {
             Label label = new Label
             {
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
                 HorizontalTextAlignment = TextAlignment.End
             };
 
@@ -126,12 +127,11 @@ namespace ArabicInterpretation.Helpers
                     label.IsVisible = false;
                     break;
                 case StringType.Subtitle:
-                    label.FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label));
+                    label.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label));
                     break;
                 case StringType.NewLine:
                     break;
                 case StringType.NewParagraph:
-                    // label.Text = "";
                     label.ClassId = "p";
                     break;
                 case StringType.Divider:
