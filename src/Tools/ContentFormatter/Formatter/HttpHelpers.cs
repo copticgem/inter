@@ -31,7 +31,18 @@ namespace Formatter
                 bookNumber.ToString(), 
                 chapterNumber + ".html");
 
-            string page = File.ReadAllText(file);
+            string page;
+
+            string modifiedFile = file.Replace("Original", "Modified");
+            if (File.Exists(modifiedFile))
+            {
+                page = File.ReadAllText(modifiedFile);
+            }
+            else
+            {
+                page = File.ReadAllText(file);
+            }
+
             string formattedPage = GetFormattedPage(page);
 
             if (formattedPage.Contains(">") || formattedPage.Contains("<"))

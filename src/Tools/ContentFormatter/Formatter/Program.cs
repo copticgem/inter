@@ -12,12 +12,12 @@ namespace Formatter
     {
         static void Main(string[] args)
         {
-            // HttpHelpers.FormatOne(Constants.Authors.FrAntonious, true, 1, 3, true);
+            HttpHelpers.FormatOne(Constants.Authors.FrAntonious, true, 1, 29, true);
 
             // HttpHelpers.FormatAll(Constants.Authors.FrAntonious, true);
             // ContentDownloader.DownloadAll();
 
-            BookNumbers.Format();
+            // BookNumbers.Format();
         }
     }
 }
