@@ -127,7 +127,7 @@ namespace ArabicInterpretation.Helpers
                     label.IsVisible = false;
                     break;
                 case StringType.Subtitle:
-                    label.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label));
+                    label.FontAttributes = FontAttributes.Bold;
                     break;
                 case StringType.NewLine:
                     break;

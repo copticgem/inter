@@ -1,4 +1,5 @@
 ﻿using ArabicInterpretation.Helpers;
+using ArabicInterpretation.Views;
 using Core;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,8 @@ namespace ArabicInterpretation.Pages
         int bookNumber;
         int chapterNumber;
 
+        StackLayout layout;
+
         public ReadingPage(
             Author author,
             bool isNT,
@@ -26,6 +29,17 @@ namespace ArabicInterpretation.Pages
             this.isNT = isNT;
             this.bookNumber = bookNumber;
             this.chapterNumber = chapterNumber;
+
+            NavigationPage.SetHasNavigationBar(this, false);
+
+            this.layout = new StackLayout
+            {
+                Orientation = StackOrientation.Vertical,
+            };
+
+            this.layout.Children.Add(new AuthorLabel(author));
+
+            this.Content = this.layout;
         }
 
         protected override async void OnAppearing()
@@ -39,7 +53,7 @@ namespace ArabicInterpretation.Pages
             Dictionary<int, Label> verses;
             List<View> views = ContentFormatter.FormatContent(content, out verses);
 
-            StackLayout layout = new StackLayout
+            StackLayout chapterLayout = new StackLayout
             {
                 Orientation = StackOrientation.Vertical,
                 Padding = new Thickness(10),
@@ -48,15 +62,15 @@ namespace ArabicInterpretation.Pages
 
             foreach (View view in views)
             {
-                layout.Children.Add(view);
+                chapterLayout.Children.Add(view);
             }
 
             ScrollView scrollView = new ScrollView
             {
-                Content = layout,
+                Content = chapterLayout,
             };
 
-            this.Content = scrollView;
+            this.layout.Children.Add(scrollView);
         }
     }
 }

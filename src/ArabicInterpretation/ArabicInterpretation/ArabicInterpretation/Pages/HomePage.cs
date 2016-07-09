@@ -10,7 +10,7 @@ namespace ArabicInterpretation
     {
         public HomePage()
         {
-            BookChooser bookChooser = new BookChooser(Author.FrTadros);
+            BookChooser bookChooser = new BookChooser(Author.FrAntonios);
             bookChooser.Initialize(false).Wait();
             this.Content = bookChooser;
         }

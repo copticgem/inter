@@ -36,9 +36,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="Helpers\ContentFormatter.cs" />
     <Compile Include="Helpers\NumbersHelper.cs" />
+    <Compile Include="Helpers\PageData.cs" />
     <Compile Include="Helpers\StringType.cs" />
+    <Compile Include="Pages\AuthorChooserPage.cs" />
     <Compile Include="Pages\ChapterChooserPage.cs" />
     <Compile Include="Pages\HomePage.cs" />
     <Compile Include="Pages\ReadingPage.cs" />
@@ -48,8 +51,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Books.resx</DependentUpon>
     </Compile>
+    <Compile Include="Views\AuthorLabel.cs" />
     <Compile Include="Views\BookChooser.cs" />
     <Compile Include="Views\BooksGrid.cs" />
+    <Compile Include="Views\AuthorsGrid.cs" />
     <Compile Include="Views\ChaptersGrid.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -114,6 +114,7 @@ namespace Formatter
                 url = url.Replace(
                     "14-Sefr-Akhbaar-Al-Aiam-El-Thane/Tafseer-Sefr-A5bar-AlAyam-Al-Thany",
                     "13-Sefr-Akhbar-El-Ayam-El-Awal/Tafseer-Sefr-Akhbar-El-Ayam-El-Awal");
+                return;
             }
             else if (Author == Constants.Authors.FrTadros && url.Contains("17-Sefr-Tobit/Tafseer-Sefr-Tobia"))
             {
