@@ -8,12 +8,9 @@ namespace ArabicInterpretation
 {
     public class HomePage : ContentPage
     {
-        ScrollView scrollView;
-        Dictionary<int, Label> verses;
-
         public HomePage()
         {
-            BookChooser bookChooser = new BookChooser(Author.FrAntonios);
+            BookChooser bookChooser = new BookChooser(Author.FrTadros);
             bookChooser.Initialize(false).Wait();
             this.Content = bookChooser;
         }

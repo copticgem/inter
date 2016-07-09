@@ -25,10 +25,10 @@ namespace Formatter
             string file = @"F:\git\inter\src\Data\Original";
             string type = isNT ? "nt" : "ot";
             file = Path.Combine(
-                file, 
-                author, 
+                file,
+                author,
                 type,
-                bookNumber.ToString(), 
+                bookNumber.ToString(),
                 chapterNumber + ".html");
 
             string page;
@@ -67,48 +67,58 @@ namespace Formatter
             string baseDirectory = @"F:\git\inter\src\Data\Original";
             baseDirectory = Path.Combine(baseDirectory, author);
 
-            int goodFiles = 0;
-            string[] files = Directory.GetFiles(baseDirectory, "*", SearchOption.AllDirectories);
+            string[] files = Directory.GetFiles(baseDirectory + "\\ot", "*", SearchOption.AllDirectories);
             files = files.OrderBy(f => f).ToArray();
 
+            int badFiles = 0;
             foreach (string file in files)
             {
-                if (goodFiles == 232)
+                try
                 {
-                    continue;
+                    FormatFile(file, save);
+                }
+                catch(Exception e)
+                {
+                    badFiles++;
                 }
 
-                string modifiedFile = file.Replace("Original", "Modified");
+                Console.Write(".");
+            }
 
-                string page;
-                if (File.Exists(modifiedFile))
-                {
-                    page = File.ReadAllText(modifiedFile);
-                }
-                else
-                {
-                    page = File.ReadAllText(file);
-                }
+            Console.WriteLine("bad files: " + badFiles);
+            Console.ReadLine();
+        }
 
-                string formattedPage = GetFormattedPage(page);
+        private static void FormatFile(string file, bool save)
+        {
+            string modifiedFile = file.Replace("Original", "Modified");
 
-                if (formattedPage.Contains(">") || formattedPage.Contains("<"))
-                {
-                    throw new InvalidOperationException("Content still contains html tags");
-                }
+            string page;
+            if (File.Exists(modifiedFile))
+            {
+                page = File.ReadAllText(modifiedFile);
+            }
+            else
+            {
+                page = File.ReadAllText(file);
+            }
 
-                if (save)
-                {
-                    string newPath = file.Replace(
-                        @"Data\Original\",
-                        @"ArabicInterpretation\ArabicInterpretation\Core\Resources\");
+            string formattedPage = GetFormattedPage(page);
 
-                    newPath = Path.ChangeExtension(newPath, ".txt");
-                    Directory.CreateDirectory(Path.GetDirectoryName(newPath));
-                    File.WriteAllText(newPath, formattedPage, Encoding.UTF8);
-                }
+            if (formattedPage.Contains(">") || formattedPage.Contains("<"))
+            {
+                throw new InvalidOperationException("Content still contains html tags");
+            }
 
-                goodFiles++;
+            if (save)
+            {
+                string newPath = file.Replace(
+                    @"Data\Original\",
+                    @"ArabicInterpretation\ArabicInterpretation\Core\Resources\");
+
+                newPath = Path.ChangeExtension(newPath, ".txt");
+                Directory.CreateDirectory(Path.GetDirectoryName(newPath));
+                File.WriteAllText(newPath, formattedPage, Encoding.UTF8);
             }
         }
 
@@ -163,7 +173,7 @@ namespace Formatter
 
             // Replace &
             page = page.Replace("&amp;", "&");
-            
+
             // Replace symbols
             page = page.Replace("&#8595;", "↓");
 
@@ -414,6 +424,8 @@ namespace Formatter
             page = ReplaceTag(page, "i", string.Empty);
             page = ReplaceTag(page, "sup", string.Empty);
             page = ReplaceTag(page, "sub", string.Empty);
+
+            page = ReplaceTag(page, "ins", string.Empty);
 
             // Remove div
             page = ReplaceTag(page, "div", string.Empty);

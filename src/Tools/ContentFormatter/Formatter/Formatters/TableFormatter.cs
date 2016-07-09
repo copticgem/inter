@@ -20,6 +20,7 @@ namespace Formatter
                 throw new InvalidOperationException("End grid not found!");
             }
 
+            // TODO: Use thead
             // Remove bold and empty lines
             List<string> grid = tokens
                 .GetRange(gridStartIndex, gridEndIndex - gridStartIndex + 1)
@@ -28,7 +29,10 @@ namespace Formatter
                             !s.Equals("{{p}}", StringComparison.InvariantCultureIgnoreCase) &&
                             !s.Equals("{{t}}", StringComparison.InvariantCultureIgnoreCase) &&
                             !s.Equals("{{/t}}", StringComparison.InvariantCultureIgnoreCase) &&
-                            !s.Equals(string.Empty))
+                            !s.Equals(string.Empty) &&
+                            !string.IsNullOrWhiteSpace(s) &&
+                            !s.Equals("<thead>", StringComparison.InvariantCultureIgnoreCase) &&
+                            !s.Equals("</thead>", StringComparison.InvariantCultureIgnoreCase))
                 .ToList();
 
             if (grid[grid.Count - 2] != "{{/gr}}" ||

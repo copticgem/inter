@@ -11,7 +11,7 @@ namespace Formatter
 {
     public static class ContentDownloader
     {
-        const string Author = Constants.Authors.FrAntonious;
+        const string Author = Constants.Authors.FrTadros;
 
         public static void DownloadAll()
         {
@@ -29,7 +29,7 @@ namespace Formatter
                     continue;
                 }
 
-                if (i != 70)
+                if (i != 13)
                 {
                     continue;
                 }
@@ -38,7 +38,7 @@ namespace Formatter
                 string directory;
                 if (i > 46)
                 {
-                    directory = Path.Combine(baseDirectory, Author, "nt", bookNumber.ToString());
+                    directory = Path.Combine(baseDirectory, Author, "ot", bookNumber.ToString());
                     urlPrefix =
                         "http://st-takla.org/pub_Bible-Interpretations/Holy-Bible-Tafsir-02-New-Testament/"
                         + Author +
@@ -108,6 +108,16 @@ namespace Formatter
                 url = url.Replace(
                     "25-Resalet-Yohanna-3/Tafseer-Resalat-Yo7ana-3",
                     "25-Risalat-Uohana-El-Thaletha/Tafseer-John-III");
+            }
+            else if (Author == Constants.Authors.FrTadros && url.Contains("14-Sefr-Akhbaar-Al-Aiam-El-Thane/Tafseer-Sefr-A5bar-AlAyam-Al-Thany"))
+            {
+                url = url.Replace(
+                    "14-Sefr-Akhbaar-Al-Aiam-El-Thane/Tafseer-Sefr-A5bar-AlAyam-Al-Thany",
+                    "13-Sefr-Akhbar-El-Ayam-El-Awal/Tafseer-Sefr-Akhbar-El-Ayam-El-Awal");
+            }
+            else if (Author == Constants.Authors.FrTadros && url.Contains("17-Sefr-Tobit/Tafseer-Sefr-Tobia"))
+            {
+                return;
             }
 
             string content = ContentDownloader.GetPage(url);

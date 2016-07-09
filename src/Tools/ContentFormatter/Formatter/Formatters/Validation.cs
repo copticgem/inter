@@ -71,6 +71,14 @@ namespace Formatter
                                 continue;
                             }
 
+                            if (endToken == "{{/t}}" && (token == "{{p}}" || token == "{{d}}"))
+                            {
+                                // Split {{t}} tag
+                                newString.Insert(newString.Count - 1, endToken);
+                                newString.Add("{{t}}");
+                                continue;
+                            }
+
                             throw new InvalidOperationException(
                                 string.Format(
                                     "Nested tags detected, outer tag '{0}', inner tag '{1}'",
