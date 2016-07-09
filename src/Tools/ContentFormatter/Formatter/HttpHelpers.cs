@@ -78,7 +78,18 @@ namespace Formatter
                     continue;
                 }
 
-                string page = File.ReadAllText(file);
+                string modifiedFile = file.Replace("Original", "Modified");
+
+                string page;
+                if (File.Exists(modifiedFile))
+                {
+                    page = File.ReadAllText(modifiedFile);
+                }
+                else
+                {
+                    page = File.ReadAllText(file);
+                }
+
                 string formattedPage = GetFormattedPage(page);
 
                 if (formattedPage.Contains(">") || formattedPage.Contains("<"))
