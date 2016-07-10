@@ -12,9 +12,9 @@ namespace ArabicInterpretation.Pages
 {
     public class AuthorChooserPage : ContentPage
     {
-        public AuthorChooserPage(PageData data)
+        public AuthorChooserPage(Author currentAuthor)
         {
-            this.Content = new AuthorsGrid(data);
+            this.Content = new AuthorsGrid(currentAuthor);
         }
     }
 }

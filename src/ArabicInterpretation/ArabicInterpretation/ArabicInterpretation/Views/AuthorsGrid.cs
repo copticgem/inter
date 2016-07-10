@@ -12,12 +12,8 @@ namespace ArabicInterpretation.Views
 {
     public class AuthorsGrid : Grid
     {
-        PageData data;
-
-        public AuthorsGrid(PageData data)
+        public AuthorsGrid(Author currentAuthor)
         {
-            this.data = data;
-
             this.HorizontalOptions = LayoutOptions.FillAndExpand;
 
             this.ColumnDefinitions = new ColumnDefinitionCollection();
@@ -51,11 +47,22 @@ namespace ArabicInterpretation.Views
 
             this.Children.Add(frAntonios, 0, 0);
             this.Children.Add(frTadros, 1, 0);
+
+            if (currentAuthor == Author.FrAntonios)
+            {
+                frAntonios.IsEnabled = false;
+            }
+            else
+            {
+                frTadros.IsEnabled = false;
+            }
         }
 
         private async Task OnAuthorClicked(Author author)
         {
-            this.data.Data.Add(Constants.DataKeyNames.Author, author.ToString());
+            // Send message to ReadingPage to update content
+            MessagingCenter.Send(this, "AuthorChanged", author.ToString());
+
             await this.Navigation.PopModalAsync(animated: true);
         }
     }

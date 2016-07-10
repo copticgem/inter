@@ -12,16 +12,14 @@ namespace ArabicInterpretation.Views
 {
     public class AuthorLabel : Button
     {
-        Author currentAuthor;
         AuthorChooserPage authorChooserPage;
-        PageData data;
 
         public AuthorLabel(Author author)
         {
-            this.data = new PageData();
-            this.authorChooserPage = new AuthorChooserPage(data);
+            this.authorChooserPage = new AuthorChooserPage(currentAuthor: author);
 
             this.TextColor = Color.Blue;
+            this.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button));
 
             this.HorizontalOptions = LayoutOptions.CenterAndExpand;
             this.VerticalOptions = LayoutOptions.Start;
@@ -34,32 +32,17 @@ namespace ArabicInterpretation.Views
                 await this.OnClicked();
             };
 
-            this.currentAuthor = author;
-            this.UpdateText();
+            this.UpdateText(author);
         }
 
         public async Task OnClicked()
         {
-            this.data.Data.Clear();
             await this.Navigation.PushModalAsync(this.authorChooserPage);
-
-            // Read data saved from modal page
-            Author author;
-            string value;
-            if (this.data.Data.TryGetValue(Constants.DataKeyNames.Author, out value) &&
-                Enum.TryParse(value, out author))
-            {
-                if (this.currentAuthor != author)
-                {
-                    this.currentAuthor = author;
-                    this.UpdateText();
-                }
-            }
         }
 
-        private void UpdateText()
+        public void UpdateText(Author author)
         {
-            if (this.currentAuthor == Author.FrAntonios)
+            if (author == Author.FrAntonios)
             {
                 this.Text = Constants.AuthorNames.FrAntonios;
             }
