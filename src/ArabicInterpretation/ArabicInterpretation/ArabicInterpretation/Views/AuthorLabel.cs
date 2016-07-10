@@ -12,11 +12,11 @@ namespace ArabicInterpretation.Views
 {
     public class AuthorLabel : Button
     {
-        AuthorChooserPage authorChooserPage;
+        Author currentAuthor; 
 
         public AuthorLabel(Author author)
         {
-            this.authorChooserPage = new AuthorChooserPage(currentAuthor: author);
+            this.currentAuthor = author;
 
             this.TextColor = Color.Blue;
             this.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button));
@@ -37,11 +37,13 @@ namespace ArabicInterpretation.Views
 
         public async Task OnClicked()
         {
-            await this.Navigation.PushModalAsync(this.authorChooserPage);
+            // TODO: Avoid creating new page everytime
+            await this.Navigation.PushModalAsync(new AuthorChooserPage(currentAuthor: this.currentAuthor));
         }
 
         public void UpdateText(Author author)
         {
+            this.currentAuthor = author;
             if (author == Author.FrAntonios)
             {
                 this.Text = Constants.AuthorNames.FrAntonios;

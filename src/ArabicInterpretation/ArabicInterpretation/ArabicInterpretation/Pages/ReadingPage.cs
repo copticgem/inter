@@ -18,7 +18,7 @@ namespace ArabicInterpretation.Pages
         int chapterNumber;
 
         AuthorLabel authorLabel;
-        StackLayout chapterLayout;
+        ScrollView scrollView;
 
         public ReadingPage(
             Author author,
@@ -41,18 +41,7 @@ namespace ArabicInterpretation.Pages
             this.authorLabel = new AuthorLabel(author);
             layout.Children.Add(this.authorLabel);
 
-            this.chapterLayout = new StackLayout
-            {
-                Orientation = StackOrientation.Vertical,
-                Padding = new Thickness(10),
-                HorizontalOptions = LayoutOptions.End,
-            };
-
-            ScrollView scrollView = new ScrollView
-            {
-                Content = this.chapterLayout,
-            };
-
+            this.scrollView = new ScrollView();
             layout.Children.Add(scrollView);
 
             this.Content = layout;
@@ -83,7 +72,7 @@ namespace ArabicInterpretation.Pages
 
         protected override async void OnAppearing()
         {
-            if (!this.chapterLayout.Children.Any())
+            if (this.scrollView.Content == null)
             {
                 // No content is loaded yet
                 await this.UpdateContent();
@@ -102,11 +91,19 @@ namespace ArabicInterpretation.Pages
             Dictionary<int, Label> verses;
             List<View> views = ContentFormatter.FormatContent(content, out verses);
 
-            this.chapterLayout.Children.Clear();
+            StackLayout chapterLayout = new StackLayout
+            {
+                Orientation = StackOrientation.Vertical,
+                Padding = new Thickness(10),
+                HorizontalOptions = LayoutOptions.End,
+            };
+
             foreach (View view in views)
             {
-                this.chapterLayout.Children.Add(view);
+                chapterLayout.Children.Add(view);
             }
+
+            this.scrollView.Content = chapterLayout;
         }
     }
 }
