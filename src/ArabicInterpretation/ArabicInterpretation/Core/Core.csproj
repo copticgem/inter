@@ -2693,5 +2693,11 @@
     <EmbeddedResource Include="Resources\Father-Tadros-Yacoub-Malaty\ot\9\8.txt" />
     <EmbeddedResource Include="Resources\Father-Tadros-Yacoub-Malaty\ot\9\9.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Father-Tadros-Yacoub-Malaty\ot\28\26.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Father-Tadros-Yacoub-Malaty\ot\23\0.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
 </Project>

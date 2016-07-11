@@ -29,7 +29,7 @@ namespace Formatter
                     continue;
                 }
 
-                if (i != 13)
+                if (i != 22)
                 {
                     continue;
                 }
@@ -117,6 +117,22 @@ namespace Formatter
                 return;
             }
             else if (Author == Constants.Authors.FrTadros && url.Contains("17-Sefr-Tobit/Tafseer-Sefr-Tobia"))
+            {
+                return;
+            }
+            else if (Author == Constants.Authors.FrTadros && url.Contains("26-Sefr-Yashoue-Ebn-Sirakh/Tafseer-Sefr-Yasho3-Ibn-Sira5"))
+            {
+                return;
+            }
+            else if (Author == Constants.Authors.FrTadros && url.Contains("30-Sefr-Baroukh/Tafseer-Sefr-Barookh"))
+            {
+                return;
+            }
+            else if (Author == Constants.Authors.FrTadros && url.Contains("45-Sefr-Makabyeen-El-Awal/Tafseer-Sefr-El-Makabyein-El-Awal"))
+            {
+                return;
+            }
+            else if (Author == Constants.Authors.FrTadros && url.Contains("46-Sefr-Makabieen-El-Thany/Tafseer-Sefr-El-Makabiein-El-Thani"))
             {
                 return;
             }

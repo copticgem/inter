@@ -32,7 +32,9 @@ namespace Formatter
                             !s.Equals(string.Empty) &&
                             !string.IsNullOrWhiteSpace(s) &&
                             !s.Equals("<thead>", StringComparison.InvariantCultureIgnoreCase) &&
-                            !s.Equals("</thead>", StringComparison.InvariantCultureIgnoreCase))
+                            !s.Equals(" <thead> ", StringComparison.InvariantCultureIgnoreCase) &&
+                            !s.Equals("</thead>", StringComparison.InvariantCultureIgnoreCase) &&
+                            !s.Equals(" </thead> ", StringComparison.InvariantCultureIgnoreCase))
                 .ToList();
 
             if (grid[grid.Count - 2] != "{{/gr}}" ||
