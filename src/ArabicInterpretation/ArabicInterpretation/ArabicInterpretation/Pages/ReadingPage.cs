@@ -61,9 +61,6 @@ namespace ArabicInterpretation.Pages
                 {
                     this.author = author;
 
-                    // Update label
-                    this.authorLabel.UpdateText(author);
-
                     // Update content
                     await this.UpdateContent();
                 }

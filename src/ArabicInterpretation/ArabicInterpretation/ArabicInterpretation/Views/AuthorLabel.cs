@@ -33,6 +33,11 @@ namespace ArabicInterpretation.Views
             };
 
             this.UpdateText(author);
+
+            // Listen to author changes
+            MessagingCenter.Subscribe<AuthorsGrid, string>(this, "AuthorChanged", (sender, arg) => {
+                this.OnAuthorChanging(sender, arg);
+            });
         }
 
         public async Task OnClicked()
@@ -41,7 +46,16 @@ namespace ArabicInterpretation.Views
             await this.Navigation.PushModalAsync(new AuthorChooserPage(currentAuthor: this.currentAuthor));
         }
 
-        public void UpdateText(Author author)
+        private void OnAuthorChanging(AuthorsGrid sender, string authorName)
+        {
+            Author author;
+            if (Enum.TryParse(authorName, out author))
+            {
+                this.UpdateText(author);
+            }
+        }
+
+        private void UpdateText(Author author)
         {
             this.currentAuthor = author;
             if (author == Author.FrAntonios)

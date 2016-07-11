@@ -1,4 +1,5 @@
 ﻿using ArabicInterpretation.Helpers;
+using ArabicInterpretation.Pages;
 using Core;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -10,9 +11,8 @@ namespace ArabicInterpretation
     {
         public HomePage()
         {
-            BookChooser bookChooser = new BookChooser(Author.FrAntonios);
-            bookChooser.Initialize(false).Wait();
-            this.Content = bookChooser;
+            BookChooserPage page = new BookChooserPage(Author.FrAntonios, true);
+            this.Navigation.PushAsync(page).Wait();
         }
     }
 }

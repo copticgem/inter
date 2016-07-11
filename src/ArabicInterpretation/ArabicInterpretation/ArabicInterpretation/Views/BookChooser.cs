@@ -67,7 +67,7 @@ namespace ArabicInterpretation
             this.Children.Add(this.ntScrollView);
             this.Children.Add(this.otScrollView);
         }
-
+        
         public async Task Initialize(bool isNT)
         {
             // TODO: Load only the first one
