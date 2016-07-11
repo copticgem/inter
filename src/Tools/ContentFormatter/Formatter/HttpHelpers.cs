@@ -68,7 +68,7 @@ namespace Formatter
             string baseDirectory = @"F:\git\inter\src\Data\Original";
             baseDirectory = Path.Combine(baseDirectory, author);
 
-            string[] files = Directory.GetFiles(baseDirectory + "\\ot", "*", SearchOption.AllDirectories);
+            string[] files = Directory.GetFiles(baseDirectory, "*", SearchOption.AllDirectories);
             files = files.OrderBy(f => f).ToArray();
 
             int badFiles = 0;

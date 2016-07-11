@@ -44,7 +44,8 @@ namespace ArabicInterpretation.Pages
             this.Content = layout;
 
             // Listen to author changes
-            MessagingCenter.Subscribe<AuthorsGrid, string>(this, "AuthorChanged", async (sender, arg) => {
+            MessagingCenter.Subscribe<AuthorsGrid, string>(this, "AuthorChanged", async (sender, arg) =>
+            {
                 await this.OnAuthorChanging(sender, arg);
             });
         }
@@ -90,6 +91,12 @@ namespace ArabicInterpretation.Pages
             }
 
             this.scrollView.Content = chapterLayout;
+
+            View firstView = chapterLayout.Children.FirstOrDefault();
+            if (firstView != null)
+            {
+                await this.scrollView.ScrollToAsync(firstView, ScrollToPosition.Start, false);
+            }
         }
     }
 }

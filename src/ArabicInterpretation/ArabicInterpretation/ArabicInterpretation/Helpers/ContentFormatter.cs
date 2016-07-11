@@ -240,7 +240,13 @@ namespace ArabicInterpretation.Helpers
                 }
             }
 
-            Grid grid = new Grid { ColumnSpacing = 1, RowSpacing = 1 };
+            // TODO: Add grid border once we have color modes
+            Grid grid = new Grid
+            {
+                ColumnSpacing = 1,
+                RowSpacing = 1,
+            };
+
             for (int i = 0; i < rowCount; i++)
             {
                 grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(3, GridUnitType.Auto) });
