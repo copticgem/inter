@@ -210,35 +210,7 @@ namespace Formatter
                replacement: "{{d}}");
 
             // Replace tables
-            page = Regex.Replace(
-               input: page,
-               pattern: "<table[^>]*>",
-               replacement: "{{g}}");
-
-            page = Regex.Replace(
-               input: page,
-               pattern: "</table>",
-               replacement: "{{/g}}");
-
-            page = Regex.Replace(
-               input: page,
-               pattern: "<tr[^>]*>",
-               replacement: "{{gr}}");
-
-            page = Regex.Replace(
-               input: page,
-               pattern: "</tr>",
-               replacement: "{{/gr}}");
-
-            page = Regex.Replace(
-               input: page,
-               pattern: "<td[^>]*>",
-               replacement: "{{gc}}");
-
-            page = Regex.Replace(
-               input: page,
-               pattern: "</td>",
-               replacement: "{{/gc}}");
+            page = TableFormatter.ReplaceTableTags(page);
 
             // Replace numbers
             page = NumbersFormatter.ReplaceNumbers(page);

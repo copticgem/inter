@@ -107,7 +107,7 @@ namespace Formatter
                         continue;
                     }
 
-                    if (token == "{{g}}")
+                    if (token == "{{g}}" || token == "{{gltr}}")
                     {
                         // Handle grid separately
                         int gridEndIndex;

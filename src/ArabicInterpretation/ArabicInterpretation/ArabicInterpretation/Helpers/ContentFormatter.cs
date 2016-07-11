@@ -71,7 +71,7 @@ namespace ArabicInterpretation.Helpers
                     {
                         views.Add(new BoxView() { Color = Color.White, HeightRequest = 1 });
                     }
-                    else if (token == "{{g}}")
+                    else if (token == "{{g}}" || token == "{{gltr}}")
                     {
                         int gridEndIndex;
                         views.Add(GetGrid(
@@ -201,6 +201,12 @@ namespace ArabicInterpretation.Helpers
             int gridStartIndex,
             out int gridEndIndex)
         {
+            bool isReversedGrid = false;
+            if (tokens[gridStartIndex] == "{{gltr}}")
+            {
+                isReversedGrid = true;
+            }
+
             gridEndIndex = tokens.IndexOf("{{/g}}", gridStartIndex);
             if (gridEndIndex <= 0)
             {
@@ -249,7 +255,7 @@ namespace ArabicInterpretation.Helpers
 
             for (int i = 0; i < rowCount; i++)
             {
-                grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(3, GridUnitType.Auto) });
+                grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) });
             }
 
             for (int i = 0; i < columnCount; i++)
@@ -262,6 +268,10 @@ namespace ArabicInterpretation.Helpers
                 Label label = CreateLabel(StringType.Text);
                 label.Text = tuple.Item1;
 
+                // This a workaround since there is a bug with grid that it truncates the text
+                StackLayout stack = new StackLayout();
+                stack.Children.Add(label);
+
                 if (gridTuples.Where(t => t.Item2 == tuple.Item2).Count() == 1)
                 {
                     // Only one, span all columns
@@ -270,7 +280,8 @@ namespace ArabicInterpretation.Helpers
                 }
                 else
                 {
-                    grid.Children.Add(label, columnCount - tuple.Item3, tuple.Item2);
+                    int left = isReversedGrid ? tuple.Item3 : columnCount - tuple.Item3;
+                    grid.Children.Add(stack, left, tuple.Item2);
                 }
             }
 

@@ -9,6 +9,53 @@ namespace Formatter
 {
     static class TableFormatter
     {
+        public static string ReplaceTableTags(string page)
+        {
+            // Reversed tables (ltr), use {{gltr}}
+            page = Regex.Replace(
+               input: page,
+               pattern: "<table[^>]*dir=ltr[^>]*>",
+               replacement: "{{gltr}}");
+
+            page = Regex.Replace(
+               input: page,
+               pattern: "<div[^>]*dir=ltr[^>]*> *<table[^>]*>",
+               replacement: "{{gltr}}");
+
+            // Normal replacements
+            page = Regex.Replace(
+               input: page,
+               pattern: "<table[^>]*>",
+               replacement: "{{g}}");
+
+            page = Regex.Replace(
+               input: page,
+               pattern: "</table>",
+               replacement: "{{/g}}");
+
+            page = Regex.Replace(
+               input: page,
+               pattern: "<tr[^>]*>",
+               replacement: "{{gr}}");
+
+            page = Regex.Replace(
+               input: page,
+               pattern: "</tr>",
+               replacement: "{{/gr}}");
+
+            page = Regex.Replace(
+               input: page,
+               pattern: "<td[^>]*>",
+               replacement: "{{gc}}");
+
+            page = Regex.Replace(
+               input: page,
+               pattern: "</td>",
+               replacement: "{{/gc}}");
+
+            return page;
+        }
+
         public static string GetGrid(
             List<string> tokens,
             int gridStartIndex,
