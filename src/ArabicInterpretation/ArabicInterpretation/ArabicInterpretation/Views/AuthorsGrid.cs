@@ -12,7 +12,7 @@ namespace ArabicInterpretation.Views
 {
     public class AuthorsGrid : Grid
     {
-        public AuthorsGrid(Author currentAuthor)
+        public AuthorsGrid(bool isNT, int bookNumber)
         {
             this.HorizontalOptions = LayoutOptions.FillAndExpand;
 
@@ -48,18 +48,38 @@ namespace ArabicInterpretation.Views
             this.Children.Add(frAntonios, 0, 0);
             this.Children.Add(frTadros, 1, 0);
 
-            if (currentAuthor == Author.FrAntonios)
+            Author currentAuthor = AuthorManager.GetCurrentAuthor();
+            this.SetAuthorVisibility(frAntonios, Author.FrAntonios, currentAuthor, isNT, bookNumber);
+            this.SetAuthorVisibility(frTadros, Author.FrTadros, currentAuthor, isNT, bookNumber);
+        }
+
+        private void SetAuthorVisibility(
+            Button button,
+            Author buttonAuthor,
+            Author currentAuthor,
+            bool isNT,
+            int bookNumber)
+        {
+            if (currentAuthor == buttonAuthor)
             {
-                frAntonios.IsEnabled = false;
+                // Author is already selected, disable it
+                button.IsEnabled = false;
+                return;
             }
-            else
+
+            List<int> missingBooks = MissingBooksHelper.GetMissingBooks(buttonAuthor, isNT);
+            if (missingBooks.Contains(bookNumber))
             {
-                frTadros.IsEnabled = false;
+                // Current book is missing from that Author so disable the choice
+                button.IsEnabled = false;
             }
         }
 
         private async Task OnAuthorClicked(Author author)
         {
+            // Update Author
+            AuthorManager.SetCurrentAuthor(author);
+
             // Send message to ReadingPage to update content
             MessagingCenter.Send(this, "AuthorChanged", author.ToString());
 

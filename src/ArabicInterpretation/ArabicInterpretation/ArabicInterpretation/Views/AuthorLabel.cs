@@ -12,11 +12,13 @@ namespace ArabicInterpretation.Views
 {
     public class AuthorLabel : Button
     {
-        Author currentAuthor; 
+        bool isNT;
+        int bookNumber;
 
-        public AuthorLabel(Author author)
+        public AuthorLabel(bool isNT, int bookNumber)
         {
-            this.currentAuthor = author;
+            this.isNT = isNT;
+            this.bookNumber = bookNumber;
 
             this.TextColor = Color.Blue;
             this.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button));
@@ -32,7 +34,7 @@ namespace ArabicInterpretation.Views
                 await this.OnClicked();
             };
 
-            this.UpdateText(author);
+            this.UpdateText();
 
             // Listen to author changes
             MessagingCenter.Subscribe<AuthorsGrid, string>(this, "AuthorChanged", (sender, arg) => {
@@ -43,21 +45,17 @@ namespace ArabicInterpretation.Views
         public async Task OnClicked()
         {
             // TODO: Avoid creating new page everytime
-            await this.Navigation.PushModalAsync(new AuthorChooserPage(currentAuthor: this.currentAuthor));
+            await this.Navigation.PushModalAsync(new AuthorChooserPage(this.isNT, this.bookNumber));
         }
 
         private void OnAuthorChanging(AuthorsGrid sender, string authorName)
         {
-            Author author;
-            if (Enum.TryParse(authorName, out author))
-            {
-                this.UpdateText(author);
-            }
+            this.UpdateText();
         }
 
-        private void UpdateText(Author author)
+        private void UpdateText()
         {
-            this.currentAuthor = author;
+            Author author = AuthorManager.GetCurrentAuthor();
             if (author == Author.FrAntonios)
             {
                 this.Text = Constants.AuthorNames.FrAntonios;

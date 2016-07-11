@@ -11,15 +11,12 @@ namespace ArabicInterpretation.Pages
 {
     public class BookChooserPage : ContentPage
     {
-        Author author;
         bool isNT;
         BookChooser bookChooser;
 
         public BookChooserPage(
-            Author author,
             bool isNT)
         {
-            this.author = author;
             this.isNT = isNT;
 
             StackLayout layout = new StackLayout
@@ -27,7 +24,8 @@ namespace ArabicInterpretation.Pages
                 Orientation = StackOrientation.Vertical,
             };
 
-            AuthorLabel authorLabel = new AuthorLabel(author);
+            // Add irrelevant bookNumber since no books are selected yet, so Authors shouldn't be disabled
+            AuthorLabel authorLabel = new AuthorLabel(isNT, -1);
             layout.Children.Add(authorLabel);
             
             this.Content = layout;
@@ -37,7 +35,7 @@ namespace ArabicInterpretation.Pages
         {
             if (this.bookChooser == null)
             {
-                this.bookChooser = new BookChooser(this.author);
+                this.bookChooser = new BookChooser();
                 ((StackLayout)this.Content).Children.Add(this.bookChooser);
 
                 await bookChooser.Initialize(isNT: this.isNT);

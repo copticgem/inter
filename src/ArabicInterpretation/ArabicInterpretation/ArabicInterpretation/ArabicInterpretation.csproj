@@ -37,7 +37,10 @@
   <ItemGroup>
     <Compile Include="App.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Extensions\ListExtensions.cs" />
+    <Compile Include="Helpers\AuthorManager.cs" />
     <Compile Include="Helpers\ContentFormatter.cs" />
+    <Compile Include="Helpers\MissingBooksHelper.cs" />
     <Compile Include="Helpers\NumbersHelper.cs" />
     <Compile Include="Helpers\PageData.cs" />
     <Compile Include="Helpers\StringType.cs" />

@@ -15,7 +15,7 @@ namespace ArabicInterpretation
         ScrollView ntScrollView;
         ScrollView otScrollView;
 
-        public BookChooser(Author author)
+        public BookChooser()
         {
             StackLayout testamentSwitch = new StackLayout
             {
@@ -50,14 +50,14 @@ namespace ArabicInterpretation
             this.HorizontalOptions = LayoutOptions.CenterAndExpand;
             this.Children.Add(testamentSwitch);
 
-            BooksGrid ntGrid = new BooksGrid(author, true);
+            BooksGrid ntGrid = new BooksGrid(true);
             this.ntScrollView = new ScrollView
             {
                 Content = ntGrid,
                 IsVisible = false
             };
 
-            BooksGrid otGrid = new BooksGrid(author, false);
+            BooksGrid otGrid = new BooksGrid(false);
             this.otScrollView = new ScrollView
             {
                 Content = otGrid,

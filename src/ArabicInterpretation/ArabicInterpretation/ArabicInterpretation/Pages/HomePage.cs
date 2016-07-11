@@ -11,7 +11,10 @@ namespace ArabicInterpretation
     {
         public HomePage()
         {
-            BookChooserPage page = new BookChooserPage(Author.FrAntonios, true);
+            // Set author
+            AuthorManager.SetCurrentAuthor(Author.FrAntonios);
+
+            BookChooserPage page = new BookChooserPage(true);
             this.Navigation.PushAsync(page).Wait();
         }
     }

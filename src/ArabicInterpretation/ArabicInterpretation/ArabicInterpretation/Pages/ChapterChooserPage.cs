@@ -15,7 +15,6 @@ namespace ArabicInterpretation.Pages
         ScrollView scrollView;
 
         public ChapterChooserPage(
-            Author author,
             bool isNT,
             int bookNumber,
             int chaptersCount)
@@ -25,12 +24,12 @@ namespace ArabicInterpretation.Pages
                 Orientation = StackOrientation.Vertical,
             };
 
-            this.authorLabel = new AuthorLabel(author);
+            this.authorLabel = new AuthorLabel(isNT, bookNumber);
             layout.Children.Add(this.authorLabel);
 
             this.scrollView = new ScrollView
             {
-                Content = new ChaptersGrid(author, isNT, bookNumber, chaptersCount)
+                Content = new ChaptersGrid(isNT, bookNumber, chaptersCount)
             };
 
             layout.Children.Add(scrollView);

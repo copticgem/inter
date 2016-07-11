@@ -1,6 +1,10 @@
-﻿using ArabicInterpretation.Pages;
+﻿using ArabicInterpretation.Helpers;
+using ArabicInterpretation.Pages;
+using ArabicInterpretation.Views;
 using Core;
 using System;
+using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -9,12 +13,14 @@ namespace ArabicInterpretation
     public class BooksGrid : Grid
     {
         bool isNT;
-        Author author;
 
-        public BooksGrid(Author author, bool isNT)
+        // Index in the list must match index in ot.txt
+        List<Button> buttons;
+
+        public BooksGrid(bool isNT)
         {
             this.isNT = isNT;
-            this.author = author;
+            this.buttons = new List<Button>();
 
             this.HorizontalOptions = LayoutOptions.FillAndExpand;
             this.ColumnDefinitions = new ColumnDefinitionCollection
@@ -29,6 +35,35 @@ namespace ArabicInterpretation
             {
                 new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }
             };
+
+            // Listen to author changes to disable missing books
+            MessagingCenter.Subscribe<AuthorsGrid, string>(this, "AuthorChanged", (sender, arg) =>
+            {
+                this.OnAuthorChanging(sender, arg);
+            });
+        }
+
+        private void OnAuthorChanging(AuthorsGrid sender, string authorName)
+        {
+            // Get missing books
+            Author currentAuthor = AuthorManager.GetCurrentAuthor();
+            List<int> missingBooks = MissingBooksHelper.GetMissingBooks(currentAuthor, this.isNT);
+
+            // Re-enable disabled buttons
+            this.buttons
+                .Where(b => !b.IsEnabled)
+                .ForEach(b => b.IsEnabled = true);
+
+            // Disable missing buttons
+            missingBooks.ForEach(bookIndex =>
+            {
+                // Change index since list starts from 0 but files start from 1
+                Button button = this.buttons.ElementAtOrDefault(bookIndex- 1);
+                if (button != null)
+                {
+                    button.IsEnabled = false;
+                }
+            });
         }
 
         public async Task LoadBooks()
@@ -54,11 +89,12 @@ namespace ArabicInterpretation
                 int bookNumber = i;
                 button.Clicked += async (sender, e) =>
                 {
-                    await this.OnBookClicked(this.author, this.isNT, bookNumber, chaptersCount);
+                    await this.OnBookClicked(this.isNT, bookNumber, chaptersCount);
                 };
 
                 int top = (i - 1) / booksPerRow;
                 this.Children.Add(button, left, top);
+                this.buttons.Add(button);
 
                 left--;
                 if (left == -1)
@@ -69,12 +105,11 @@ namespace ArabicInterpretation
         }
 
         private async Task OnBookClicked(
-            Author author,
-            bool isNT, 
+            bool isNT,
             int bookNumber,
             int chaptersCount)
         {
-            await this.Navigation.PushAsync(new ChapterChooserPage(author, isNT, bookNumber, chaptersCount));
+            await this.Navigation.PushAsync(new ChapterChooserPage(isNT, bookNumber, chaptersCount));
         }
     }
 }

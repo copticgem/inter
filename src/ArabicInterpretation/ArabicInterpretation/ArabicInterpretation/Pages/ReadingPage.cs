@@ -12,7 +12,6 @@ namespace ArabicInterpretation.Pages
 {
     public class ReadingPage : ContentPage
     {
-        Author author;
         bool isNT;
         int bookNumber;
         int chapterNumber;
@@ -21,12 +20,10 @@ namespace ArabicInterpretation.Pages
         ScrollView scrollView;
 
         public ReadingPage(
-            Author author,
             bool isNT,
             int bookNumber,
             int chapterNumber)
         {
-            this.author = author;
             this.isNT = isNT;
             this.bookNumber = bookNumber;
             this.chapterNumber = chapterNumber;
@@ -38,7 +35,7 @@ namespace ArabicInterpretation.Pages
                 Orientation = StackOrientation.Vertical,
             };
 
-            this.authorLabel = new AuthorLabel(author);
+            this.authorLabel = new AuthorLabel(isNT, bookNumber);
             layout.Children.Add(this.authorLabel);
 
             this.scrollView = new ScrollView();
@@ -54,17 +51,8 @@ namespace ArabicInterpretation.Pages
 
         private async Task OnAuthorChanging(AuthorsGrid sender, string authorName)
         {
-            Author author;
-            if (Enum.TryParse(authorName, out author))
-            {
-                if (this.author != author)
-                {
-                    this.author = author;
-
-                    // Update content
-                    await this.UpdateContent();
-                }
-            }
+            // Update content
+            await this.UpdateContent();
         }
 
         protected override async void OnAppearing()
@@ -79,8 +67,9 @@ namespace ArabicInterpretation.Pages
         private async Task UpdateContent()
         {
             // Update content
+            Author currentAuthor = AuthorManager.GetCurrentAuthor();
             string content = await FileHelper.GetFile(
-                this.author,
+                currentAuthor,
                 this.isNT,
                 this.bookNumber,
                 this.chapterNumber);

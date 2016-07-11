@@ -13,7 +13,6 @@ namespace ArabicInterpretation.Views
     public class ChaptersGrid : Grid
     {
         public ChaptersGrid(
-            Author author,
             bool isNT,
             int bookNumber,
             int chaptersCount)
@@ -44,7 +43,6 @@ namespace ArabicInterpretation.Views
             introButton.Clicked += async (sender, e) =>
             {
                 await this.OnChapterClicked(
-                    author: author,
                     isNT: isNT, 
                     bookNumber: bookNumber,
                     chapterNumber: 0);
@@ -68,7 +66,6 @@ namespace ArabicInterpretation.Views
                 button.Clicked += async (sender, e) =>
                 {
                     await this.OnChapterClicked(
-                        author: author,
                         isNT: isNT,
                         bookNumber: bookNumber,
                         chapterNumber: chapterNumber);
@@ -86,12 +83,11 @@ namespace ArabicInterpretation.Views
         }
 
         private async Task OnChapterClicked(
-            Author author,
             bool isNT,
             int bookNumber,
             int chapterNumber)
         {
-            await this.Navigation.PushAsync(new ReadingPage(author, isNT, bookNumber, chapterNumber));
+            await this.Navigation.PushAsync(new ReadingPage(isNT, bookNumber, chapterNumber));
         }
     }
 }
