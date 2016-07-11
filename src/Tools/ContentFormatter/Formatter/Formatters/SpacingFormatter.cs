@@ -23,6 +23,12 @@ namespace Formatter.Formatters
                 pattern: "({{p}} *)+",
                 replacement: "{{p}}");
 
+            // Remove duplicate spaces
+            page = Regex.Replace(
+                input: page,
+                pattern: " +",
+                replacement: " ");
+
             return page;
         }
     }

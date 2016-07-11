@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Diagnostics;
 using Formatter.Formatters;
+using System.Web;
 
 namespace Formatter
 {
@@ -124,9 +125,14 @@ namespace Formatter
 
         public static string GetFormattedPage(string page)
         {
+            // HTML Decode
+            page = HttpUtility.HtmlDecode(page);
+
+            // Remove headers and footers
             page = RemoveHeaderAndFooter(page);
 
             // Remove special characters
+            page = page.Replace("\r\n", " ");
             page = page.Replace("\n", string.Empty);
             page = page.Replace("\r", string.Empty);
             page = page.Replace("\t", string.Empty);
