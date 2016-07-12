@@ -55,6 +55,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Books.resx</DependentUpon>
     </Compile>
+    <Compile Include="Views\ChapterLabel.cs" />
+    <Compile Include="Views\BookLabel.cs" />
     <Compile Include="Views\AuthorLabel.cs" />
     <Compile Include="Views\BookChooser.cs" />
     <Compile Include="Views\BooksGrid.cs" />
