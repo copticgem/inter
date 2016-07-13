@@ -49,7 +49,7 @@ namespace ArabicInterpretation.Views
         public async Task OnClicked()
         {
             // TODO: The modal will create new page, see if this has perf problems
-            await this.Navigation.PushModalAsync(this.chapterChooserPage);
+            await this.Navigation.PushAsync(this.chapterChooserPage);
         }
 
         private void UpdateText()

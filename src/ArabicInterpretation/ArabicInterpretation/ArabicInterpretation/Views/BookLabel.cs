@@ -1,4 +1,5 @@
 ﻿using ArabicInterpretation.Helpers;
+using ArabicInterpretation.Model;
 using ArabicInterpretation.Pages;
 using Core;
 using System;
@@ -15,19 +16,14 @@ namespace ArabicInterpretation.Views
         bool isNT;
         int bookNumber;
         BookChooserPage bookChooserPage;
-        List<string> ntBooks;
-        List<string> otBooks;
 
         public BookLabel(
             bool isNT, 
             int bookNumber,
-            List<string> ntBooks,
-            List<string> otBooks)
+            string bookName)
         {
             this.isNT = isNT;
             this.bookNumber = bookNumber;
-            this.ntBooks = ntBooks;
-            this.otBooks = otBooks;
 
             this.TextColor = Color.Blue;
             this.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button));
@@ -43,7 +39,7 @@ namespace ArabicInterpretation.Views
                 await this.OnClicked();
             };
 
-            this.UpdateText();
+            this.Text = bookName;
 
             this.bookChooserPage = new BookChooserPage(isNT);
         }
@@ -51,19 +47,7 @@ namespace ArabicInterpretation.Views
         public async Task OnClicked()
         {
             // TODO: The modal will create new page, see if this has perf problems
-            await this.Navigation.PushModalAsync(this.bookChooserPage);
-        }
-
-        private void UpdateText()
-        {
-            if (this.isNT)
-            {
-                this.Text = this.ntBooks[this.bookNumber - 1];
-            }
-            else
-            {
-                this.Text = this.otBooks[this.bookNumber - 1];
-            }
+            await this.Navigation.PushAsync(this.bookChooserPage);
         }
     }
 }

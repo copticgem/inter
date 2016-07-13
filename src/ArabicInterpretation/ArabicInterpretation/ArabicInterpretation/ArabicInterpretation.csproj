@@ -38,12 +38,14 @@
     <Compile Include="App.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
+    <Compile Include="Helpers\BookNameManager.cs" />
     <Compile Include="Helpers\AuthorManager.cs" />
     <Compile Include="Helpers\ContentFormatter.cs" />
     <Compile Include="Helpers\MissingBooksHelper.cs" />
     <Compile Include="Helpers\NumbersHelper.cs" />
     <Compile Include="Helpers\PageData.cs" />
     <Compile Include="Helpers\StringType.cs" />
+    <Compile Include="Model\BookInfo.cs" />
     <Compile Include="Pages\AuthorChooserPage.cs" />
     <Compile Include="Pages\BookChooserPage.cs" />
     <Compile Include="Pages\ChapterChooserPage.cs" />
@@ -55,6 +57,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Books.resx</DependentUpon>
     </Compile>
+    <Compile Include="Views\BookChapterLabel.cs" />
     <Compile Include="Views\ChapterLabel.cs" />
     <Compile Include="Views\BookLabel.cs" />
     <Compile Include="Views\AuthorLabel.cs" />

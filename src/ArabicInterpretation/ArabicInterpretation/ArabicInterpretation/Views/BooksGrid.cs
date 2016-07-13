@@ -7,6 +7,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using ArabicInterpretation.Model;
 
 namespace ArabicInterpretation
 {
@@ -68,20 +69,17 @@ namespace ArabicInterpretation
 
         public async Task LoadBooks()
         {
-            string index = await FileHelper.GetIndex(this.isNT);
-            string[] books = index.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            List<BookInfo> books = await BookNameManager.GetBookNames(this.isNT);
 
             int booksPerRow = 4;
             int left = 3;
-            for (int i = 1; i <= books.Length; i++)
+            for (int i = 1; i <= books.Count; i++)
             {
-                string[] tokens = books[i - 1].Split(':');
-
-                int chaptersCount = int.Parse(tokens[2]);
+                BookInfo book = books[i - 1];
                 Button button = new Button
                 {
                     FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button)),
-                    Text = tokens[0] + "\r\n\r\n(" + tokens[1] + ")"
+                    Text = book.Name  + "\r\n\r\n(" + book.ShortName + ")"
                 };
 
                 button.HeightRequest = button.Width;
@@ -89,7 +87,7 @@ namespace ArabicInterpretation
                 int bookNumber = i;
                 button.Clicked += async (sender, e) =>
                 {
-                    await this.OnBookClicked(this.isNT, bookNumber, chaptersCount);
+                    await this.OnBookClicked(this.isNT, bookNumber, book.ChaptersCount);
                 };
 
                 int top = (i - 1) / booksPerRow;

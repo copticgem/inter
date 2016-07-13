@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ArabicInterpretation.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,9 +14,7 @@ namespace ArabicInterpretation.Views
             bool isNT,
             int bookNumber,
             int chapterNumber,
-            int chaptersCount,
-            List<string> ntBooks,
-            List<string> otBooks)
+            BookInfo bookInfo)
         {
             this.Orientation = StackOrientation.Horizontal;
             this.HorizontalOptions = LayoutOptions.Center;
@@ -24,11 +23,20 @@ namespace ArabicInterpretation.Views
                 isNT: isNT, 
                 bookNumber: bookNumber, 
                 chapterNumber: chapterNumber,
-                chaptersCount: chaptersCount);
+                chaptersCount: bookInfo.ChaptersCount);
 
             this.Children.Add(chapterLabel);
 
-            BookLabel bookLabel = new BookLabel(isNT, bookNumber, ntBooks, otBooks);
+            Label separatorLabel = new Label
+            {
+                TextColor = Color.Blue,
+                Text = "|",
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button))
+            };
+
+            this.Children.Add(separatorLabel);
+
+            BookLabel bookLabel = new BookLabel(isNT, bookNumber, bookInfo.Name);
             this.Children.Add(bookLabel);
         }
     }

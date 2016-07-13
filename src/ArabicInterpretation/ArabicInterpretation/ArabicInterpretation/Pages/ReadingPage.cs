@@ -1,4 +1,5 @@
 ﻿using ArabicInterpretation.Helpers;
+using ArabicInterpretation.Model;
 using ArabicInterpretation.Views;
 using Core;
 using System;
@@ -35,9 +36,19 @@ namespace ArabicInterpretation.Pages
                 Orientation = StackOrientation.Vertical,
             };
 
+            // TODO: Move to async method
+            BookInfo bookInfo = BookNameManager.GetBookNames(isNT).Result[bookNumber -1];
+            BookChapterLabel bookChapterLabel = new BookChapterLabel(
+                isNT: isNT,
+                bookNumber: bookNumber,
+                chapterNumber: chapterNumber,
+                bookInfo: bookInfo);
+
+            layout.Children.Add(bookChapterLabel);
+
             this.authorLabel = new AuthorLabel(isNT, bookNumber);
             layout.Children.Add(this.authorLabel);
-
+            
             this.scrollView = new ScrollView();
             layout.Children.Add(scrollView);
 
