@@ -27,7 +27,7 @@ namespace ArabicInterpretation.Views
             this.bookNumber = bookNumber;
             this.chapterNumber = chapterNumber;
 
-            this.TextColor = Color.Blue;
+            this.TextColor = ColorManager.Text.BookChapter;
             this.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button));
 
             this.HorizontalOptions = LayoutOptions.CenterAndExpand;

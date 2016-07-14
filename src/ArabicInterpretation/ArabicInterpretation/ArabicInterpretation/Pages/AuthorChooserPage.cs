@@ -10,7 +10,7 @@ using Xamarin.Forms;
 
 namespace ArabicInterpretation.Pages
 {
-    public class AuthorChooserPage : ContentPage
+    public class AuthorChooserPage : BasePage
     {
         public AuthorChooserPage(bool isNT, int bookNumber)
         {

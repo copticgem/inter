@@ -76,11 +76,9 @@ namespace ArabicInterpretation
             for (int i = 1; i <= books.Count; i++)
             {
                 BookInfo book = books[i - 1];
-                Button button = new Button
-                {
-                    FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button)),
-                    Text = book.Name  + "\r\n\r\n(" + book.ShortName + ")"
-                };
+                Button button = ColorManager.CreateButton();
+                button.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button));
+                button.Text = book.Name + "\r\n\r\n(" + book.ShortName + ")";
 
                 button.HeightRequest = button.Width;
 

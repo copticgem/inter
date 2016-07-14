@@ -9,7 +9,7 @@ using Xamarin.Forms;
 
 namespace ArabicInterpretation.Pages
 {
-    public class BookChooserPage : ContentPage
+    public class BookChooserPage : BasePage
     {
         bool isNT;
         BookChooser bookChooser;

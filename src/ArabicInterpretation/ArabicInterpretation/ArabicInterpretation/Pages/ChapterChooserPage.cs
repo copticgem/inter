@@ -9,7 +9,7 @@ using Xamarin.Forms;
 
 namespace ArabicInterpretation.Pages
 {
-    public class ChapterChooserPage : ContentPage
+    public class ChapterChooserPage : BasePage
     {
         AuthorLabel authorLabel;
         ScrollView scrollView;

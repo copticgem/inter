@@ -23,23 +23,17 @@ namespace ArabicInterpretation.Views
             this.RowDefinitions = new RowDefinitionCollection();
             this.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) });
 
-            Button frTadros = new Button
-            {
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button)),
-                Text = Constants.AuthorNames.FrTadros
-            };
-
+            Button frTadros = ColorManager.CreateButton();
+            frTadros.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button));
+            frTadros.Text = Constants.AuthorNames.FrTadros;
             frTadros.Clicked += async (sender, e) =>
             {
                 await this.OnAuthorClicked(author: Author.FrTadros);
             };
 
-            Button frAntonios = new Button
-            {
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button)),
-                Text = Constants.AuthorNames.FrAntonios
-            };
-
+            Button frAntonios = ColorManager.CreateButton();
+            frAntonios.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button));
+            frAntonios.Text = Constants.AuthorNames.FrAntonios;
             frAntonios.Clicked += async (sender, e) =>
             {
                 await this.OnAuthorClicked(author: Author.FrAntonios);

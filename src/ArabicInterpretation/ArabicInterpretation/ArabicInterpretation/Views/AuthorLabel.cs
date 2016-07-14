@@ -10,26 +10,29 @@ using Xamarin.Forms;
 
 namespace ArabicInterpretation.Views
 {
-    public class AuthorLabel : Button
+    public class AuthorLabel : StackLayout
     {
         bool isNT;
         int bookNumber;
+        Button button;
 
         public AuthorLabel(bool isNT, int bookNumber)
         {
             this.isNT = isNT;
             this.bookNumber = bookNumber;
-
-            this.TextColor = Color.Blue;
-            this.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button));
-
-            this.HorizontalOptions = LayoutOptions.CenterAndExpand;
+            this.BackgroundColor = ColorManager.Backgrounds.AuthorBar;
+            this.HorizontalOptions = LayoutOptions.FillAndExpand;
             this.VerticalOptions = LayoutOptions.Start;
 
-            this.BorderWidth = 0;
-            this.BackgroundColor = Color.Transparent;
+            this.button = new Button();
+            this.Children.Add(button);
+            this.button.TextColor = ColorManager.Text.Author;
+            this.button.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button));
 
-            this.Clicked += async (sender, e) =>
+            this.button.BorderWidth = 0;
+            this.button.BackgroundColor = Color.Transparent;
+
+            this.button.Clicked += async (sender, e) =>
             {
                 await this.OnClicked();
             };
@@ -58,11 +61,11 @@ namespace ArabicInterpretation.Views
             Author author = AuthorManager.GetCurrentAuthor();
             if (author == Author.FrAntonios)
             {
-                this.Text = Constants.AuthorNames.FrAntonios;
+                this.button.Text = Constants.AuthorNames.FrAntonios;
             }
             else
             {
-                this.Text = Constants.AuthorNames.FrTadros;
+                this.button.Text = Constants.AuthorNames.FrTadros;
             }
         }
     }

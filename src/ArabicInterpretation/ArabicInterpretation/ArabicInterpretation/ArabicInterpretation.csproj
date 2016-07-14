@@ -40,6 +40,7 @@
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Helpers\BookNameManager.cs" />
     <Compile Include="Helpers\AuthorManager.cs" />
+    <Compile Include="Helpers\ColorManager.cs" />
     <Compile Include="Helpers\ContentFormatter.cs" />
     <Compile Include="Helpers\MissingBooksHelper.cs" />
     <Compile Include="Helpers\NumbersHelper.cs" />
@@ -47,6 +48,7 @@
     <Compile Include="Helpers\StringType.cs" />
     <Compile Include="Model\BookInfo.cs" />
     <Compile Include="Pages\AuthorChooserPage.cs" />
+    <Compile Include="Pages\BasePage.cs" />
     <Compile Include="Pages\BookChooserPage.cs" />
     <Compile Include="Pages\ChapterChooserPage.cs" />
     <Compile Include="Pages\HomePage.cs" />

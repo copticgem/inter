@@ -34,12 +34,9 @@ namespace ArabicInterpretation.Views
             }
 
             // Add the introduction button
-            Button introButton = new Button
-            {
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button)),
-                Text = "مقدمة"
-            };
-
+            Button introButton = ColorManager.CreateButton();
+            introButton.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button));
+            introButton.Text = "مقدمة";
             introButton.Clicked += async (sender, e) =>
             {
                 await this.OnChapterClicked(
@@ -53,14 +50,9 @@ namespace ArabicInterpretation.Views
             int left = buttonsPerRow - 1;
             for (int i = 1; i <= chaptersCount; i++)
             {
-                Button button = new Button
-                {
-                    FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button)),
-                    Text = NumbersHelper.TranslateNumber(i),
-                    
-                };
-
-                button.HeightRequest = button.Width;
+                Button button = ColorManager.CreateButton();
+                button.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button));
+                button.Text = NumbersHelper.TranslateNumber(i);
 
                 int chapterNumber = i;
                 button.Clicked += async (sender, e) =>

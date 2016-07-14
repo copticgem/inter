@@ -23,21 +23,15 @@ namespace ArabicInterpretation
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
             };
 
-            Button ntButton = new Button
-            {
-                Text = "العهد الجديد",
-            };
-
+            Button ntButton = ColorManager.CreateButton();
+            ntButton.Text = "العهد الجديد";
             ntButton.Clicked += (sender, e) =>
             {
                 this.OnTestamentSwitchClicked(true);
             };
 
-            Button otButton = new Button
-            {
-                Text = "العهد القديم"
-            };
-
+            Button otButton = ColorManager.CreateButton();
+            otButton.Text = "العهد القديم";
             otButton.Clicked += (sender, e) =>
             {
                 this.OnTestamentSwitchClicked(false);

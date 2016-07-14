@@ -118,7 +118,9 @@ namespace ArabicInterpretation.Helpers
             Label label = new Label
             {
                 FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                HorizontalTextAlignment = TextAlignment.End
+                HorizontalTextAlignment = TextAlignment.End,
+                TextColor = ColorManager.Text.Default,
+                BackgroundColor = ColorManager.Backgrounds.Default
             };
 
             switch (type)
@@ -192,7 +194,7 @@ namespace ArabicInterpretation.Helpers
                 BackgroundColor = label.BackgroundColor,
                 FontFamily = label.FontFamily,
                 FontSize = label.FontSize,
-                ForegroundColor = label.TextColor
+                ForegroundColor = label.TextColor,
             };
         }
 
@@ -251,6 +253,7 @@ namespace ArabicInterpretation.Helpers
             {
                 ColumnSpacing = 1,
                 RowSpacing = 1,
+                BackgroundColor = ColorManager.Border.Grid
             };
 
             for (int i = 0; i < rowCount; i++)

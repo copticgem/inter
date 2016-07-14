@@ -11,7 +11,7 @@ using Xamarin.Forms;
 
 namespace ArabicInterpretation.Pages
 {
-    public class ReadingPage : ContentPage
+    public class ReadingPage : BasePage
     {
         bool isNT;
         int bookNumber;
@@ -28,13 +28,14 @@ namespace ArabicInterpretation.Pages
             this.isNT = isNT;
             this.bookNumber = bookNumber;
             this.chapterNumber = chapterNumber;
-
-            NavigationPage.SetHasNavigationBar(this, false);
-
+            
             StackLayout layout = new StackLayout
             {
                 Orientation = StackOrientation.Vertical,
             };
+
+            this.authorLabel = new AuthorLabel(isNT, bookNumber);
+            layout.Children.Add(this.authorLabel);
 
             // TODO: Move to async method
             BookInfo bookInfo = BookNameManager.GetBookNames(isNT).Result[bookNumber -1];
@@ -45,9 +46,6 @@ namespace ArabicInterpretation.Pages
                 bookInfo: bookInfo);
 
             layout.Children.Add(bookChapterLabel);
-
-            this.authorLabel = new AuthorLabel(isNT, bookNumber);
-            layout.Children.Add(this.authorLabel);
             
             this.scrollView = new ScrollView();
             layout.Children.Add(scrollView);

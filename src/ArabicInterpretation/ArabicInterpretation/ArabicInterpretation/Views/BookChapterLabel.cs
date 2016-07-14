@@ -17,7 +17,8 @@ namespace ArabicInterpretation.Views
             BookInfo bookInfo)
         {
             this.Orientation = StackOrientation.Horizontal;
-            this.HorizontalOptions = LayoutOptions.Center;
+            this.HorizontalOptions = LayoutOptions.FillAndExpand;
+            this.BackgroundColor = ColorManager.Backgrounds.BookChapterBar;
 
             ChapterLabel chapterLabel = new ChapterLabel(
                 isNT: isNT, 
@@ -26,15 +27,6 @@ namespace ArabicInterpretation.Views
                 chaptersCount: bookInfo.ChaptersCount);
 
             this.Children.Add(chapterLabel);
-
-            Label separatorLabel = new Label
-            {
-                TextColor = Color.Blue,
-                Text = "|",
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button))
-            };
-
-            this.Children.Add(separatorLabel);
 
             BookLabel bookLabel = new BookLabel(isNT, bookNumber, bookInfo.Name);
             this.Children.Add(bookLabel);

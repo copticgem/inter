@@ -25,7 +25,7 @@ namespace ArabicInterpretation.Views
             this.isNT = isNT;
             this.bookNumber = bookNumber;
 
-            this.TextColor = Color.Blue;
+            this.TextColor = ColorManager.Text.BookChapter;
             this.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button));
 
             this.HorizontalOptions = LayoutOptions.CenterAndExpand;
