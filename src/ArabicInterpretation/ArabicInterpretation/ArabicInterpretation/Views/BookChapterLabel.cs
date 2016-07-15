@@ -12,6 +12,7 @@ namespace ArabicInterpretation.Views
     {
         ChapterLabel chapterLabel;
         BookLabel bookLabel;
+        VerseLabel verseLabel;
 
         public BookChapterLabel()
         {
@@ -24,11 +25,16 @@ namespace ArabicInterpretation.Views
 
             this.bookLabel = new BookLabel();
             this.Children.Add(this.bookLabel);
+
+            this.verseLabel = new VerseLabel();
+            this.Children.Add(this.verseLabel);
         }
 
         public async Task Initialize(
             ReadingInfo readingInfo,
-            BookInfo bookInfo)
+            BookInfo bookInfo,
+            ScrollView scrollView,
+            Dictionary<int, Label> verses)
         {
             await this.chapterLabel.Initialize(
                 readingInfo: readingInfo,
@@ -39,6 +45,10 @@ namespace ArabicInterpretation.Views
                 isNT: readingInfo.IsNT,
                 bookNumber: readingInfo.BookNumber, 
                 bookName: bookInfo.Name);
+
+            await this.verseLabel.Initialize(
+                scrollView,
+                verses);
         }
     }
 }

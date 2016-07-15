@@ -126,6 +126,7 @@ namespace ArabicInterpretation.Helpers
             switch (type)
             {
                 case StringType.Verse:
+                    label.Text = string.Empty;
                     label.IsVisible = false;
                     break;
                 case StringType.Subtitle:

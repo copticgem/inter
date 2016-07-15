@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -14,6 +15,7 @@ namespace ArabicInterpretation.Pages
     public class ReadingPage : BasePage
     {
         public const string ChapterChangedMessage = "ReadingPageChapterChanged";
+        public const string VerseChangedMessage = "ReadingPageVerseChanged";
         private const string AuthorChangedMessage = "ReadingPageAuthorChanged";
 
         ReadingInfo readingInfo;
@@ -21,6 +23,7 @@ namespace ArabicInterpretation.Pages
         AuthorLabel authorLabel;
         BookChapterLabel bookChapterLabel;
         ScrollView scrollView;
+        Dictionary<int, Label> verses;
 
         public ReadingPage()
         {
@@ -51,6 +54,16 @@ namespace ArabicInterpretation.Pages
             {
                 await this.OnChapterChanged(sender, arg);
             });
+
+            // Listen to verse changes
+            MessagingCenter.Subscribe<VersesGrid, int>(this, VerseChangedMessage, async (sender, arg) =>
+            {
+                Label verseLabel = this.verses[arg];
+
+                await Task.Delay(TimeSpan.FromSeconds(0.5));
+
+                await this.scrollView.ScrollToAsync(verseLabel, ScrollToPosition.Start, false);
+            });
         }
 
         public async Task Initialize(ReadingInfo readingInfo, bool isFirstTime = false)
@@ -63,9 +76,13 @@ namespace ArabicInterpretation.Pages
 
             await this.UpdateAuthorLabel();
 
-            await this.bookChapterLabel.Initialize(readingInfo, bookInfo);
+            Dictionary<int, Label> verses = await this.UpdateContent(isFirstTime);
 
-            await this.UpdateContent(isFirstTime);
+            await this.bookChapterLabel.Initialize(
+                readingInfo, 
+                bookInfo,
+                this.scrollView,
+                verses);
         }
 
         private async Task UpdateAuthorLabel()
@@ -98,7 +115,7 @@ namespace ArabicInterpretation.Pages
             }
         }
 
-        private async Task UpdateContent(bool isFirstTime)
+        private async Task<Dictionary<int, Label>> UpdateContent(bool isFirstTime)
         {
             // Update content
             string content = await FileHelper.GetFile(
@@ -107,8 +124,7 @@ namespace ArabicInterpretation.Pages
                 this.readingInfo.BookNumber,
                 this.readingInfo.ChapterNumber);
 
-            Dictionary<int, Label> verses;
-            List<View> views = ContentFormatter.FormatContent(content, out verses);
+            List<View> views = ContentFormatter.FormatContent(content, out this.verses);
 
             StackLayout chapterLayout = new StackLayout
             {
@@ -131,6 +147,8 @@ namespace ArabicInterpretation.Pages
             {
                 await this.scrollView.ScrollToAsync(firstView, ScrollToPosition.Start, false);
             }
+
+            return this.verses;
         }
     }
 }

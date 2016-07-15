@@ -51,6 +51,7 @@
     <Compile Include="Pages\AuthorChooserPage.cs" />
     <Compile Include="Pages\BasePage.cs" />
     <Compile Include="Pages\BookChooserPage.cs" />
+    <Compile Include="Pages\VerseChooserPage.cs" />
     <Compile Include="Pages\ChapterChooserPage.cs" />
     <Compile Include="Pages\HomePage.cs" />
     <Compile Include="Pages\ReadingPage.cs" />
@@ -61,12 +62,14 @@
       <DependentUpon>Books.resx</DependentUpon>
     </Compile>
     <Compile Include="Views\BookChapterLabel.cs" />
+    <Compile Include="Views\VerseLabel.cs" />
     <Compile Include="Views\ChapterLabel.cs" />
     <Compile Include="Views\BookLabel.cs" />
     <Compile Include="Views\AuthorLabel.cs" />
     <Compile Include="Views\BookChooser.cs" />
     <Compile Include="Views\BooksGrid.cs" />
     <Compile Include="Views\AuthorsGrid.cs" />
+    <Compile Include="Views\VersesGrid.cs" />
     <Compile Include="Views\ChaptersGrid.cs" />
   </ItemGroup>
   <ItemGroup>
