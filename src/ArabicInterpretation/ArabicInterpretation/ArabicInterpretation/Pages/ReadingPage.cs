@@ -53,7 +53,7 @@ namespace ArabicInterpretation.Pages
             });
         }
 
-        public async Task Initialize(ReadingInfo readingInfo)
+        public async Task Initialize(ReadingInfo readingInfo, bool isFirstTime = false)
         {
             this.readingInfo = readingInfo;
 
@@ -65,7 +65,7 @@ namespace ArabicInterpretation.Pages
 
             await this.bookChapterLabel.Initialize(readingInfo, bookInfo);
 
-            await this.UpdateContent();
+            await this.UpdateContent(isFirstTime);
         }
 
         private async Task UpdateAuthorLabel()
@@ -98,7 +98,7 @@ namespace ArabicInterpretation.Pages
             }
         }
 
-        private async Task UpdateContent()
+        private async Task UpdateContent(bool isFirstTime)
         {
             // Update content
             string content = await FileHelper.GetFile(
@@ -125,7 +125,9 @@ namespace ArabicInterpretation.Pages
             this.scrollView.Content = chapterLayout;
 
             View firstView = chapterLayout.Children.FirstOrDefault();
-            if (firstView != null)
+
+            // For some reason, when app starts, scrollToAsync hangs
+            if (!isFirstTime && firstView != null)
             {
                 await this.scrollView.ScrollToAsync(firstView, ScrollToPosition.Start, false);
             }

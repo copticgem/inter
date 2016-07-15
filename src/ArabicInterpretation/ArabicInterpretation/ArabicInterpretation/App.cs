@@ -20,14 +20,17 @@ namespace ArabicInterpretation
             ColorManager.Initialize();
 
             ReadingPage readingPage = new ReadingPage();
+            this.MainPage = new NavigationPage(readingPage);
+
+            Navigation = this.MainPage.Navigation;
+
             readingPage.Initialize(new ReadingInfo(
                 Author.FrAntonios,
                 false,
                 1,
-                1)).Wait();
+                1),
+                true).Wait();
 
-            this.MainPage = new NavigationPage(readingPage);
-            Navigation = this.MainPage.Navigation;
         }
 
         protected override void OnStart()
