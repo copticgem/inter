@@ -11,30 +11,75 @@ namespace ArabicInterpretation.Pages
 {
     public class ChapterChooserPage : BasePage
     {
-        AuthorLabel authorLabel;
-        ScrollView scrollView;
+        private const string AuthorChangedMessage = "ChapterChooserPageAuthorChanged";
 
-        public ChapterChooserPage(
-            bool isNT,
-            int bookNumber,
-            int chaptersCount)
+        Author author;
+        bool isNT;
+        int bookNumber;
+        int chaptersCount;
+
+        AuthorLabel authorLabel;
+        ChaptersGrid chaptersGrid;
+
+        public ChapterChooserPage()
         {
             StackLayout layout = new StackLayout
             {
                 Orientation = StackOrientation.Vertical,
             };
 
-            this.authorLabel = new AuthorLabel(isNT, bookNumber);
+            this.authorLabel = new AuthorLabel();
             layout.Children.Add(this.authorLabel);
 
-            this.scrollView = new ScrollView
+            this.chaptersGrid = new ChaptersGrid();
+            ScrollView scrollView = new ScrollView
             {
-                Content = new ChaptersGrid(isNT, bookNumber, chaptersCount)
+                Content = this.chaptersGrid
             };
 
             layout.Children.Add(scrollView);
 
             this.Content = layout;
+
+            // Listen to author changes
+            MessagingCenter.Subscribe<AuthorsGrid, Author>(this, ChapterChooserPage.AuthorChangedMessage, async (sender, arg) =>
+            {
+                if (this.author != arg)
+                {
+                    this.author = arg;
+
+                    // TODO: No need to initialize all these
+                    await this.Initialize(
+                        author: arg,
+                        isNT: this.isNT,
+                        bookNumber: this.bookNumber,
+                        chaptersCount: this.chaptersCount);
+                }
+            });
+        }
+
+        public async Task Initialize(
+            Author author,
+            bool isNT,
+            int bookNumber,
+            int chaptersCount)
+        {
+            this.author = author;
+            this.isNT = isNT;
+            this.bookNumber = bookNumber;
+            this.chaptersCount = chaptersCount;
+
+            await this.authorLabel.Initialize(
+                ChapterChooserPage.AuthorChangedMessage,
+                author,
+                isNT,
+                bookNumber);
+
+            await this.chaptersGrid.Initialize(
+                author,
+                isNT,
+                bookNumber,
+                chaptersCount);
         }
     }
 }

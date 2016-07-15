@@ -13,63 +13,83 @@ namespace ArabicInterpretation.Pages
 {
     public class ReadingPage : BasePage
     {
-        bool isNT;
-        int bookNumber;
-        int chapterNumber;
+        public const string ChapterChangedMessage = "ReadingPageChapterChanged";
+        private const string AuthorChangedMessage = "ReadingPageAuthorChanged";
+
+        ReadingInfo readingInfo;
 
         AuthorLabel authorLabel;
+        BookChapterLabel bookChapterLabel;
         ScrollView scrollView;
 
-        public ReadingPage(
-            bool isNT,
-            int bookNumber,
-            int chapterNumber)
+        public ReadingPage()
         {
-            this.isNT = isNT;
-            this.bookNumber = bookNumber;
-            this.chapterNumber = chapterNumber;
-            
             StackLayout layout = new StackLayout
             {
                 Orientation = StackOrientation.Vertical,
             };
 
-            this.authorLabel = new AuthorLabel(isNT, bookNumber);
+            this.authorLabel = new AuthorLabel();
             layout.Children.Add(this.authorLabel);
 
-            // TODO: Move to async method
-            BookInfo bookInfo = BookNameManager.GetBookNames(isNT).Result[bookNumber -1];
-            BookChapterLabel bookChapterLabel = new BookChapterLabel(
-                isNT: isNT,
-                bookNumber: bookNumber,
-                chapterNumber: chapterNumber,
-                bookInfo: bookInfo);
-
+            this.bookChapterLabel = new BookChapterLabel();
             layout.Children.Add(bookChapterLabel);
-            
+
             this.scrollView = new ScrollView();
             layout.Children.Add(scrollView);
 
             this.Content = layout;
 
-            // Listen to author changes
-            MessagingCenter.Subscribe<AuthorsGrid, string>(this, "AuthorChanged", async (sender, arg) =>
+            // Listen to author changes intended to ReadingPage
+            MessagingCenter.Subscribe<AuthorsGrid, Author>(this, AuthorChangedMessage, async (sender, arg) =>
             {
-                await this.OnAuthorChanging(sender, arg);
+                await this.OnAuthorChanged(sender, arg);
+            });
+
+            // Listen to chapter changes
+            MessagingCenter.Subscribe<ChaptersGrid, ReadingInfo>(this, AuthorChangedMessage, async (sender, arg) =>
+            {
+                await this.OnChapterChanged(sender, arg);
             });
         }
 
-        private async Task OnAuthorChanging(AuthorsGrid sender, string authorName)
+        public async Task Initialize(ReadingInfo readingInfo)
         {
-            // Update content
+            this.readingInfo = readingInfo;
+
+            // This has internal cache
+            List<BookInfo> booksInfo = await BookNameManager.GetBookNames(readingInfo.IsNT);
+            BookInfo bookInfo = booksInfo[readingInfo.BookNumber - 1];
+
+            await this.authorLabel.Initialize(
+                ReadingPage.AuthorChangedMessage,
+                readingInfo.Author,
+                readingInfo.IsNT, 
+                readingInfo.BookNumber);
+
+            await this.bookChapterLabel.Initialize(readingInfo, bookInfo);
+
             await this.UpdateContent();
         }
 
-        protected override async void OnAppearing()
+        private async Task OnChapterChanged(ChaptersGrid sender, ReadingInfo readingInfo)
         {
-            if (this.scrollView.Content == null)
+            if (this.readingInfo.Author != readingInfo.Author ||
+                this.readingInfo.IsNT != readingInfo.IsNT ||
+                this.readingInfo.BookNumber != readingInfo.BookNumber ||
+                this.readingInfo.ChapterNumber != readingInfo.ChapterNumber)
             {
-                // No content is loaded yet
+                await this.Initialize(readingInfo);
+            }
+        }
+
+        private async Task OnAuthorChanged(AuthorsGrid sender, Author author)
+        {
+            if (this.readingInfo.Author != author)
+            {
+                this.readingInfo.Author = author;
+
+                // Update content
                 await this.UpdateContent();
             }
         }
@@ -77,12 +97,11 @@ namespace ArabicInterpretation.Pages
         private async Task UpdateContent()
         {
             // Update content
-            Author currentAuthor = AuthorManager.GetCurrentAuthor();
             string content = await FileHelper.GetFile(
-                currentAuthor,
-                this.isNT,
-                this.bookNumber,
-                this.chapterNumber);
+                this.readingInfo.Author,
+                this.readingInfo.IsNT,
+                this.readingInfo.BookNumber,
+                this.readingInfo.ChapterNumber);
 
             Dictionary<int, Label> verses;
             List<View> views = ContentFormatter.FormatContent(content, out verses);
@@ -104,7 +123,7 @@ namespace ArabicInterpretation.Pages
             View firstView = chapterLayout.Children.FirstOrDefault();
             if (firstView != null)
             {
-                await this.scrollView.ScrollToAsync(firstView, ScrollToPosition.Start, false);
+                // await this.scrollView.ScrollToAsync(firstView, ScrollToPosition.Start, false);
             }
         }
     }

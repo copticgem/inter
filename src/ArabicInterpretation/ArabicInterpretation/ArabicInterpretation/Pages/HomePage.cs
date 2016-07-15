@@ -11,13 +11,6 @@ namespace ArabicInterpretation
     {
         public HomePage()
         {
-            // Set author
-            AuthorManager.SetCurrentAuthor(Author.FrAntonios);
-
-            ColorManager.Initialize();
-
-            BookChooserPage page = new BookChooserPage(true);
-            this.Navigation.PushAsync(page).Wait();
         }
     }
 }

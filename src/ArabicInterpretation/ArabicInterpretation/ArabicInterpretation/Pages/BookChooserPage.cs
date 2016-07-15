@@ -1,4 +1,5 @@
-﻿using ArabicInterpretation.Views;
+﻿using ArabicInterpretation.Model;
+using ArabicInterpretation.Views;
 using Core;
 using System;
 using System.Collections.Generic;
@@ -11,35 +12,64 @@ namespace ArabicInterpretation.Pages
 {
     public class BookChooserPage : BasePage
     {
+        private const string AuthorChangedMessage = "BookChooserPageAuthorChanged";
+
+        Author author;
         bool isNT;
+        int bookNumber;
+
         BookChooser bookChooser;
+        AuthorLabel authorLabel;
 
-        public BookChooserPage(
-            bool isNT)
+        public BookChooserPage()
         {
-            this.isNT = isNT;
-
             StackLayout layout = new StackLayout
             {
                 Orientation = StackOrientation.Vertical,
             };
 
-            // Add irrelevant bookNumber since no books are selected yet, so Authors shouldn't be disabled
-            AuthorLabel authorLabel = new AuthorLabel(isNT, -1);
+            this.authorLabel = new AuthorLabel();
             layout.Children.Add(authorLabel);
-            
+
+            this.bookChooser = new BookChooser();
+            layout.Children.Add(this.bookChooser);
+
             this.Content = layout;
+
+            // Listen to author changes to disable missing books
+            MessagingCenter.Subscribe<AuthorsGrid, Author>(this, BookChooserPage.AuthorChangedMessage, async (sender, arg) =>
+            {
+                if (this.author != arg)
+                {
+                    this.author = arg;
+
+                    await this.Initialize(
+                        author: arg,
+                        isNT: this.isNT,
+                        bookNumber: this.bookNumber);
+                }
+            });
         }
 
-        protected override async void OnAppearing()
+        public async Task Initialize(
+            Author author,
+            bool isNT,
+            int bookNumber)
         {
-            if (this.bookChooser == null)
-            {
-                this.bookChooser = new BookChooser();
-                ((StackLayout)this.Content).Children.Add(this.bookChooser);
+            this.author = author;
+            this.isNT = isNT;
+            this.bookNumber = bookNumber;
 
-                await bookChooser.Initialize(isNT: this.isNT);
-            }
+            await this.authorLabel.Initialize(
+                BookChooserPage.AuthorChangedMessage,
+                author,
+                isNT,
+                bookNumber);
+
+            await bookChooser.Initialize(
+                author: author,
+                isNT: isNT,
+                currentBookNumber: bookNumber);
         }
     }
 }

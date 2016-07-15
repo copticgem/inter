@@ -12,9 +12,25 @@ namespace ArabicInterpretation.Pages
 {
     public class AuthorChooserPage : BasePage
     {
-        public AuthorChooserPage(bool isNT, int bookNumber)
+        AuthorsGrid authorsGrid;
+
+        public AuthorChooserPage()
         {
-            this.Content = new AuthorsGrid(isNT, bookNumber);
+            this.authorsGrid = new AuthorsGrid();
+            this.Content = authorsGrid;
+        }
+
+        public async Task Initialize(
+            string messageTitle,
+            Author currentAuthor,
+            bool isNT, 
+            int bookNumber)
+        {
+            await this.authorsGrid.Initialize(
+                messageTitle, 
+                currentAuthor, 
+                isNT, 
+                bookNumber);
         }
     }
 }

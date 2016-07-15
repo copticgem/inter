@@ -1,4 +1,5 @@
 ﻿using ArabicInterpretation.Helpers;
+using ArabicInterpretation.Model;
 using ArabicInterpretation.Pages;
 using Core;
 using System;
@@ -12,21 +13,10 @@ namespace ArabicInterpretation.Views
 {
     public class ChapterLabel : Button
     {
-        bool isNT;
-        int bookNumber;
-        int chapterNumber;
         ChapterChooserPage chapterChooserPage;
 
-        public ChapterLabel(
-            bool isNT, 
-            int bookNumber,
-            int chapterNumber,
-            int chaptersCount)
+        public ChapterLabel()
         {
-            this.isNT = isNT;
-            this.bookNumber = bookNumber;
-            this.chapterNumber = chapterNumber;
-
             this.TextColor = ColorManager.Text.BookChapter;
             this.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button));
 
@@ -41,26 +31,34 @@ namespace ArabicInterpretation.Views
                 await this.OnClicked();
             };
 
-            this.UpdateText();
+            this.chapterChooserPage = new ChapterChooserPage();
+        }
 
-            this.chapterChooserPage = new ChapterChooserPage(isNT, bookNumber, chaptersCount);
+        public async Task Initialize(ReadingInfo readingInfo, int chaptersCount)
+        {
+            this.UpdateText(readingInfo.ChapterNumber);
+
+            await this.chapterChooserPage.Initialize(
+                readingInfo.Author,
+                readingInfo.IsNT, 
+                readingInfo.BookNumber, 
+                chaptersCount);
         }
 
         public async Task OnClicked()
         {
-            // TODO: The modal will create new page, see if this has perf problems
             await this.Navigation.PushAsync(this.chapterChooserPage);
         }
 
-        private void UpdateText()
+        private void UpdateText(int chapterNumber)
         {
-            if (this.chapterNumber == 0)
+            if (chapterNumber == 0)
             {
                 this.Text = "مقدمة";
             }
             else
             {
-                this.Text = NumbersHelper.TranslateNumber(this.chapterNumber);
+                this.Text = NumbersHelper.TranslateNumber(chapterNumber);
             }
         }
     }

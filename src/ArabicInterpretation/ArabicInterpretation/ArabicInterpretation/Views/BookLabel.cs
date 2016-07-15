@@ -13,18 +13,10 @@ namespace ArabicInterpretation.Views
 {
     public class BookLabel : Button
     {
-        bool isNT;
-        int bookNumber;
         BookChooserPage bookChooserPage;
 
-        public BookLabel(
-            bool isNT, 
-            int bookNumber,
-            string bookName)
+        public BookLabel()
         {
-            this.isNT = isNT;
-            this.bookNumber = bookNumber;
-
             this.TextColor = ColorManager.Text.BookChapter;
             this.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button));
 
@@ -39,15 +31,26 @@ namespace ArabicInterpretation.Views
                 await this.OnClicked();
             };
 
+            this.bookChooserPage = new BookChooserPage();
+        }
+
+        public async Task Initialize(
+            Author author,
+            bool isNT,
+            int bookNumber,
+            string bookName)
+        {
             this.Text = bookName;
 
-            this.bookChooserPage = new BookChooserPage(isNT);
+            await this.bookChooserPage.Initialize(
+                author,
+                isNT,
+                bookNumber);
         }
 
         public async Task OnClicked()
         {
-            // TODO: The modal will create new page, see if this has perf problems
-            await this.Navigation.PushAsync(this.bookChooserPage);
+            await this.Navigation.PushModalAsync(this.bookChooserPage);
         }
     }
 }

@@ -10,26 +10,35 @@ namespace ArabicInterpretation.Views
 {
     public class BookChapterLabel : StackLayout
     {
-        public BookChapterLabel(
-            bool isNT,
-            int bookNumber,
-            int chapterNumber,
-            BookInfo bookInfo)
+        ChapterLabel chapterLabel;
+        BookLabel bookLabel;
+
+        public BookChapterLabel()
         {
             this.Orientation = StackOrientation.Horizontal;
             this.HorizontalOptions = LayoutOptions.FillAndExpand;
             this.BackgroundColor = ColorManager.Backgrounds.BookChapterBar;
 
-            ChapterLabel chapterLabel = new ChapterLabel(
-                isNT: isNT, 
-                bookNumber: bookNumber, 
-                chapterNumber: chapterNumber,
-                chaptersCount: bookInfo.ChaptersCount);
-
+            this.chapterLabel = new ChapterLabel();
             this.Children.Add(chapterLabel);
 
-            BookLabel bookLabel = new BookLabel(isNT, bookNumber, bookInfo.Name);
-            this.Children.Add(bookLabel);
+            this.bookLabel = new BookLabel();
+            this.Children.Add(this.bookLabel);
+        }
+
+        public async Task Initialize(
+            ReadingInfo readingInfo,
+            BookInfo bookInfo)
+        {
+            await this.chapterLabel.Initialize(
+                readingInfo: readingInfo,
+                chaptersCount: bookInfo.ChaptersCount);
+
+            await this.bookLabel.Initialize(
+                author: readingInfo.Author,
+                isNT: readingInfo.IsNT,
+                bookNumber: readingInfo.BookNumber, 
+                bookName: bookInfo.Name);
         }
     }
 }

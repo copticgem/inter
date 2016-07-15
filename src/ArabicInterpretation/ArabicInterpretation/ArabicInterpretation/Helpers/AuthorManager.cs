@@ -8,7 +8,7 @@ namespace ArabicInterpretation.Helpers
 
         private static Author currentAuthor;
 
-        public static void SetCurrentAuthor(Author author)
+        public static void Set1CurrentAuthor(Author author)
         {
             lock (authorLock)
             {
@@ -16,7 +16,7 @@ namespace ArabicInterpretation.Helpers
             }
         }
 
-        public static Author GetCurrentAuthor()
+        public static Author Get1CurrentAuthor()
         {
             return currentAuthor;
         }

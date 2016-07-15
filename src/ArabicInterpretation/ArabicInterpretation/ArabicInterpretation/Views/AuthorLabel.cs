@@ -12,14 +12,11 @@ namespace ArabicInterpretation.Views
 {
     public class AuthorLabel : StackLayout
     {
-        bool isNT;
-        int bookNumber;
+        AuthorChooserPage authorChooserPage;
         Button button;
 
-        public AuthorLabel(bool isNT, int bookNumber)
+        public AuthorLabel()
         {
-            this.isNT = isNT;
-            this.bookNumber = bookNumber;
             this.BackgroundColor = ColorManager.Backgrounds.AuthorBar;
             this.HorizontalOptions = LayoutOptions.FillAndExpand;
             this.VerticalOptions = LayoutOptions.Start;
@@ -37,28 +34,31 @@ namespace ArabicInterpretation.Views
                 await this.OnClicked();
             };
 
-            this.UpdateText();
-
-            // Listen to author changes
-            MessagingCenter.Subscribe<AuthorsGrid, string>(this, "AuthorChanged", (sender, arg) => {
-                this.OnAuthorChanging(sender, arg);
-            });
+            this.authorChooserPage = new AuthorChooserPage();
         }
 
-        public async Task OnClicked()
+        public async Task Initialize(
+            string messageTitle,
+            Author author,
+            bool isNT, 
+            int bookNumber)
         {
-            // TODO: Avoid creating new page everytime
-            await this.Navigation.PushModalAsync(new AuthorChooserPage(this.isNT, this.bookNumber));
+            await this.authorChooserPage.Initialize(
+                messageTitle,
+                author, 
+                isNT, 
+                bookNumber);
+
+            this.UpdateText(author);
         }
 
-        private void OnAuthorChanging(AuthorsGrid sender, string authorName)
+        private async Task OnClicked()
         {
-            this.UpdateText();
+            await this.Navigation.PushModalAsync(this.authorChooserPage);
         }
 
-        private void UpdateText()
+        private void UpdateText(Author author)
         {
-            Author author = AuthorManager.GetCurrentAuthor();
             if (author == Author.FrAntonios)
             {
                 this.button.Text = Constants.AuthorNames.FrAntonios;

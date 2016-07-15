@@ -13,7 +13,9 @@ namespace ArabicInterpretation
 {
     public class BooksGrid : Grid
     {
+        Author author;
         bool isNT;
+        int selectedBook = -1;
 
         // Index in the list must match index in ot.txt
         List<Button> buttons;
@@ -36,38 +38,22 @@ namespace ArabicInterpretation
             {
                 new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }
             };
-
-            // Listen to author changes to disable missing books
-            MessagingCenter.Subscribe<AuthorsGrid, string>(this, "AuthorChanged", (sender, arg) =>
-            {
-                this.OnAuthorChanging(sender, arg);
-            });
         }
 
-        private void OnAuthorChanging(AuthorsGrid sender, string authorName)
+        public async Task Initialize(Author author, int selectedBook)
         {
-            // Get missing books
-            Author currentAuthor = AuthorManager.GetCurrentAuthor();
-            List<int> missingBooks = MissingBooksHelper.GetMissingBooks(currentAuthor, this.isNT);
+            this.author = author;
 
-            // Re-enable disabled buttons
-            this.buttons
-                .Where(b => !b.IsEnabled)
-                .ForEach(b => b.IsEnabled = true);
-
-            // Disable missing buttons
-            missingBooks.ForEach(bookIndex =>
+            if (!this.buttons.Any())
             {
-                // Change index since list starts from 0 but files start from 1
-                Button button = this.buttons.ElementAtOrDefault(bookIndex- 1);
-                if (button != null)
-                {
-                    button.IsEnabled = false;
-                }
-            });
+                // First time, load books
+                await this.LoadBooks();
+            }
+
+            this.FormatButtons(author, selectedBook);
         }
 
-        public async Task LoadBooks()
+        private async Task LoadBooks()
         {
             List<BookInfo> books = await BookNameManager.GetBookNames(this.isNT);
 
@@ -85,7 +71,7 @@ namespace ArabicInterpretation
                 int bookNumber = i;
                 button.Clicked += async (sender, e) =>
                 {
-                    await this.OnBookClicked(this.isNT, bookNumber, book.ChaptersCount);
+                    await this.OnBookClicked(bookNumber, book.ChaptersCount);
                 };
 
                 int top = (i - 1) / booksPerRow;
@@ -100,12 +86,56 @@ namespace ArabicInterpretation
             }
         }
 
+        private void FormatButtons(Author author, int bookNumber)
+        {
+            // Get missing books
+            List<int> missingBooks = MissingBooksHelper.GetMissingBooks(author, this.isNT);
+
+            // Re-enable disabled buttons
+            this.buttons
+                .Where(b => !b.IsEnabled)
+                .ForEach(b => b.IsEnabled = true);
+
+            // Disable missing buttons
+            missingBooks.ForEach(bookIndex =>
+            {
+                // Change index since list starts from 0 but files start from 1
+                Button button = this.buttons.ElementAtOrDefault(bookIndex - 1);
+                if (button != null)
+                {
+                    button.IsEnabled = false;
+                }
+            });
+
+            // Reset previously selected one if any
+            if (this.selectedBook != -1)
+            {
+                this.buttons[this.selectedBook - 1].TextColor = ColorManager.Text.Default;
+            }
+
+            // Set selected book if any
+            if (bookNumber != -1)
+            {
+                this.buttons[bookNumber - 1].TextColor = ColorManager.Text.SelectedButton;
+            }
+
+            this.selectedBook = bookNumber;
+        }
+
         private async Task OnBookClicked(
-            bool isNT,
             int bookNumber,
             int chaptersCount)
         {
-            await this.Navigation.PushAsync(new ChapterChooserPage(isNT, bookNumber, chaptersCount));
+            ChapterChooserPage chapterChooserPage = new ChapterChooserPage();
+            await chapterChooserPage.Initialize(
+                this.author,
+                this.isNT,
+                bookNumber,
+                chaptersCount);
+
+            await App.Navigation.PushModalAsync(
+                page: chapterChooserPage,
+                animated: false);
         }
     }
 }

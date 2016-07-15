@@ -1,4 +1,5 @@
 ﻿using ArabicInterpretation.Helpers;
+using ArabicInterpretation.Model;
 using ArabicInterpretation.Pages;
 using Core;
 using System;
@@ -12,17 +13,14 @@ namespace ArabicInterpretation.Views
 {
     public class ChaptersGrid : Grid
     {
-        public ChaptersGrid(
-            bool isNT,
-            int bookNumber,
-            int chaptersCount)
+        private const int ButtonsPerRow = 5;
+
+        public ChaptersGrid()
         {
             this.HorizontalOptions = LayoutOptions.FillAndExpand;
 
-            int buttonsPerRow = 5;
-
             this.ColumnDefinitions = new ColumnDefinitionCollection();
-            for (int i = 0; i < buttonsPerRow; i++)
+            for (int i = 0; i < ButtonsPerRow; i++)
             {
                 this.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
             }
@@ -32,7 +30,14 @@ namespace ArabicInterpretation.Views
             {
                 this.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) });
             }
+        }
 
+        public Task Initialize(
+            Author author,
+            bool isNT,
+            int bookNumber,
+            int chaptersCount)
+        {
             // Add the introduction button
             Button introButton = ColorManager.CreateButton();
             introButton.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button));
@@ -40,14 +45,15 @@ namespace ArabicInterpretation.Views
             introButton.Clicked += async (sender, e) =>
             {
                 await this.OnChapterClicked(
-                    isNT: isNT, 
+                    author: author,
+                    isNT: isNT,
                     bookNumber: bookNumber,
                     chapterNumber: 0);
             };
 
-            this.Children.Add(introButton, buttonsPerRow - 1, 0);
+            this.Children.Add(introButton, ButtonsPerRow - 1, 0);
 
-            int left = buttonsPerRow - 1;
+            int left = ButtonsPerRow - 1;
             for (int i = 1; i <= chaptersCount; i++)
             {
                 Button button = ColorManager.CreateButton();
@@ -58,28 +64,41 @@ namespace ArabicInterpretation.Views
                 button.Clicked += async (sender, e) =>
                 {
                     await this.OnChapterClicked(
+                        author: author,
                         isNT: isNT,
                         bookNumber: bookNumber,
                         chapterNumber: chapterNumber);
                 };
 
-                int top = (i - 1) / buttonsPerRow;
+                int top = (i - 1) / ButtonsPerRow;
                 this.Children.Add(button, left, top + 1);
 
                 left--;
                 if (left == -1)
                 {
-                    left = buttonsPerRow - 1;
+                    left = ButtonsPerRow - 1;
                 }
             }
+
+            return Task.FromResult(true);
         }
 
         private async Task OnChapterClicked(
+            Author author,
             bool isNT,
             int bookNumber,
             int chapterNumber)
         {
-            await this.Navigation.PushAsync(new ReadingPage(isNT, bookNumber, chapterNumber));
+            await App.Navigation.PopModalAsync(false);
+            await App.Navigation.PopModalAsync(false);
+
+            ReadingInfo readingInfo = new ReadingInfo(
+                author,
+                isNT,
+                bookNumber,
+                chapterNumber);
+
+            MessagingCenter.Send(this, ReadingPage.ChapterChangedMessage, readingInfo);
         }
     }
 }

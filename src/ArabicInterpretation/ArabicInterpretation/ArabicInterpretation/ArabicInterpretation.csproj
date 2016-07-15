@@ -46,6 +46,7 @@
     <Compile Include="Helpers\NumbersHelper.cs" />
     <Compile Include="Helpers\PageData.cs" />
     <Compile Include="Helpers\StringType.cs" />
+    <Compile Include="Model\ReadingInfo.cs" />
     <Compile Include="Model\BookInfo.cs" />
     <Compile Include="Pages\AuthorChooserPage.cs" />
     <Compile Include="Pages\BasePage.cs" />

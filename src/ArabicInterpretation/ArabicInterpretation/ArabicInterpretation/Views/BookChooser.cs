@@ -61,12 +61,27 @@ namespace ArabicInterpretation
             this.Children.Add(this.ntScrollView);
             this.Children.Add(this.otScrollView);
         }
-        
-        public async Task Initialize(bool isNT)
+
+        public async Task Initialize(
+            Author author,
+            bool isNT, 
+            int currentBookNumber)
         {
             // TODO: Load only the first one
-            await ((BooksGrid)this.otScrollView.Content).LoadBooks();
-            await ((BooksGrid)this.ntScrollView.Content).LoadBooks();
+            BooksGrid otGrid = (BooksGrid)this.otScrollView.Content;
+            BooksGrid ntGrid = (BooksGrid)this.ntScrollView.Content;
+
+            // Set selected book
+            if (isNT)
+            {
+                await otGrid.Initialize(author, -1);
+                await ntGrid.Initialize(author, currentBookNumber);
+            }
+            else
+            {
+                await otGrid.Initialize(author, currentBookNumber);
+                await ntGrid.Initialize(author, -1);
+            }
 
             this.OnTestamentSwitchClicked(isNT);
         }

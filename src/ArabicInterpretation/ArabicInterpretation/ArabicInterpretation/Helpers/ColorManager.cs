@@ -28,6 +28,9 @@ namespace ArabicInterpretation
             Text.BookChapter = Color.Blue;
             Text.Default = Color.Black;
 
+            // Yellow
+            Text.SelectedButton = Color.FromRgb(242, 231, 0);
+
             Border.Default = Color.Black;
             Border.Grid = Color.Black;
         }
@@ -45,6 +48,7 @@ namespace ArabicInterpretation
             public static Color Default;
             public static Color Author;
             public static Color BookChapter;
+            public static Color SelectedButton;
         }
 
         public static class Border

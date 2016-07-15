@@ -1,4 +1,8 @@
-﻿using System;
+﻿using ArabicInterpretation.Helpers;
+using ArabicInterpretation.Model;
+using ArabicInterpretation.Pages;
+using Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,12 +13,21 @@ namespace ArabicInterpretation
 {
     public class App : Application
     {
+        public static INavigation Navigation { get; private set; }
+
         public App()
         {
-            this.MainPage = new NavigationPage(new HomePage())
-            {
-                BarBackgroundColor = Color.White
-            };
+            ColorManager.Initialize();
+
+            ReadingPage readingPage = new ReadingPage();
+            readingPage.Initialize(new ReadingInfo(
+                Author.FrAntonios,
+                false,
+                1,
+                1)).Wait();
+
+            this.MainPage = new NavigationPage(readingPage);
+            Navigation = this.MainPage.Navigation;
         }
 
         protected override void OnStart()

@@ -1,10 +1,6 @@
 ﻿using ArabicInterpretation.Helpers;
-using ArabicInterpretation.Pages;
 using Core;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -12,7 +8,13 @@ namespace ArabicInterpretation.Views
 {
     public class AuthorsGrid : Grid
     {
-        public AuthorsGrid(bool isNT, int bookNumber)
+        // AuthorsGrid can be called from different components, this message will send result to calling one
+        string messageTitle;
+
+        Button frTadros;
+        Button frAntonios;
+
+        public AuthorsGrid()
         {
             this.HorizontalOptions = LayoutOptions.FillAndExpand;
 
@@ -23,7 +25,7 @@ namespace ArabicInterpretation.Views
             this.RowDefinitions = new RowDefinitionCollection();
             this.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) });
 
-            Button frTadros = ColorManager.CreateButton();
+            this.frTadros = ColorManager.CreateButton();
             frTadros.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button));
             frTadros.Text = Constants.AuthorNames.FrTadros;
             frTadros.Clicked += async (sender, e) =>
@@ -31,7 +33,7 @@ namespace ArabicInterpretation.Views
                 await this.OnAuthorClicked(author: Author.FrTadros);
             };
 
-            Button frAntonios = ColorManager.CreateButton();
+            this.frAntonios = ColorManager.CreateButton();
             frAntonios.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button));
             frAntonios.Text = Constants.AuthorNames.FrAntonios;
             frAntonios.Clicked += async (sender, e) =>
@@ -41,10 +43,20 @@ namespace ArabicInterpretation.Views
 
             this.Children.Add(frAntonios, 0, 0);
             this.Children.Add(frTadros, 1, 0);
+        }
 
-            Author currentAuthor = AuthorManager.GetCurrentAuthor();
+        public Task Initialize(
+            string messageTitle,
+            Author currentAuthor,
+            bool isNT, 
+            int bookNumber)
+        {
+            this.messageTitle = messageTitle;
+
             this.SetAuthorVisibility(frAntonios, Author.FrAntonios, currentAuthor, isNT, bookNumber);
             this.SetAuthorVisibility(frTadros, Author.FrTadros, currentAuthor, isNT, bookNumber);
+
+            return Task.FromResult(true);
         }
 
         private void SetAuthorVisibility(
@@ -71,11 +83,8 @@ namespace ArabicInterpretation.Views
 
         private async Task OnAuthorClicked(Author author)
         {
-            // Update Author
-            AuthorManager.SetCurrentAuthor(author);
-
-            // Send message to ReadingPage to update content
-            MessagingCenter.Send(this, "AuthorChanged", author.ToString());
+            // Send message to caller to update content
+            MessagingCenter.Send(this, this.messageTitle, author.ToString());
 
             await this.Navigation.PopModalAsync(animated: true);
         }
