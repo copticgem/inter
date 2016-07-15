@@ -54,7 +54,7 @@ namespace ArabicInterpretation.Views
 
         private async Task OnClicked()
         {
-            await App.Navigation.PushModalAsync(this.authorChooserPage);
+            await PageTransition.PushModalAsync(this.authorChooserPage);
         }
 
         private void UpdateText(Author author)

@@ -36,18 +36,23 @@ namespace ArabicInterpretation.Views
             this.verseChooserPage = new VerseChooserPage();
         }
 
-        public async Task Initialize(
-            ScrollView scrollView,
-            Dictionary<int, Label> verses)
+        public async Task Initialize(Dictionary<int, Grid> verses)
         {
-            await this.verseChooserPage.Initialize(
-                scrollView,
-                verses);
+            if (!verses.Any())
+            {
+                ColorManager.DisableButton(this);
+            }
+            else
+            {
+                ColorManager.EnableButton(this);
+                await this.verseChooserPage.Initialize(verses);
+
+            }
         }
 
         public async Task OnClicked()
         {
-            await App.Navigation.PushModalAsync(this.verseChooserPage);
+            await PageTransition.PushModalAsync(this.verseChooserPage);
         }
     }
 }

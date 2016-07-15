@@ -15,9 +15,6 @@ namespace ArabicInterpretation.Views
     {
         private const int ButtonsPerRow = 5;
 
-        ScrollView scrollView;
-        Dictionary<int, Label> verses;
-
         public VersesGrid()
         {
             this.HorizontalOptions = LayoutOptions.FillAndExpand;
@@ -35,13 +32,8 @@ namespace ArabicInterpretation.Views
             }
         }
 
-        public Task Initialize(
-            ScrollView scrollView,
-            Dictionary<int, Label> verses)
+        public Task Initialize(Dictionary<int, Grid> verses)
         {
-            this.scrollView = scrollView;
-            this.verses = verses;
-
             this.Children.Clear(); 
 
             var orderedVerses = verses.OrderBy(k => k.Key);
@@ -78,12 +70,6 @@ namespace ArabicInterpretation.Views
             await App.Navigation.PopModalAsync(true);
 
             MessagingCenter.Send(this, ReadingPage.VerseChangedMessage, verseNumber);
-
-
-            //await this.scrollView.ScrollToAsync(
-            //    element: this.verses[verseNumber],
-            //    position: ScrollToPosition.Start,
-            //    animated: true);
         }
     }
 }

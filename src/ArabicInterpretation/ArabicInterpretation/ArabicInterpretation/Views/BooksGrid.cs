@@ -134,7 +134,7 @@ namespace ArabicInterpretation
                 bookNumber: bookNumber,
                 chaptersCount: chaptersCount);
 
-            await App.Navigation.PushModalAsync(
+            await PageTransition.PushModalAsync(
                 page: chapterChooserPage,
                 animated: false);
         }

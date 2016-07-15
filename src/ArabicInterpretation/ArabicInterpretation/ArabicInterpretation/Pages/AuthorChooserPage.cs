@@ -15,6 +15,7 @@ namespace ArabicInterpretation.Pages
         AuthorsGrid authorsGrid;
 
         public AuthorChooserPage()
+            : base("الكاتب")
         {
             this.authorsGrid = new AuthorsGrid();
             this.Content = authorsGrid;
@@ -23,13 +24,13 @@ namespace ArabicInterpretation.Pages
         public async Task Initialize(
             string messageTitle,
             Author currentAuthor,
-            bool isNT, 
+            bool isNT,
             int bookNumber)
         {
             await this.authorsGrid.Initialize(
-                messageTitle, 
-                currentAuthor, 
-                isNT, 
+                messageTitle,
+                currentAuthor,
+                isNT,
                 bookNumber);
         }
     }

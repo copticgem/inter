@@ -14,6 +14,7 @@ namespace ArabicInterpretation.Pages
         VersesGrid versesGrid;
 
         public VerseChooserPage()
+            :base("الايات")
         {
             StackLayout layout = new StackLayout
             {
@@ -31,13 +32,9 @@ namespace ArabicInterpretation.Pages
             this.Content = layout;
         }
 
-        public async Task Initialize(
-            ScrollView scrollView,
-            Dictionary<int, Label> verses)
+        public async Task Initialize(Dictionary<int, Grid> verses)
         {
-            await this.versesGrid.Initialize(
-                scrollView,
-                verses);
+            await this.versesGrid.Initialize(verses);
         }
     }
 }

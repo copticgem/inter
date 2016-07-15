@@ -9,7 +9,8 @@ namespace ArabicInterpretation
 {
     public class HomePage : BasePage
     {
-        public HomePage()
+        public HomePage():
+            base(null)
         {
         }
     }

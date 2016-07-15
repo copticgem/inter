@@ -44,6 +44,8 @@ namespace ArabicInterpretation.Views
         {
             this.shouldPopTwice = shouldPopTwice;
 
+            this.Children.Clear();
+
             // Add the introduction button
             Button introButton = ColorManager.CreateButton();
             introButton.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button));

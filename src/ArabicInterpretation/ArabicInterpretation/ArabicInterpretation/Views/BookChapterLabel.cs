@@ -33,8 +33,7 @@ namespace ArabicInterpretation.Views
         public async Task Initialize(
             ReadingInfo readingInfo,
             BookInfo bookInfo,
-            ScrollView scrollView,
-            Dictionary<int, Label> verses)
+            Dictionary<int, Grid> verses)
         {
             await this.chapterLabel.Initialize(
                 readingInfo: readingInfo,
@@ -46,9 +45,7 @@ namespace ArabicInterpretation.Views
                 bookNumber: readingInfo.BookNumber, 
                 bookName: bookInfo.Name);
 
-            await this.verseLabel.Initialize(
-                scrollView,
-                verses);
+            await this.verseLabel.Initialize(verses);
         }
     }
 }

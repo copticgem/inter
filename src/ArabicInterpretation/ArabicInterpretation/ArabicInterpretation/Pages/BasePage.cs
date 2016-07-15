@@ -9,10 +9,19 @@ namespace ArabicInterpretation.Pages
 {
     public class BasePage : ContentPage
     {
-        public BasePage()
+        public BasePage(string title)
         {
             this.BackgroundColor = ColorManager.Backgrounds.Default;
-            NavigationPage.SetHasNavigationBar(this, false);
+
+            if (title != null)
+            {
+                NavigationPage.SetHasNavigationBar(this, true);
+                this.Title = title;
+            }
+            else
+            {
+                NavigationPage.SetHasNavigationBar(this, false);
+            }
         }
     }
 }

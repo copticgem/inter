@@ -23,6 +23,7 @@ namespace ArabicInterpretation.Pages
         ChaptersGrid chaptersGrid;
 
         public ChapterChooserPage()
+            :base("الاصحاحات")
         {
             StackLayout layout = new StackLayout
             {

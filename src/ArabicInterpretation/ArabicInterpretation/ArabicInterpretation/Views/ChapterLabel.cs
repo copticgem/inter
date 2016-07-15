@@ -48,7 +48,7 @@ namespace ArabicInterpretation.Views
 
         public async Task OnClicked()
         {
-            await App.Navigation.PushModalAsync(this.chapterChooserPage);
+            await PageTransition.PushModalAsync(this.chapterChooserPage);
         }
 
         private void UpdateText(int chapterNumber)

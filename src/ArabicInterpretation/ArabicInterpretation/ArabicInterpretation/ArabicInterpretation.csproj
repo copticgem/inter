@@ -45,6 +45,7 @@
     <Compile Include="Helpers\MissingBooksHelper.cs" />
     <Compile Include="Helpers\NumbersHelper.cs" />
     <Compile Include="Helpers\PageData.cs" />
+    <Compile Include="Helpers\PageTransition.cs" />
     <Compile Include="Helpers\StringType.cs" />
     <Compile Include="Model\ReadingInfo.cs" />
     <Compile Include="Model\BookInfo.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="Views\AuthorsGrid.cs" />
     <Compile Include="Views\VersesGrid.cs" />
     <Compile Include="Views\ChaptersGrid.cs" />
+    <Compile Include="Views\VersesPanel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">

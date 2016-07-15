@@ -10,9 +10,9 @@ namespace ArabicInterpretation.Helpers
 {
     static class ContentFormatter
     {
-        public static List<View> FormatContent(string content, out Dictionary<int, Label> verses)
+        public static List<View> FormatContent(string content, out Dictionary<int, Grid> verses)
         {
-            verses = new Dictionary<int, Label>();
+            verses = new Dictionary<int, Grid>();
 
             List<View> views = new List<View>();
 
@@ -34,11 +34,12 @@ namespace ArabicInterpretation.Helpers
                     {
                         int endIndex = token.IndexOf("}");
                         int verseNumber = int.Parse(token.Substring(3, endIndex - 3));
-                        Label verseLabel = CreateLabel(StringType.Verse);
-                        views.Add(verseLabel);
+
+                        Grid grid = new Grid();
+                        views.Add(grid);
                         if (!verses.ContainsKey(verseNumber))
                         {
-                            verses.Add(verseNumber, verseLabel);
+                            verses.Add(verseNumber, grid);
                         }
                     }
                     else if (token == "{{t}}")
@@ -113,6 +114,17 @@ namespace ArabicInterpretation.Helpers
             return views;
         }
 
+        private static void MergeVerses(List<int> openVerses, Label label, Dictionary<int, Label> verses)
+        {
+            openVerses.ForEach(verseNumber =>
+            {
+                if (!verses.ContainsKey(verseNumber))
+                {
+                    verses.Add(verseNumber, label);
+                }
+            });
+        }
+
         private static Label CreateLabel(StringType type)
         {
             Label label = new Label
@@ -127,7 +139,6 @@ namespace ArabicInterpretation.Helpers
             {
                 case StringType.Verse:
                     label.Text = string.Empty;
-                    label.IsVisible = false;
                     break;
                 case StringType.Subtitle:
                     label.FontAttributes = FontAttributes.Bold;

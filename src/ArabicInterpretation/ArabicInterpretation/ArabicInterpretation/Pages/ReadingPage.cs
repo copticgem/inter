@@ -23,9 +23,12 @@ namespace ArabicInterpretation.Pages
         AuthorLabel authorLabel;
         BookChapterLabel bookChapterLabel;
         ScrollView scrollView;
-        Dictionary<int, Label> verses;
+        Dictionary<int, Grid> verses;
+
+        bool isFullScreen = true;
 
         public ReadingPage()
+            : base("التفسير")
         {
             StackLayout layout = new StackLayout
             {
@@ -40,7 +43,7 @@ namespace ArabicInterpretation.Pages
 
             this.scrollView = new ScrollView();
             layout.Children.Add(scrollView);
-
+            
             this.Content = layout;
 
             // Listen to author changes intended to ReadingPage
@@ -58,16 +61,16 @@ namespace ArabicInterpretation.Pages
             // Listen to verse changes
             MessagingCenter.Subscribe<VersesGrid, int>(this, VerseChangedMessage, async (sender, arg) =>
             {
-                Label verseLabel = this.verses[arg];
-
-                await Task.Delay(TimeSpan.FromSeconds(0.5));
-
-                await this.scrollView.ScrollToAsync(verseLabel, ScrollToPosition.Start, false);
+                Grid verseMarker = this.verses[arg];
+                await this.scrollView.ScrollToAsync(verseMarker, ScrollToPosition.Start, false);
             });
         }
 
         public async Task Initialize(ReadingInfo readingInfo, bool isFirstTime = false)
         {
+            this.isFullScreen = true;
+            this.AdjustFullScreen();
+
             this.readingInfo = readingInfo;
 
             // This has internal cache
@@ -76,13 +79,12 @@ namespace ArabicInterpretation.Pages
 
             await this.UpdateAuthorLabel();
 
-            Dictionary<int, Label> verses = await this.UpdateContent(isFirstTime);
+            await this.UpdateContent(isFirstTime);
 
             await this.bookChapterLabel.Initialize(
-                readingInfo, 
+                readingInfo,
                 bookInfo,
-                this.scrollView,
-                verses);
+                this.verses);
         }
 
         private async Task UpdateAuthorLabel()
@@ -115,7 +117,7 @@ namespace ArabicInterpretation.Pages
             }
         }
 
-        private async Task<Dictionary<int, Label>> UpdateContent(bool isFirstTime)
+        private async Task UpdateContent(bool isFirstTime)
         {
             // Update content
             string content = await FileHelper.GetFile(
@@ -140,6 +142,14 @@ namespace ArabicInterpretation.Pages
 
             this.scrollView.Content = chapterLayout;
 
+            TapGestureRecognizer tapGestureRecognizer = new TapGestureRecognizer();
+            tapGestureRecognizer.Tapped += (s, e) => {
+                this.isFullScreen = !this.isFullScreen;
+                this.AdjustFullScreen();
+            };
+
+            chapterLayout.GestureRecognizers.Add(tapGestureRecognizer);
+
             View firstView = chapterLayout.Children.FirstOrDefault();
 
             // For some reason, when app starts, scrollToAsync hangs
@@ -147,8 +157,22 @@ namespace ArabicInterpretation.Pages
             {
                 await this.scrollView.ScrollToAsync(firstView, ScrollToPosition.Start, false);
             }
+        }
 
-            return this.verses;
+        private void AdjustFullScreen()
+        {
+            if (!this.isFullScreen)
+            {
+                NavigationPage.SetHasNavigationBar(this, true);
+                this.authorLabel.IsVisible = true;
+                this.bookChapterLabel.IsVisible = true;
+            }
+            else
+            {
+                NavigationPage.SetHasNavigationBar(this, false);
+                this.authorLabel.IsVisible = false;
+                this.bookChapterLabel.IsVisible = false;
+            }
         }
     }
 }
