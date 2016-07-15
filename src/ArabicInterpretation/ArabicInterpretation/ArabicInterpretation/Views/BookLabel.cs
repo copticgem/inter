@@ -50,7 +50,7 @@ namespace ArabicInterpretation.Views
 
         public async Task OnClicked()
         {
-            await this.Navigation.PushModalAsync(this.bookChooserPage);
+            await App.Navigation.PushModalAsync(this.bookChooserPage);
         }
     }
 }

@@ -22,6 +22,7 @@ namespace ArabicInterpretation
             Backgrounds.AuthorBar = Color.FromRgb(233, 234, 235);
             Backgrounds.BookChapterBar = Color.FromRgb(249, 249, 249);
             Backgrounds.Button = Color.Transparent;
+            Backgrounds.DisabledButton = Color.Gray;
 
             // Blue
             Text.Author = Color.Blue;
@@ -41,6 +42,7 @@ namespace ArabicInterpretation
             public static Color AuthorBar;
             public static Color BookChapterBar;
             public static Color Button;
+            public static Color DisabledButton;
         }
 
         public static class Text
@@ -66,6 +68,18 @@ namespace ArabicInterpretation
                 BorderColor = ColorManager.Border.Default,
                 BorderWidth = 2
             };
+        }
+
+        public static void DisableButton(Button button)
+        {
+            button.BackgroundColor = Backgrounds.DisabledButton;
+            button.IsEnabled = false;
+        }
+
+        public static void EnableButton(Button button)
+        {
+            button.BackgroundColor = Backgrounds.Button;
+            button.IsEnabled = true;
         }
     }
 }

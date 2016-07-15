@@ -39,15 +39,16 @@ namespace ArabicInterpretation.Views
             this.UpdateText(readingInfo.ChapterNumber);
 
             await this.chapterChooserPage.Initialize(
-                readingInfo.Author,
-                readingInfo.IsNT, 
-                readingInfo.BookNumber, 
-                chaptersCount);
+                shouldPopTwice: false,
+                author: readingInfo.Author,
+                isNT: readingInfo.IsNT, 
+                bookNumber: readingInfo.BookNumber, 
+                chaptersCount: chaptersCount);
         }
 
         public async Task OnClicked()
         {
-            await this.Navigation.PushAsync(this.chapterChooserPage);
+            await App.Navigation.PushModalAsync(this.chapterChooserPage);
         }
 
         private void UpdateText(int chapterNumber)

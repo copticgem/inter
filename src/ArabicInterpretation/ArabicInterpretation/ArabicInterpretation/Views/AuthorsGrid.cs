@@ -48,7 +48,7 @@ namespace ArabicInterpretation.Views
         public Task Initialize(
             string messageTitle,
             Author currentAuthor,
-            bool isNT, 
+            bool isNT,
             int bookNumber)
         {
             this.messageTitle = messageTitle;
@@ -69,24 +69,29 @@ namespace ArabicInterpretation.Views
             if (currentAuthor == buttonAuthor)
             {
                 // Author is already selected, disable it
-                button.IsEnabled = false;
+                ColorManager.DisableButton(button);
                 return;
+            }
+            else
+            {
+                // Enable
+                ColorManager.EnableButton(button);
             }
 
             List<int> missingBooks = MissingBooksHelper.GetMissingBooks(buttonAuthor, isNT);
             if (missingBooks.Contains(bookNumber))
             {
                 // Current book is missing from that Author so disable the choice
-                button.IsEnabled = false;
+                ColorManager.DisableButton(button);
             }
         }
 
         private async Task OnAuthorClicked(Author author)
         {
             // Send message to caller to update content
-            MessagingCenter.Send(this, this.messageTitle, author.ToString());
+            MessagingCenter.Send(this, this.messageTitle, author);
 
-            await this.Navigation.PopModalAsync(animated: true);
+            await App.Navigation.PopModalAsync(animated: true);
         }
     }
 }

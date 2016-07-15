@@ -60,11 +60,12 @@ namespace ArabicInterpretation.Pages
             this.isNT = isNT;
             this.bookNumber = bookNumber;
 
+            // BookChooser, you're allowed to choose any author
             await this.authorLabel.Initialize(
                 BookChooserPage.AuthorChangedMessage,
                 author,
                 isNT,
-                bookNumber);
+                -1);
 
             await bookChooser.Initialize(
                 author: author,

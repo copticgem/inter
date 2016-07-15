@@ -13,6 +13,7 @@ namespace ArabicInterpretation.Pages
     {
         private const string AuthorChangedMessage = "ChapterChooserPageAuthorChanged";
 
+        bool shouldPopTwice;
         Author author;
         bool isNT;
         int bookNumber;
@@ -50,6 +51,7 @@ namespace ArabicInterpretation.Pages
 
                     // TODO: No need to initialize all these
                     await this.Initialize(
+                        shouldPopTwice: this.shouldPopTwice,
                         author: arg,
                         isNT: this.isNT,
                         bookNumber: this.bookNumber,
@@ -59,11 +61,13 @@ namespace ArabicInterpretation.Pages
         }
 
         public async Task Initialize(
+            bool shouldPopTwice,
             Author author,
             bool isNT,
             int bookNumber,
             int chaptersCount)
         {
+            this.shouldPopTwice = shouldPopTwice;
             this.author = author;
             this.isNT = isNT;
             this.bookNumber = bookNumber;
@@ -76,6 +80,7 @@ namespace ArabicInterpretation.Pages
                 bookNumber);
 
             await this.chaptersGrid.Initialize(
+                shouldPopTwice,
                 author,
                 isNT,
                 bookNumber,

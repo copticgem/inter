@@ -15,6 +15,8 @@ namespace ArabicInterpretation.Views
     {
         private const int ButtonsPerRow = 5;
 
+        bool shouldPopTwice;
+
         public ChaptersGrid()
         {
             this.HorizontalOptions = LayoutOptions.FillAndExpand;
@@ -32,12 +34,16 @@ namespace ArabicInterpretation.Views
             }
         }
 
+        // TODO: Highlight selected chapter
         public Task Initialize(
+            bool shouldPopTwice,
             Author author,
             bool isNT,
             int bookNumber,
             int chaptersCount)
         {
+            this.shouldPopTwice = shouldPopTwice;
+
             // Add the introduction button
             Button introButton = ColorManager.CreateButton();
             introButton.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button));
@@ -89,9 +95,6 @@ namespace ArabicInterpretation.Views
             int bookNumber,
             int chapterNumber)
         {
-            await App.Navigation.PopModalAsync(false);
-            await App.Navigation.PopModalAsync(false);
-
             ReadingInfo readingInfo = new ReadingInfo(
                 author,
                 isNT,
@@ -99,6 +102,19 @@ namespace ArabicInterpretation.Views
                 chapterNumber);
 
             MessagingCenter.Send(this, ReadingPage.ChapterChangedMessage, readingInfo);
+
+            Task pop1 = App.Navigation.PopModalAsync(true);
+
+            // This flag means the call is coming from BooksChooser, so need to pop this page as well
+            if (this.shouldPopTwice)
+            {
+                Task pop2 = App.Navigation.PopModalAsync(false);
+                await Task.WhenAll(new Task[] { pop1, pop2 });
+            }
+            else
+            {
+                await pop1;
+            }
         }
     }
 }

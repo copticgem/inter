@@ -47,7 +47,7 @@ namespace ArabicInterpretation.Pages
             });
 
             // Listen to chapter changes
-            MessagingCenter.Subscribe<ChaptersGrid, ReadingInfo>(this, AuthorChangedMessage, async (sender, arg) =>
+            MessagingCenter.Subscribe<ChaptersGrid, ReadingInfo>(this, ChapterChangedMessage, async (sender, arg) =>
             {
                 await this.OnChapterChanged(sender, arg);
             });
@@ -61,15 +61,20 @@ namespace ArabicInterpretation.Pages
             List<BookInfo> booksInfo = await BookNameManager.GetBookNames(readingInfo.IsNT);
             BookInfo bookInfo = booksInfo[readingInfo.BookNumber - 1];
 
-            await this.authorLabel.Initialize(
-                ReadingPage.AuthorChangedMessage,
-                readingInfo.Author,
-                readingInfo.IsNT, 
-                readingInfo.BookNumber);
+            await this.UpdateAuthorLabel();
 
             await this.bookChapterLabel.Initialize(readingInfo, bookInfo);
 
             await this.UpdateContent();
+        }
+
+        private async Task UpdateAuthorLabel()
+        {
+            await this.authorLabel.Initialize(
+                ReadingPage.AuthorChangedMessage,
+                this.readingInfo.Author,
+                this.readingInfo.IsNT,
+                this.readingInfo.BookNumber);
         }
 
         private async Task OnChapterChanged(ChaptersGrid sender, ReadingInfo readingInfo)
@@ -89,8 +94,7 @@ namespace ArabicInterpretation.Pages
             {
                 this.readingInfo.Author = author;
 
-                // Update content
-                await this.UpdateContent();
+                await this.Initialize(this.readingInfo);
             }
         }
 
@@ -123,7 +127,7 @@ namespace ArabicInterpretation.Pages
             View firstView = chapterLayout.Children.FirstOrDefault();
             if (firstView != null)
             {
-                // await this.scrollView.ScrollToAsync(firstView, ScrollToPosition.Start, false);
+                await this.scrollView.ScrollToAsync(firstView, ScrollToPosition.Start, false);
             }
         }
     }

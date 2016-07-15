@@ -94,7 +94,7 @@ namespace ArabicInterpretation
             // Re-enable disabled buttons
             this.buttons
                 .Where(b => !b.IsEnabled)
-                .ForEach(b => b.IsEnabled = true);
+                .ForEach(b => ColorManager.EnableButton(b));
 
             // Disable missing buttons
             missingBooks.ForEach(bookIndex =>
@@ -103,7 +103,7 @@ namespace ArabicInterpretation
                 Button button = this.buttons.ElementAtOrDefault(bookIndex - 1);
                 if (button != null)
                 {
-                    button.IsEnabled = false;
+                    ColorManager.DisableButton(button);
                 }
             });
 
@@ -128,10 +128,11 @@ namespace ArabicInterpretation
         {
             ChapterChooserPage chapterChooserPage = new ChapterChooserPage();
             await chapterChooserPage.Initialize(
-                this.author,
-                this.isNT,
-                bookNumber,
-                chaptersCount);
+                shouldPopTwice: true,
+                author: this.author,
+                isNT: this.isNT,
+                bookNumber: bookNumber,
+                chaptersCount: chaptersCount);
 
             await App.Navigation.PushModalAsync(
                 page: chapterChooserPage,
