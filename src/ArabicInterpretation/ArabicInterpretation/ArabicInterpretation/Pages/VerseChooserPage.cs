@@ -14,7 +14,7 @@ namespace ArabicInterpretation.Pages
         VersesGrid versesGrid;
 
         public VerseChooserPage()
-            :base("اختر الآية")
+            :base("اختر الآية ")
         {
             StackLayout layout = new StackLayout
             {

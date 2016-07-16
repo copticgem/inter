@@ -42,6 +42,8 @@ namespace Formatter
                 input: page,
                 pattern: @"({{/*\w+}})");
 
+            tokens = tokens.Where(t => t != string.Empty).ToArray();
+
             string endToken = null;
             for (int i = 0; i < tokens.Length; i++)
             {
@@ -60,7 +62,7 @@ namespace Formatter
                         {
                             // We don't want verse tag in the middle since it's a separate label
                             // Move up till it's not nested
-                            ReplaceVerseTag(newString, endToken.Replace("/", string.Empty));
+                            UnNestVerseTag(newString, endToken.Replace("/", string.Empty));
                             continue;
                         }
 
@@ -117,10 +119,20 @@ namespace Formatter
                         }
                     }
 
+                    if (token.StartsWith("{{v") && i > 0)
+                    {
+                        if (!IsSystemTag(tokens[i - 1]) && !IsSystemTag(tokens[i + 1]))
+                        {
+                            // Verse marker is in the middle of a statement, move up since it will cause a newline
+                            ReplaceVerseTag(newString);
+                        }
+
+                        continue;
+                    }
+
                     if (token == "{{l}}" ||
                         token == "{{p}}" ||
-                        token == "{{d}}" ||
-                        token.StartsWith("{{v"))
+                        token == "{{d}}")
                     {
                         continue;
                     }
@@ -154,7 +166,7 @@ namespace Formatter
             return string.Join(string.Empty, newString);
         }
 
-        private static void ReplaceVerseTag(
+        private static void UnNestVerseTag(
             List<string> tags,
             string openTag)
         {
@@ -172,6 +184,29 @@ namespace Formatter
             }
 
             throw new InvalidOperationException("Unable to find a spot for tag: " + verseTag);
+        }
+
+        private static void ReplaceVerseTag(List<string> tags)
+        {
+            string verseTag = tags.Last();
+            tags.RemoveAt(tags.Count - 1);
+
+            for (int i = tags.Count - 1; i >= 0; i--)
+            {
+                if (IsSystemTag(tags[i]))
+                {
+                    // Insert the verse after the tag
+                    tags.Insert(i + 1, verseTag);
+                    return;
+                }
+            }
+
+            throw new InvalidOperationException("Unable to find a spot for tag: " + verseTag);
+        }
+
+        private static bool IsSystemTag(string token)
+        {
+            return token.StartsWith("{{");
         }
     }
 }
