@@ -35,7 +35,7 @@ namespace ArabicInterpretation
             Text.NavigationBar = testamentBlue;
 
             // Yellow
-            Text.SelectedButton = Color.FromRgb(242, 231, 0);
+            Text.SelectedButton = Color.FromRgb(204, 168, 0);
 
             Border.Default = Color.Black;
             Border.Grid = Color.Black;
