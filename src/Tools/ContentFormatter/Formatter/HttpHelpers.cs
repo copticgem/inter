@@ -224,6 +224,9 @@ namespace Formatter
             // Format spaces
             page = SpacingFormatter.FormatSpaces(page);
 
+            // Validate info
+            page = Validation.ValidateInfo(page);
+
             return page;
         }
 
@@ -313,14 +316,6 @@ namespace Formatter
                     verses.Add(verseNumber);
                 }
             }
-
-            //// Remove all remaining identifiers
-            // Multiple verse refs
-            // TODO: this doesn't work
-            //page = Regex.Replace(
-            //    input: page,
-            //    pattern: "<a name=\"([0-9]|\\-)+\">([0-9]|\\-)*</a>",
-            //    replacement: string.Empty);
 
             // Links to other chapters/topics
             page = ReplaceTag(page, "a", string.Empty);
@@ -421,7 +416,7 @@ namespace Formatter
                 input: page,
                 pattern: "{{b}} *{{d}}{{/b}}",
                 replacement: "{{d}}");
-
+            
             return page;
         }
 

@@ -9,6 +9,31 @@ namespace Formatter
 {
     class Validation
     {
+        public static string ValidateInfo(string page)
+        {
+            page = Regex.Replace(
+                page,
+                "(انظر *المزيد *عن *هذا *الموضوع *هنا *في *موقع *الأنبا *تكلا *في *أقسام *المقالات *و *التفاسير *الأخرى).",
+                string.Empty);
+
+            page = Regex.Replace(
+                page,
+                "وستجد المزيد عن هذا الموضوع هنا في موقع الأنبا تكلاهيمانوت في صفحات قاموس وتفاسير الكتاب المقدس الأخرى.",
+                string.Empty);
+
+            page = Regex.Replace(
+                page,
+                "\\([^\\)]*موقع الأنبا تكلا[^\\)]*\\)",
+                string.Empty);
+
+            if (page.Contains("موقع الأنبا تكلا"))
+            {
+                throw new InvalidOperationException("موقع الأنبا تكلا");
+            }
+
+            return page;
+        }
+
         public static string ValidateTags(string page)
         {
             List<string> newString = new List<string>();
