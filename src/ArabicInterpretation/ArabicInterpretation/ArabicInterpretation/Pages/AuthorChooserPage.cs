@@ -21,6 +21,7 @@ namespace ArabicInterpretation.Pages
 
             StackLayout layout = new StackLayout
             {
+                Padding = Constants.DefaultPadding,
                 Orientation = StackOrientation.Vertical,
                 VerticalOptions = LayoutOptions.CenterAndExpand
             };

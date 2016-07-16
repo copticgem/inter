@@ -25,7 +25,7 @@ namespace ArabicInterpretation.Views
             this.HorizontalOptions = LayoutOptions.End;
 
             this.BorderWidth = 0;
-            this.BackgroundColor = Color.Blue;
+            this.BackgroundColor = Color.Transparent;
 
             this.Clicked += async (sender, e) =>
             {
@@ -37,16 +37,7 @@ namespace ArabicInterpretation.Views
 
         public async Task Initialize(Dictionary<int, Grid> verses)
         {
-            if (!verses.Any())
-            {
-                ColorManager.DisableButton(this);
-            }
-            else
-            {
-                ColorManager.EnableButton(this);
-                await this.verseChooserPage.Initialize(verses);
-
-            }
+            await this.verseChooserPage.Initialize(verses);
         }
 
         public async Task OnClicked()

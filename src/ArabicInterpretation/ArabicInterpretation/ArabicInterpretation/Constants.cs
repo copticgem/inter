@@ -8,6 +8,8 @@ namespace ArabicInterpretation
 {
     static class Constants
     {
+        public const int DefaultPadding = 10;
+
         public static class AuthorNames
         {
             public static string FrTadros = "القمص تادرس يعقوب";

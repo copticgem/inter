@@ -68,9 +68,6 @@ namespace ArabicInterpretation.Pages
 
         public async Task Initialize(ReadingInfo readingInfo, bool isFirstTime = false)
         {
-            this.isFullScreen = true;
-            this.AdjustFullScreen();
-
             this.readingInfo = readingInfo;
 
             // This has internal cache
@@ -85,6 +82,9 @@ namespace ArabicInterpretation.Pages
                 readingInfo,
                 bookInfo,
                 this.verses);
+
+            this.isFullScreen = true;
+            this.AdjustFullScreen();
         }
 
         private async Task UpdateAuthorLabel()
@@ -169,9 +169,9 @@ namespace ArabicInterpretation.Pages
             }
             else
             {
-                NavigationPage.SetHasNavigationBar(this, false);
                 this.authorLabel.IsVisible = false;
                 this.bookChapterLabel.IsVisible = false;
+                NavigationPage.SetHasNavigationBar(this, false);
             }
         }
     }

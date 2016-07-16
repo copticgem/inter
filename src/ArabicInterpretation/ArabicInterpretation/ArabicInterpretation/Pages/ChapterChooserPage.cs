@@ -36,6 +36,7 @@ namespace ArabicInterpretation.Pages
             this.chaptersGrid = new ChaptersGrid();
             ScrollView scrollView = new ScrollView
             {
+                Padding = Constants.DefaultPadding,
                 Content = this.chaptersGrid
             };
 

@@ -19,6 +19,8 @@ namespace ArabicInterpretation.Pages
             StackLayout layout = new StackLayout
             {
                 Orientation = StackOrientation.Vertical,
+                VerticalOptions = LayoutOptions.Start,
+                Padding = Constants.DefaultPadding
             };
 
             this.versesGrid = new VersesGrid();

@@ -56,6 +56,7 @@ namespace ArabicInterpretation
             BooksGrid ntGrid = new BooksGrid(true);
             this.ntScrollView = new ScrollView
             {
+                Padding = Constants.DefaultPadding,
                 Content = ntGrid,
                 IsVisible = false,
             };
@@ -63,6 +64,7 @@ namespace ArabicInterpretation
             BooksGrid otGrid = new BooksGrid(false);
             this.otScrollView = new ScrollView
             {
+                Padding = Constants.DefaultPadding,
                 Content = otGrid,
                 IsVisible = false
             };
