@@ -13,12 +13,17 @@ namespace ArabicInterpretation.Views
         ChapterLabel chapterLabel;
         BookLabel bookLabel;
         VerseLabel verseLabel;
+        SettingsLabel settingsLabel;
 
         public BookChapterLabel()
         {
             this.Orientation = StackOrientation.Horizontal;
             this.HorizontalOptions = LayoutOptions.FillAndExpand;
+            this.VerticalOptions = LayoutOptions.StartAndExpand;
             this.BackgroundColor = ColorManager.Backgrounds.BookChapterBar;
+
+            this.settingsLabel = new SettingsLabel();
+            this.Children.Add(this.settingsLabel);
 
             this.chapterLabel = new ChapterLabel();
             this.Children.Add(chapterLabel);

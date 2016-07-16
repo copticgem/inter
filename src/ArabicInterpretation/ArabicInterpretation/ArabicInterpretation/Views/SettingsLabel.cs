@@ -11,16 +11,16 @@ using Xamarin.Forms;
 
 namespace ArabicInterpretation.Views
 {
-    public class BookLabel : Button
+    public class SettingsLabel : Button
     {
-        BookChooserPage bookChooserPage;
-
-        public BookLabel()
+        public SettingsLabel()
         {
             this.TextColor = ColorManager.Text.BookChapter;
             this.FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Button));
 
-            this.HorizontalOptions = LayoutOptions.CenterAndExpand;
+            this.Text = "اعدادت";
+
+            this.HorizontalOptions = LayoutOptions.Start;
 
             this.BorderWidth = 0;
             this.BackgroundColor = Color.Transparent;
@@ -29,27 +29,14 @@ namespace ArabicInterpretation.Views
             {
                 await this.OnClicked();
             };
-
-            this.bookChooserPage = new BookChooserPage();
         }
 
-        public async Task Initialize(
-            Author author,
-            bool isNT,
-            int bookNumber,
-            string bookName)
+        public async Task Initialize()
         {
-            this.Text = bookName;
-
-            await this.bookChooserPage.Initialize(
-                author,
-                isNT,
-                bookNumber);
         }
 
         public async Task OnClicked()
         {
-            await PageTransition.PushModalAsync(this.bookChooserPage);
         }
     }
 }

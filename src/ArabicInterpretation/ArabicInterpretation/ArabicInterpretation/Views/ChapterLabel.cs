@@ -18,10 +18,9 @@ namespace ArabicInterpretation.Views
         public ChapterLabel()
         {
             this.TextColor = ColorManager.Text.BookChapter;
-            this.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button));
+            this.FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Button));
 
             this.HorizontalOptions = LayoutOptions.CenterAndExpand;
-            this.VerticalOptions = LayoutOptions.Start;
 
             this.BorderWidth = 0;
             this.BackgroundColor = Color.Transparent;

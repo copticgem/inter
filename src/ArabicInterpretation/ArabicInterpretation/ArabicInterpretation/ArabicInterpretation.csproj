@@ -63,6 +63,7 @@
       <DependentUpon>Books.resx</DependentUpon>
     </Compile>
     <Compile Include="Views\BookChapterLabel.cs" />
+    <Compile Include="Views\SettingsLabel.cs" />
     <Compile Include="Views\VerseLabel.cs" />
     <Compile Include="Views\ChapterLabel.cs" />
     <Compile Include="Views\BookLabel.cs" />
