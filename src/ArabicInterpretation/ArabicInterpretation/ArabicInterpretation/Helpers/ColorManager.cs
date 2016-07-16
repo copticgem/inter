@@ -22,7 +22,7 @@ namespace ArabicInterpretation
             // Grey
             Backgrounds.AuthorBar = Color.FromRgb(233, 234, 235);
             Backgrounds.BookChapterBar = Color.FromRgb(249, 249, 249);
-            Backgrounds.Button = Color.Transparent;
+            Backgrounds.Button = Color.White;
             Backgrounds.DisabledButton = Color.Gray;
             Backgrounds.SelectedTestament = testamentBlue;
             Backgrounds.NavigationBar = testamentBlue;
@@ -78,7 +78,7 @@ namespace ArabicInterpretation
                 TextColor = ColorManager.Text.Default,
                 BackgroundColor = ColorManager.Backgrounds.Button,
                 BorderColor = ColorManager.Border.Default,
-                BorderWidth = 2
+                BorderWidth = Constants.DefaultBorderWidth
             };
         }
 

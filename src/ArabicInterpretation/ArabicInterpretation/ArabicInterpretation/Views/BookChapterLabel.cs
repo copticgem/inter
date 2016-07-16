@@ -22,14 +22,25 @@ namespace ArabicInterpretation.Views
             this.VerticalOptions = LayoutOptions.StartAndExpand;
             this.BackgroundColor = ColorManager.Backgrounds.BookChapterBar;
 
+            // Book & chapter layout
+            StackLayout bookChapter = new StackLayout
+            {
+                Orientation = StackOrientation.Horizontal,
+                Spacing = 0,
+                HorizontalOptions = LayoutOptions.Center
+            };
+
+            this.chapterLabel = new ChapterLabel();
+            bookChapter.Children.Add(chapterLabel);
+
+            this.bookLabel = new BookLabel();
+            bookChapter.Children.Add(this.bookLabel);
+
+            // Main layout
             this.settingsLabel = new SettingsLabel();
             this.Children.Add(this.settingsLabel);
 
-            this.chapterLabel = new ChapterLabel();
-            this.Children.Add(chapterLabel);
-
-            this.bookLabel = new BookLabel();
-            this.Children.Add(this.bookLabel);
+            this.Children.Add(bookChapter);
 
             this.verseLabel = new VerseLabel();
             this.Children.Add(this.verseLabel);

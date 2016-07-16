@@ -9,6 +9,7 @@ namespace ArabicInterpretation
     static class Constants
     {
         public const int DefaultPadding = 10;
+        public const int DefaultBorderWidth = 2;
 
         public static class AuthorNames
         {

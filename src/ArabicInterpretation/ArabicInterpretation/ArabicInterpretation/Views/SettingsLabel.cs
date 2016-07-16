@@ -23,7 +23,7 @@ namespace ArabicInterpretation.Views
             this.HorizontalOptions = LayoutOptions.Start;
 
             this.BorderWidth = 0;
-            this.BackgroundColor = Color.Transparent;
+            this.BackgroundColor = ColorManager.Backgrounds.BookChapterBar;
 
             this.Clicked += async (sender, e) =>
             {

@@ -27,7 +27,7 @@ namespace ArabicInterpretation.Views
             this.button.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button));
 
             this.button.BorderWidth = 0;
-            this.button.BackgroundColor = Color.Transparent;
+            this.button.BackgroundColor = ColorManager.Backgrounds.AuthorBar;
 
             this.button.Clicked += async (sender, e) =>
             {
