@@ -11,7 +11,12 @@ namespace ArabicInterpretation.Helpers
     {
         public static async Task PushModalAsync(Page page, bool animated = true)
         {
-            NavigationPage navPage = new NavigationPage(page);
+            NavigationPage navPage = new NavigationPage(page)
+            {
+                BarBackgroundColor = ColorManager.Backgrounds.NavigationBar,
+                BarTextColor = ColorManager.Text.NavigationBar
+            };
+
             await App.Navigation.PushModalAsync(navPage, animated);
         }
     }

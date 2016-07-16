@@ -20,7 +20,11 @@ namespace ArabicInterpretation
             ColorManager.Initialize();
 
             ReadingPage readingPage = new ReadingPage();
-            this.MainPage = new NavigationPage(readingPage);
+            this.MainPage = new NavigationPage(readingPage)
+            {
+                BarBackgroundColor = ColorManager.Backgrounds.NavigationBar,
+                BarTextColor = ColorManager.Text.NavigationBar
+            };
 
             Navigation = this.MainPage.Navigation;
 

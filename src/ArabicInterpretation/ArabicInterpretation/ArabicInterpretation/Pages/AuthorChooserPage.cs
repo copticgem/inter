@@ -18,7 +18,15 @@ namespace ArabicInterpretation.Pages
             : base("الكاتب")
         {
             this.authorsGrid = new AuthorsGrid();
-            this.Content = authorsGrid;
+
+            StackLayout layout = new StackLayout
+            {
+                Orientation = StackOrientation.Vertical,
+                VerticalOptions = LayoutOptions.CenterAndExpand
+            };
+
+            layout.Children.Add(authorsGrid);
+            this.Content = layout;
         }
 
         public async Task Initialize(

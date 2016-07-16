@@ -25,13 +25,14 @@ namespace ArabicInterpretation
             Backgrounds.Button = Color.Transparent;
             Backgrounds.DisabledButton = Color.Gray;
             Backgrounds.SelectedTestament = testamentBlue;
+            Backgrounds.NavigationBar = testamentBlue;
 
-            // Blue
             Text.Author = testamentBlue;
             Text.BookChapter = testamentBlue;
             Text.Default = Color.Black;
             Text.SelectedTestament = Color.White;
             Text.UnSelectedTestament = testamentBlue;
+            Text.NavigationBar = testamentBlue;
 
             // Yellow
             Text.SelectedButton = Color.FromRgb(242, 231, 0);
@@ -44,6 +45,7 @@ namespace ArabicInterpretation
         public static class Backgrounds
         {
             public static Color Default;
+            public static Color NavigationBar;
             public static Color AuthorBar;
             public static Color BookChapterBar;
             public static Color Button;
@@ -54,6 +56,7 @@ namespace ArabicInterpretation
         public static class Text
         {
             public static Color Default;
+            public static Color NavigationBar;
             public static Color Author;
             public static Color BookChapter;
             public static Color SelectedButton;
