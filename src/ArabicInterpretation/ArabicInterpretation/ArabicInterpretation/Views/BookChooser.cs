@@ -15,6 +15,9 @@ namespace ArabicInterpretation
         ScrollView ntScrollView;
         ScrollView otScrollView;
 
+        Button ntButton;
+        Button otButton;
+
         public BookChooser()
         {
             StackLayout testamentSwitch = new StackLayout
@@ -23,17 +26,23 @@ namespace ArabicInterpretation
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
             };
 
-            Button ntButton = ColorManager.CreateButton();
+            this.ntButton = ColorManager.CreateButton();
             ntButton.Text = "العهد الجديد";
+            ntButton.BorderColor = ColorManager.Border.Button;
+
+            this.otButton = ColorManager.CreateButton();
+            otButton.Text = "العهد القديم";
+            otButton.BorderColor = ColorManager.Border.Button;
+
             ntButton.Clicked += (sender, e) =>
             {
                 this.OnTestamentSwitchClicked(true);
             };
-
-            Button otButton = ColorManager.CreateButton();
-            otButton.Text = "العهد القديم";
+            
             otButton.Clicked += (sender, e) =>
             {
+                this.SetSelectedButton(otButton);
+                this.SetUnselectedButton(ntButton);
                 this.OnTestamentSwitchClicked(false);
             };
 
@@ -48,7 +57,7 @@ namespace ArabicInterpretation
             this.ntScrollView = new ScrollView
             {
                 Content = ntGrid,
-                IsVisible = false
+                IsVisible = false,
             };
 
             BooksGrid otGrid = new BooksGrid(false);
@@ -93,12 +102,30 @@ namespace ArabicInterpretation
             {
                 this.otScrollView.IsVisible = false;
                 this.ntScrollView.IsVisible = true;
+
+                this.SetSelectedButton(ntButton);
+                this.SetUnselectedButton(otButton);
             }
             else
             {
                 this.ntScrollView.IsVisible = false;
                 this.otScrollView.IsVisible = true;
+
+                this.SetSelectedButton(otButton);
+                this.SetUnselectedButton(ntButton);
             }
+        }
+
+        private void SetSelectedButton(Button button)
+        {
+            button.BackgroundColor = ColorManager.Backgrounds.SelectedTestament;
+            button.TextColor = ColorManager.Text.SelectedTestament;
+        }
+
+        private void SetUnselectedButton(Button button)
+        {
+            button.BackgroundColor = ColorManager.Backgrounds.Default;
+            button.TextColor = ColorManager.Text.UnSelectedTestament;
         }
     }
 }

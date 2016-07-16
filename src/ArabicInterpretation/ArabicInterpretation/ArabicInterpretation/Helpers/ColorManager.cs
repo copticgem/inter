@@ -16,6 +16,7 @@ namespace ArabicInterpretation
 
         private static void SetNormalModeColors()
         {
+            Color testamentBlue = Color.FromRgb(55, 141, 204);
             Backgrounds.Default = Color.White;
 
             // Grey
@@ -23,17 +24,21 @@ namespace ArabicInterpretation
             Backgrounds.BookChapterBar = Color.FromRgb(249, 249, 249);
             Backgrounds.Button = Color.Transparent;
             Backgrounds.DisabledButton = Color.Gray;
+            Backgrounds.SelectedTestament = testamentBlue;
 
             // Blue
-            Text.Author = Color.Blue;
-            Text.BookChapter = Color.Blue;
+            Text.Author = testamentBlue;
+            Text.BookChapter = testamentBlue;
             Text.Default = Color.Black;
+            Text.SelectedTestament = Color.White;
+            Text.UnSelectedTestament = testamentBlue;
 
             // Yellow
             Text.SelectedButton = Color.FromRgb(242, 231, 0);
 
             Border.Default = Color.Black;
             Border.Grid = Color.Black;
+            Border.Button = testamentBlue;
         }
 
         public static class Backgrounds
@@ -43,6 +48,7 @@ namespace ArabicInterpretation
             public static Color BookChapterBar;
             public static Color Button;
             public static Color DisabledButton;
+            public static Color SelectedTestament;
         }
 
         public static class Text
@@ -51,12 +57,15 @@ namespace ArabicInterpretation
             public static Color Author;
             public static Color BookChapter;
             public static Color SelectedButton;
+            public static Color SelectedTestament;
+            public static Color UnSelectedTestament;
         }
 
         public static class Border
         {
             public static Color Default;
             public static Color Grid;
+            public static Color Button;
         }
 
         public static Button CreateButton()
