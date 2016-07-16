@@ -91,7 +91,7 @@ namespace ArabicInterpretation.Views
             // Send message to caller to update content
             MessagingCenter.Send(this, this.messageTitle, author);
 
-            await App.Navigation.PopModalAsync(animated: true);
+            await PageTransition.PopModalAsync(animated: true);
         }
     }
 }

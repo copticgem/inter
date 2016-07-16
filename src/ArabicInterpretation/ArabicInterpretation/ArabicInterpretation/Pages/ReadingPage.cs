@@ -28,7 +28,7 @@ namespace ArabicInterpretation.Pages
         bool isFullScreen = true;
 
         public ReadingPage()
-            : base("التفسير")
+            : base(null)
         {
             StackLayout layout = new StackLayout
             {
@@ -41,7 +41,12 @@ namespace ArabicInterpretation.Pages
             this.bookChapterLabel = new BookChapterLabel();
             layout.Children.Add(bookChapterLabel);
 
-            this.scrollView = new ScrollView();
+            this.scrollView = new ScrollView
+            {
+                 BackgroundColor = ColorManager.Backgrounds.Default,
+                 Padding = Constants.ReadingPadding,
+            };
+
             layout.Children.Add(scrollView);
             
             this.Content = layout;

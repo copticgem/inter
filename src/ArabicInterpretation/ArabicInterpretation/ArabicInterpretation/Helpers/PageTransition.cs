@@ -19,5 +19,10 @@ namespace ArabicInterpretation.Helpers
 
             await App.Navigation.PushModalAsync(navPage, animated);
         }
+
+        public static async Task PopModalAsync(bool animated)
+        {
+            await App.Navigation.PopModalAsync(animated);
+        }
     }
 }

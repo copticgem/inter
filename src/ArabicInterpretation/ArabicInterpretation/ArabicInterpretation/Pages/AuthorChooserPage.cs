@@ -15,7 +15,7 @@ namespace ArabicInterpretation.Pages
         AuthorsGrid authorsGrid;
 
         public AuthorChooserPage()
-            : base("الكاتب")
+            : base("اختر الكاتب ")
         {
             this.authorsGrid = new AuthorsGrid();
 

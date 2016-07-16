@@ -105,12 +105,12 @@ namespace ArabicInterpretation.Views
 
             MessagingCenter.Send(this, ReadingPage.ChapterChangedMessage, readingInfo);
 
-            Task pop1 = App.Navigation.PopModalAsync(true);
+            Task pop1 = PageTransition.PopModalAsync(true);
 
             // This flag means the call is coming from BooksChooser, so need to pop this page as well
             if (this.shouldPopTwice)
             {
-                Task pop2 = App.Navigation.PopModalAsync(false);
+                Task pop2 = PageTransition.PopModalAsync(false);
                 await Task.WhenAll(new Task[] { pop1, pop2 });
             }
             else

@@ -22,7 +22,7 @@ namespace ArabicInterpretation.Pages
         AuthorLabel authorLabel;
 
         public BookChooserPage()
-            : base("الاسفار")
+            : base("اختر السفر ")
         {
             StackLayout layout = new StackLayout
             {
