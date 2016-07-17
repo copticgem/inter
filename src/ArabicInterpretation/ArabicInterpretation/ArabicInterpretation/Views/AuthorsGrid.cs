@@ -30,7 +30,7 @@ namespace ArabicInterpretation.Views
             frTadros.Text = Constants.AuthorNames.FrTadros;
             frTadros.Clicked += async (sender, e) =>
             {
-                await this.OnAuthorClicked(author: Author.FrTadros);
+                await this.OnAuthorClicked_Safe(author: Author.FrTadros);
             };
 
             this.frAntonios = ColorManager.CreateButton();
@@ -38,7 +38,7 @@ namespace ArabicInterpretation.Views
             frAntonios.Text = Constants.AuthorNames.FrAntonios;
             frAntonios.Clicked += async (sender, e) =>
             {
-                await this.OnAuthorClicked(author: Author.FrAntonios);
+                await this.OnAuthorClicked_Safe(author: Author.FrAntonios);
             };
 
             this.Children.Add(frAntonios, 0, 0);
@@ -84,6 +84,11 @@ namespace ArabicInterpretation.Views
                 // Current book is missing from that Author so disable the choice
                 ColorManager.DisableButton(button);
             }
+        }
+
+        private async Task OnAuthorClicked_Safe(Author author)
+        {
+            await SynchronizationHelper.ExecuteOnce(this.OnAuthorClicked(author));
         }
 
         private async Task OnAuthorClicked(Author author)

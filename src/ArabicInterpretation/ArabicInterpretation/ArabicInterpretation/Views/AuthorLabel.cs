@@ -31,7 +31,7 @@ namespace ArabicInterpretation.Views
 
             this.button.Clicked += async (sender, e) =>
             {
-                await this.OnClicked();
+                await SynchronizationHelper.ExecuteOnce(this.OnClicked());
             };
 
             this.authorChooserPage = new AuthorChooserPage();

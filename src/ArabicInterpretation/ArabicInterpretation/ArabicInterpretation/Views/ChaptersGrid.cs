@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -52,7 +53,7 @@ namespace ArabicInterpretation.Views
             introButton.Text = "مقدمة";
             introButton.Clicked += async (sender, e) =>
             {
-                await this.OnChapterClicked(
+                await this.OnChapterClicked_Safe(
                     author: author,
                     isNT: isNT,
                     bookNumber: bookNumber,
@@ -71,7 +72,7 @@ namespace ArabicInterpretation.Views
                 int chapterNumber = i;
                 button.Clicked += async (sender, e) =>
                 {
-                    await this.OnChapterClicked(
+                    await this.OnChapterClicked_Safe(
                         author: author,
                         isNT: isNT,
                         bookNumber: bookNumber,
@@ -89,6 +90,20 @@ namespace ArabicInterpretation.Views
             }
 
             return Task.FromResult(true);
+        }
+
+        private async Task OnChapterClicked_Safe(
+            Author author,
+            bool isNT,
+            int bookNumber,
+            int chapterNumber)
+        {
+            await SynchronizationHelper.ExecuteOnce(
+                this.OnChapterClicked(
+                    author,
+                    isNT,
+                    bookNumber,
+                    chapterNumber));
         }
 
         private async Task OnChapterClicked(

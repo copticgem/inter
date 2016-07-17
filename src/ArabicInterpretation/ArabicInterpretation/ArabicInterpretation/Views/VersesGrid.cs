@@ -49,7 +49,7 @@ namespace ArabicInterpretation.Views
 
                 button.Clicked += async (sender, e) =>
                 {
-                    await this.OnVerseClicked(verseNumber: verseNumber);
+                    await SynchronizationHelper.ExecuteOnce(this.OnVerseClicked(verseNumber: verseNumber));
                 };
 
                 int top = (i - 1) / ButtonsPerRow;

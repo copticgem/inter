@@ -27,7 +27,7 @@ namespace ArabicInterpretation.Views
 
             this.Clicked += async (sender, e) =>
             {
-                await this.OnClicked();
+                await SynchronizationHelper.ExecuteOnce(this.OnClicked());
             };
         }
 

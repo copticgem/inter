@@ -71,7 +71,7 @@ namespace ArabicInterpretation
                 int bookNumber = i;
                 button.Clicked += async (sender, e) =>
                 {
-                    await this.OnBookClicked(bookNumber, book.ChaptersCount);
+                    await SynchronizationHelper.ExecuteOnce(this.OnBookClicked(bookNumber, book.ChaptersCount));
                 };
 
                 int top = (i - 1) / booksPerRow;
