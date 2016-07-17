@@ -16,13 +16,16 @@ namespace ArabicInterpretation.Pages
     {
         public const string ChapterChangedMessage = "ReadingPageChapterChanged";
         public const string VerseChangedMessage = "ReadingPageVerseChanged";
-        private const string AuthorChangedMessage = "ReadingPageAuthorChanged";
+        public const string AuthorChangedMessage = "ReadingPageAuthorChanged";
+        public const string ShowLoadingMessage = "ReadingPageShowLoading";
 
         ReadingInfo readingInfo;
 
         AuthorLabel authorLabel;
         BookChapterLabel bookChapterLabel;
         ScrollView scrollView;
+        Image loadingImage;
+
         Dictionary<int, Grid> verses;
 
         bool isFullScreen = true;
@@ -34,12 +37,21 @@ namespace ArabicInterpretation.Pages
             {
                 Orientation = StackOrientation.Vertical,
             };
-
+            
             this.authorLabel = new AuthorLabel();
             layout.Children.Add(this.authorLabel);
 
             this.bookChapterLabel = new BookChapterLabel();
             layout.Children.Add(bookChapterLabel);
+
+            this.loadingImage = new Image
+            {
+                Source = ImageSource.FromResource("ArabicInterpretation.Resources.loading.png"),
+                IsVisible = false,
+                VerticalOptions = LayoutOptions.StartAndExpand
+            };
+
+            layout.Children.Add(this.loadingImage);
 
             this.scrollView = new ScrollView
             {
@@ -48,7 +60,7 @@ namespace ArabicInterpretation.Pages
             };
 
             layout.Children.Add(scrollView);
-            
+
             this.Content = layout;
 
             // Listen to author changes intended to ReadingPage
@@ -69,6 +81,12 @@ namespace ArabicInterpretation.Pages
                 Grid verseMarker = this.verses[arg];
                 await this.scrollView.ScrollToAsync(verseMarker, ScrollToPosition.Start, false);
             });
+
+            // Listen to show loading
+            MessagingCenter.Subscribe<INavigation>(this, ShowLoadingMessage, (sender) =>
+            {
+                this.ToggleLoading(true);
+            });
         }
 
         public async Task Initialize(ReadingInfo readingInfo, bool isFirstTime = false)
@@ -88,8 +106,24 @@ namespace ArabicInterpretation.Pages
                 bookInfo,
                 this.verses);
 
+            this.ToggleLoading(false);
+
             this.isFullScreen = true;
             this.AdjustFullScreen();
+        }
+
+        private void ToggleLoading(bool isVisible)
+        {
+            if (isVisible)
+            {
+                this.scrollView.IsVisible = false;
+                this.loadingImage.IsVisible = true;
+            }
+            else
+            {
+                this.loadingImage.IsVisible = false;
+                this.scrollView.IsVisible = true;
+            }
         }
 
         private async Task UpdateAuthorLabel()

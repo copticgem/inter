@@ -67,9 +67,9 @@ namespace ArabicInterpretation.Views
 
         private async Task OnVerseClicked(int verseNumber)
         {
-            await PageTransition.PopModalAsync(true);
-
             MessagingCenter.Send(this, ReadingPage.VerseChangedMessage, verseNumber);
+
+            await PageTransition.PopModalAsync(true);
         }
     }
 }

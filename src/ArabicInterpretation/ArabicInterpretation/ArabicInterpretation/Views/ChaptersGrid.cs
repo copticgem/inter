@@ -112,14 +112,15 @@ namespace ArabicInterpretation.Views
             int bookNumber,
             int chapterNumber)
         {
+            // Show loading screen in reading page
+            MessagingCenter.Send(App.Navigation, ReadingPage.ShowLoadingMessage);
+
             ReadingInfo readingInfo = new ReadingInfo(
                 author,
                 isNT,
                 bookNumber,
                 chapterNumber);
-
-            MessagingCenter.Send(this, ReadingPage.ChapterChangedMessage, readingInfo);
-
+            
             Task pop1 = PageTransition.PopModalAsync(true);
 
             // This flag means the call is coming from BooksChooser, so need to pop this page as well
@@ -132,6 +133,8 @@ namespace ArabicInterpretation.Views
             {
                 await pop1;
             }
+
+            MessagingCenter.Send(this, ReadingPage.ChapterChangedMessage, readingInfo);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using ArabicInterpretation.Helpers;
+using ArabicInterpretation.Pages;
 using Core;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -93,10 +94,16 @@ namespace ArabicInterpretation.Views
 
         private async Task OnAuthorClicked(Author author)
         {
-            // Send message to caller to update content
-            MessagingCenter.Send(this, this.messageTitle, author);
+            if (this.messageTitle == ReadingPage.AuthorChangedMessage)
+            {
+                // This will go back to reading page, showLoading first
+                MessagingCenter.Send(App.Navigation, ReadingPage.ShowLoadingMessage);
+            }
 
             await PageTransition.PopModalAsync(animated: true);
+
+            // Send message to caller to update content
+            MessagingCenter.Send(this, this.messageTitle, author);
         }
     }
 }

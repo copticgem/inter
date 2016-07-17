@@ -29,7 +29,7 @@ namespace ArabicInterpretation
             Navigation = this.MainPage.Navigation;
 
             readingPage.Initialize(new ReadingInfo(
-                Author.FrAntonios,
+                Author.FrTadros,
                 false,
                 1,
                 1),
