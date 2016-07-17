@@ -27,7 +27,7 @@ namespace ArabicInterpretation.Views
             {
                 Orientation = StackOrientation.Horizontal,
                 Spacing = 0,
-                HorizontalOptions = LayoutOptions.Center
+                HorizontalOptions = LayoutOptions.CenterAndExpand
             };
 
             this.chapterLabel = new ChapterLabel();

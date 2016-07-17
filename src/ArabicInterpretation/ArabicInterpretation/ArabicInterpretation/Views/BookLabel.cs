@@ -20,7 +20,7 @@ namespace ArabicInterpretation.Views
             this.TextColor = ColorManager.Text.BookChapter;
             this.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button));
 
-            this.HorizontalOptions = LayoutOptions.CenterAndExpand;
+            this.HorizontalOptions = LayoutOptions.EndAndExpand;
 
             this.BorderRadius = 1;
             this.BorderWidth = Constants.DefaultBorderWidth;
