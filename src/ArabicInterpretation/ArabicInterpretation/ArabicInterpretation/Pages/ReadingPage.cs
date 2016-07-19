@@ -23,10 +23,13 @@ namespace ArabicInterpretation.Pages
 
         AuthorLabel authorLabel;
         BookChapterLabel bookChapterLabel;
-        ScrollView scrollView;
         Image loadingImage;
 
         Dictionary<int, Grid> verses;
+
+        ScrollView scrollView;
+        double scrollX;
+        double scrollY;
 
         bool isFullScreen = true;
 
@@ -37,7 +40,7 @@ namespace ArabicInterpretation.Pages
             {
                 Orientation = StackOrientation.Vertical,
             };
-            
+
             this.authorLabel = new AuthorLabel();
             layout.Children.Add(this.authorLabel);
 
@@ -55,8 +58,8 @@ namespace ArabicInterpretation.Pages
 
             this.scrollView = new ScrollView
             {
-                 BackgroundColor = ColorManager.Backgrounds.Default,
-                 Padding = Constants.ReadingPadding,
+                BackgroundColor = ColorManager.Backgrounds.Default,
+                Padding = Constants.ReadingPadding,
             };
 
             layout.Children.Add(scrollView);
@@ -89,9 +92,28 @@ namespace ArabicInterpretation.Pages
             });
         }
 
-        public async Task Initialize(ReadingInfo readingInfo, bool isFirstTime = false)
+        protected override async void OnDisappearing()
+        {
+            await this.SaveLastPosition();
+        }
+
+        public async Task SaveLastPosition()
+        {
+            await ReadingPositionManager.SaveLastPosition(
+                this.readingInfo,
+                this.scrollView.ScrollX,
+                this.scrollView.ScrollY);
+        }
+
+        public async Task Initialize(
+            ReadingInfo readingInfo,
+            double x = 0,
+            double y = 0,
+            bool isFirstTime = false)
         {
             this.readingInfo = readingInfo;
+            this.scrollX = x;
+            this.scrollY = y;
 
             // This has internal cache
             List<BookInfo> booksInfo = await BookNameManager.GetBookNames(readingInfo.IsNT);
@@ -110,6 +132,18 @@ namespace ArabicInterpretation.Pages
 
             this.isFullScreen = true;
             this.AdjustFullScreen();
+        }
+
+        protected override async void OnAppearing()
+        {
+            if (this.scrollX != 0 || this.scrollY != 0)
+            {
+                await Task.Yield();
+                await this.scrollView.ScrollToAsync(this.scrollX, this.scrollY, false);
+
+                this.scrollX = 0;
+                this.scrollY = 0;
+            }
         }
 
         private void ToggleLoading(bool isVisible)
@@ -182,7 +216,8 @@ namespace ArabicInterpretation.Pages
             this.scrollView.Content = chapterLayout;
 
             TapGestureRecognizer tapGestureRecognizer = new TapGestureRecognizer();
-            tapGestureRecognizer.Tapped += (s, e) => {
+            tapGestureRecognizer.Tapped += (s, e) =>
+            {
                 this.isFullScreen = !this.isFullScreen;
                 this.AdjustFullScreen();
             };

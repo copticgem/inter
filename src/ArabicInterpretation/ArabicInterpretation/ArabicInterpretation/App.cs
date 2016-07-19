@@ -15,11 +15,13 @@ namespace ArabicInterpretation
     {
         public static INavigation Navigation { get; private set; }
 
+        private ReadingPage readingPage;
+
         public App()
         {
             ColorManager.Initialize();
 
-            ReadingPage readingPage = new ReadingPage();
+            this.readingPage = new ReadingPage();
             this.MainPage = new NavigationPage(readingPage)
             {
                 BarBackgroundColor = ColorManager.Backgrounds.NavigationBar,
@@ -28,13 +30,11 @@ namespace ArabicInterpretation
 
             Navigation = this.MainPage.Navigation;
 
-            readingPage.Initialize(new ReadingInfo(
-                Author.FrTadros,
-                false,
-                1,
-                1),
-                true).Wait();
+            double x;
+            double y;
+            ReadingInfo readingInfo = ReadingPositionManager.GetLastPosition(out x, out y);
 
+            readingPage.Initialize(readingInfo, x, y, true).Wait();
         }
 
         protected override void OnStart()
@@ -42,9 +42,9 @@ namespace ArabicInterpretation
             // Handle when your app starts
         }
 
-        protected override void OnSleep()
+        protected override async void OnSleep()
         {
-            // Handle when your app sleeps
+            await this.readingPage.SaveLastPosition();
         }
 
         protected override void OnResume()

@@ -22,5 +22,10 @@ namespace ArabicInterpretation
         {
             public static string Author = "Author";
         }
+
+        public static class Properties
+        {
+            public static string LastPosition = "Last";
+        }
     }
 }

@@ -46,6 +46,7 @@
     <Compile Include="Helpers\NumbersHelper.cs" />
     <Compile Include="Helpers\PageData.cs" />
     <Compile Include="Helpers\PageTransition.cs" />
+    <Compile Include="Helpers\ReadingPositionManager.cs" />
     <Compile Include="Helpers\StringType.cs" />
     <Compile Include="Helpers\SynchronizationHelper.cs" />
     <Compile Include="Model\ReadingInfo.cs" />
