@@ -26,6 +26,9 @@ namespace ArabicInterpretation
         public static class Properties
         {
             public static string LastPosition = "Last";
+            public static string FontSize = "FontSize";
+            public static string BackgroundColor = "Background";
+            public static string OnDurationInMinutes = "OnDurationInMinutes";
         }
     }
 }

@@ -13,6 +13,8 @@ namespace ArabicInterpretation.Views
 {
     public class SettingsLabel : Button
     {
+        SettingsPage settingsPage;
+
         public SettingsLabel()
         {
             this.TextColor = ColorManager.Text.BookChapter;
@@ -29,14 +31,18 @@ namespace ArabicInterpretation.Views
             {
                 await SynchronizationHelper.ExecuteOnce(this.OnClicked());
             };
+
+            this.settingsPage = new SettingsPage();
         }
 
-        public async Task Initialize()
+        public void Initialize()
         {
+            this.settingsPage.Initialize();
         }
 
         public async Task OnClicked()
         {
+            await PageTransition.PushModalAsync(this.settingsPage, true);
         }
     }
 }

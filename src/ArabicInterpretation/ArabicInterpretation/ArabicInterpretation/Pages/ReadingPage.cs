@@ -237,7 +237,6 @@ namespace ArabicInterpretation.Pages
         {
             if (!this.isFullScreen)
             {
-                NavigationPage.SetHasNavigationBar(this, true);
                 this.authorLabel.IsVisible = true;
                 this.bookChapterLabel.IsVisible = true;
             }
@@ -245,7 +244,6 @@ namespace ArabicInterpretation.Pages
             {
                 this.authorLabel.IsVisible = false;
                 this.bookChapterLabel.IsVisible = false;
-                NavigationPage.SetHasNavigationBar(this, false);
             }
         }
     }

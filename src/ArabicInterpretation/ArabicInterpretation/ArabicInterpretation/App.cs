@@ -20,6 +20,7 @@ namespace ArabicInterpretation
         public App()
         {
             ColorManager.Initialize();
+            SettingsManager.Initialize();
 
             this.readingPage = new ReadingPage();
             this.MainPage = new NavigationPage(readingPage)

@@ -47,14 +47,19 @@
     <Compile Include="Helpers\PageData.cs" />
     <Compile Include="Helpers\PageTransition.cs" />
     <Compile Include="Helpers\ReadingPositionManager.cs" />
+    <Compile Include="Helpers\SettingsManager.cs" />
     <Compile Include="Helpers\StringType.cs" />
     <Compile Include="Helpers\SynchronizationHelper.cs" />
+    <Compile Include="Model\FontSize.cs" />
+    <Compile Include="Model\OptionItem.cs" />
     <Compile Include="Model\ReadingInfo.cs" />
     <Compile Include="Model\BookInfo.cs" />
+    <Compile Include="Model\BackgroundColor.cs" />
     <Compile Include="Pages\AuthorChooserPage.cs" />
     <Compile Include="Pages\BasePage.cs" />
     <Compile Include="Pages\BookChooserPage.cs" />
     <Compile Include="Pages\LoadingPage.cs" />
+    <Compile Include="Pages\SettingsPage.cs" />
     <Compile Include="Pages\VerseChooserPage.cs" />
     <Compile Include="Pages\ChapterChooserPage.cs" />
     <Compile Include="Pages\HomePage.cs" />
@@ -66,6 +71,7 @@
       <DependentUpon>Books.resx</DependentUpon>
     </Compile>
     <Compile Include="Views\BookChapterLabel.cs" />
+    <Compile Include="Views\CustomPicker.cs" />
     <Compile Include="Views\SettingsLabel.cs" />
     <Compile Include="Views\VerseLabel.cs" />
     <Compile Include="Views\ChapterLabel.cs" />
