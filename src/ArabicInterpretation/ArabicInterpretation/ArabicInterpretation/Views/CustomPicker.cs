@@ -13,10 +13,10 @@ namespace ArabicInterpretation.Views
     class CustomPicker : StackLayout
     {
         string title;
+        List<OptionItem> options;
 
         Button button;
         Picker picker;
-        List<OptionItem> options;
 
         public CustomPicker(
             string title,
@@ -26,19 +26,7 @@ namespace ArabicInterpretation.Views
             this.title = title;
             this.options = options;
 
-            this.button = new Button
-            {
-                BackgroundColor = ColorManager.Backgrounds.Default,
-                HorizontalOptions = LayoutOptions.End,
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button)),
-                TextColor = ColorManager.Text.Default
-            };
-
-            this.button.Clicked += (sender, e) =>
-            {
-                this.picker.Focus();
-            };
-
+            // Picker
             this.picker = new Picker
             {
                 IsVisible = false
@@ -58,6 +46,20 @@ namespace ArabicInterpretation.Views
                 }
             };
 
+            // Button
+            this.button = new Button
+            {
+                BackgroundColor = ColorManager.Backgrounds.Default,
+                HorizontalOptions = LayoutOptions.End,
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button)),
+                TextColor = ColorManager.Text.Default
+            };
+
+            this.button.Clicked += (sender, e) =>
+            {
+                this.picker.Focus();
+            };
+
             this.Children.Add(this.button);
             this.Children.Add(this.picker);
         }
@@ -66,6 +68,7 @@ namespace ArabicInterpretation.Views
         {
             string displayName = this.options.Single(o => o.OptionName.Equals(optionName)).DisplayName;
             this.SetButtonText(displayName);
+            this.picker.SelectedIndex = this.picker.Items.IndexOf(displayName);
         }
 
         private void SetButtonText(string displayName)

@@ -31,6 +31,11 @@ namespace ArabicInterpretation.Helpers
             {
                 Application.Current.Properties[Constants.Properties.FontSize] = FontSize.Medium.ToString();
             }
+
+            if (!Application.Current.Properties.ContainsKey(Constants.Properties.BackgroundColor))
+            {
+                Application.Current.Properties[Constants.Properties.BackgroundColor] = ReadingBackgroundColor.White.ToString();
+            }
         }
     }
 }

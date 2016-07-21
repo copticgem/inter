@@ -13,6 +13,7 @@ namespace ArabicInterpretation.Pages
     class SettingsPage : BasePage
     {
         CustomPicker fontSizePicker;
+        CustomPicker backgroundColorPicker;
 
         public SettingsPage()
             : base("الاعدادات ")
@@ -31,20 +32,35 @@ namespace ArabicInterpretation.Pages
             };
 
             this.fontSizePicker = new CustomPicker(
-                title: "حجم الخط",
+                title: "حجم النص",
                 options: fontSizes,
                 settingName: Constants.Properties.FontSize);
 
-            this.Initialize();
+            // Background color
+            List<OptionItem> backgroundColors = new List<OptionItem>
+            {
+                new OptionItem(ReadingBackgroundColor.White.ToString(), "ابيض"),
+                new OptionItem(ReadingBackgroundColor.Black.ToString(), "اسود"),
+                new OptionItem(ReadingBackgroundColor.Sepia.ToString(), "بيج"),
+            };
 
-            stackLayout.Children.Add(fontSizePicker);
+            this.backgroundColorPicker = new CustomPicker(
+                title: "خلفية النص",
+                options: backgroundColors,
+                settingName: Constants.Properties.BackgroundColor);
+
+            stackLayout.Children.Add(this.fontSizePicker);
+            stackLayout.Children.Add(this.backgroundColorPicker);
             this.Content = stackLayout;
         }
 
         public void Initialize()
         {
-            string defaultFontSize = SettingsManager.GetSetting(Constants.Properties.FontSize);
-            this.fontSizePicker.Initialize(defaultFontSize);
+            string currentFontSize = SettingsManager.GetSetting(Constants.Properties.FontSize);
+            this.fontSizePicker.Initialize(currentFontSize);
+
+            string currentBackgroundColor = SettingsManager.GetSetting(Constants.Properties.BackgroundColor);
+            this.backgroundColorPicker.Initialize(currentBackgroundColor);
         }
     }
 }

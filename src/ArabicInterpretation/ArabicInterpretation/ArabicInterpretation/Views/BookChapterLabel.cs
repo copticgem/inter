@@ -62,6 +62,8 @@ namespace ArabicInterpretation.Views
                 bookName: bookInfo.Name);
 
             await this.verseLabel.Initialize(verses);
+
+            this.settingsLabel.Initialize();
         }
     }
 }
