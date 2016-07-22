@@ -15,6 +15,9 @@ namespace ArabicInterpretation.Pages
         CustomPicker fontSizePicker;
         CustomPicker backgroundColorPicker;
 
+        FontSize currentFontSize;
+        ReadingBackgroundColor currentBackgroundColor;
+
         public SettingsPage()
             : base("الاعدادات ")
         {
@@ -56,11 +59,31 @@ namespace ArabicInterpretation.Pages
 
         public void Initialize()
         {
-            string currentFontSize = SettingsManager.GetSetting(Constants.Properties.FontSize);
-            this.fontSizePicker.Initialize(currentFontSize);
+            this.currentFontSize = SettingsManager.GetFontSize();
+            this.fontSizePicker.Initialize(currentFontSize.ToString());
 
-            string currentBackgroundColor = SettingsManager.GetSetting(Constants.Properties.BackgroundColor);
-            this.backgroundColorPicker.Initialize(currentBackgroundColor);
+            this.currentBackgroundColor = SettingsManager.GetBackgroundColor();
+            this.backgroundColorPicker.Initialize(currentBackgroundColor.ToString());
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+
+            FontSize newFontSize = SettingsManager.GetFontSize();
+            ReadingBackgroundColor newBackgroundColor = SettingsManager.GetBackgroundColor();
+
+            if (this.currentFontSize != newFontSize ||
+                this.currentBackgroundColor != newBackgroundColor)
+            {
+                this.currentFontSize = newFontSize;
+                this.currentBackgroundColor = newBackgroundColor;
+
+                // Send message to reload readingPage
+                // Show loading screen in reading page
+                MessagingCenter.Send(App.Navigation, ReadingPage.ShowLoadingMessage);
+                MessagingCenter.Send(this, ReadingPage.SettingsChangedMessage);
+            }
         }
     }
 }

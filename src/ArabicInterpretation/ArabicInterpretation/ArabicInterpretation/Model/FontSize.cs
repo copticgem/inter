@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ArabicInterpretation.Model
 {
-    enum FontSize
+    public enum FontSize
     {
         Small,
         Medium,

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ArabicInterpretation.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,11 +11,15 @@ namespace ArabicInterpretation.Helpers
 {
     static class ContentFormatter
     {
-        public static List<View> FormatContent(string content, out Dictionary<int, Grid> verses)
+        public static List<View> FormatContent(
+            string content, 
+            ReadingColor color,
+            out Dictionary<int, Grid> verses)
         {
             verses = new Dictionary<int, Grid>();
-
             List<View> views = new List<View>();
+
+            NamedSize fontSize = SettingsManager.ToNamedSize(SettingsManager.GetFontSize());
 
             string[] tokens = Regex.Split(
                 input: content,
@@ -44,7 +49,7 @@ namespace ArabicInterpretation.Helpers
                     }
                     else if (token == "{{t}}")
                     {
-                        openLabel = CreateLabel(StringType.Subtitle);
+                        openLabel = CreateLabel(StringType.Subtitle, fontSize, color);
                     }
                     else if (token == "{{/t}}")
                     {
@@ -53,24 +58,24 @@ namespace ArabicInterpretation.Helpers
                     }
                     else if (token == "{{b}}")
                     {
-                        openLabel = CreateLabel(StringType.BoldText);
+                        openLabel = CreateLabel(StringType.BoldText, fontSize, color);
                     }
                     else if (token == "{{/b}}")
                     {
-                        MergeBoldText(openLabel, views);
+                        MergeBoldText(openLabel, views, fontSize, color);
                         openLabel = null;
                     }
                     else if (token == "{{l}}")
                     {
-                        views.Add(CreateLabel(StringType.NewLine));
+                        views.Add(CreateLabel(StringType.NewLine, fontSize, color));
                     }
                     else if (token == "{{p}}")
                     {
-                        views.Add(CreateLabel(StringType.NewParagraph));
+                        views.Add(CreateLabel(StringType.NewParagraph, fontSize, color));
                     }
                     else if (token == "{{d}}")
                     {
-                        views.Add(new BoxView() { Color = Color.White, HeightRequest = 1 });
+                        views.Add(new BoxView() { Color = color.TextColor, HeightRequest = 1 });
                     }
                     else if (token == "{{g}}" || token == "{{gltr}}")
                     {
@@ -78,6 +83,8 @@ namespace ArabicInterpretation.Helpers
                         views.Add(GetGrid(
                             tokens.ToList(),
                             i,
+                            fontSize,
+                            color,
                             out gridEndIndex));
 
                         // Skip the grid
@@ -97,13 +104,13 @@ namespace ArabicInterpretation.Helpers
                         if (lastLabel != null && lastLabel.FormattedText != null)
                         {
                             // Last label was bold, this needs to be on the same line
-                            Span span = CreateSpan(CreateLabel(StringType.Text));
+                            Span span = CreateSpan(CreateLabel(StringType.Text, fontSize, color));
                             span.Text = token;
                             lastLabel.FormattedText.Spans.Add(span);
                         }
                         else
                         {
-                            Label textLabel = CreateLabel(StringType.Text);
+                            Label textLabel = CreateLabel(StringType.Text, fontSize, color);
                             textLabel.Text = token;
                             views.Add(textLabel);
                         }
@@ -125,14 +132,17 @@ namespace ArabicInterpretation.Helpers
             });
         }
 
-        private static Label CreateLabel(StringType type)
+        private static Label CreateLabel(
+            StringType type, 
+            NamedSize fontSize,
+            ReadingColor color)
         {
             Label label = new Label
             {
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                FontSize = Device.GetNamedSize(fontSize, typeof(Label)),
                 HorizontalTextAlignment = TextAlignment.End,
-                TextColor = ColorManager.Text.Default,
-                BackgroundColor = ColorManager.Backgrounds.Default
+                TextColor = color.TextColor,
+                BackgroundColor = color.BackgroundColor
             };
 
             switch (type)
@@ -163,7 +173,11 @@ namespace ArabicInterpretation.Helpers
             return label;
         }
 
-        private static void MergeBoldText(Label boldLabel, List<View> views)
+        private static void MergeBoldText(
+            Label boldLabel, 
+            List<View> views,
+            NamedSize fontSize,
+            ReadingColor color)
         {
             if (!views.Any())
             {
@@ -175,7 +189,7 @@ namespace ArabicInterpretation.Helpers
             if (lastLabel == null || lastLabel.ClassId == "p")
             {
                 // Not a label, add bold as separate label
-                Label label = CreateLabel(StringType.Text);
+                Label label = CreateLabel(StringType.Text, fontSize, color);
                 label.FormattedText = new FormattedString();
                 label.FormattedText.Spans.Add(boldSpan);
                 views.Add(label);
@@ -189,7 +203,7 @@ namespace ArabicInterpretation.Helpers
             {
                 // Convert last text to span
                 views.Remove(lastLabel);
-                Label label = CreateLabel(StringType.Text);
+                Label label = CreateLabel(StringType.Text, fontSize, color);
                 label.FormattedText = new FormattedString();
                 label.FormattedText.Spans.Add(CreateSpan(lastLabel));
                 label.FormattedText.Spans.Add(boldSpan);
@@ -213,6 +227,8 @@ namespace ArabicInterpretation.Helpers
         private static Grid GetGrid(
             List<string> tokens,
             int gridStartIndex,
+            NamedSize fontSize,
+            ReadingColor color,
             out int gridEndIndex)
         {
             bool isReversedGrid = false;
@@ -265,7 +281,7 @@ namespace ArabicInterpretation.Helpers
             {
                 ColumnSpacing = 1,
                 RowSpacing = 1,
-                BackgroundColor = ColorManager.Border.Grid
+                BackgroundColor = color.TextColor
             };
 
             for (int i = 0; i < rowCount; i++)
@@ -280,7 +296,7 @@ namespace ArabicInterpretation.Helpers
 
             foreach (var tuple in gridTuples)
             {
-                Label label = CreateLabel(StringType.Text);
+                Label label = CreateLabel(StringType.Text, fontSize, color);
                 label.Text = tuple.Item1;
 
                 // This a workaround since there is a bug with grid that it truncates the text

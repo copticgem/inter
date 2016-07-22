@@ -52,6 +52,7 @@
     <Compile Include="Helpers\SynchronizationHelper.cs" />
     <Compile Include="Model\FontSize.cs" />
     <Compile Include="Model\OptionItem.cs" />
+    <Compile Include="Model\ReadingColor.cs" />
     <Compile Include="Model\ReadingInfo.cs" />
     <Compile Include="Model\BookInfo.cs" />
     <Compile Include="Model\ReadingBackgroundColor.cs" />

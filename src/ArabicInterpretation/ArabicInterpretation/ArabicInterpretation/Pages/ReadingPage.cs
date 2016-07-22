@@ -17,6 +17,7 @@ namespace ArabicInterpretation.Pages
         public const string ChapterChangedMessage = "ReadingPageChapterChanged";
         public const string VerseChangedMessage = "ReadingPageVerseChanged";
         public const string AuthorChangedMessage = "ReadingPageAuthorChanged";
+        public const string SettingsChangedMessage = "ReadingPageSettingsChanged";
         public const string ShowLoadingMessage = "ReadingPageShowLoading";
 
         ReadingInfo readingInfo;
@@ -58,7 +59,6 @@ namespace ArabicInterpretation.Pages
 
             this.scrollView = new ScrollView
             {
-                BackgroundColor = ColorManager.Backgrounds.Default,
                 Padding = Constants.ReadingPadding,
             };
 
@@ -89,6 +89,12 @@ namespace ArabicInterpretation.Pages
             MessagingCenter.Subscribe<INavigation>(this, ShowLoadingMessage, (sender) =>
             {
                 this.ToggleLoading(true);
+            });
+
+            // Listen to settings changed
+            MessagingCenter.Subscribe<SettingsPage>(this, SettingsChangedMessage, async (sender) =>
+            {
+                await this.Initialize(this.readingInfo, this.scrollView.ScrollX, this.scrollView.ScrollY);
             });
         }
 
@@ -199,7 +205,8 @@ namespace ArabicInterpretation.Pages
                 this.readingInfo.BookNumber,
                 this.readingInfo.ChapterNumber);
 
-            List<View> views = ContentFormatter.FormatContent(content, out this.verses);
+            ReadingColor color = SettingsManager.ToColor(SettingsManager.GetBackgroundColor());
+            List<View> views = ContentFormatter.FormatContent(content, color, out this.verses);
 
             StackLayout chapterLayout = new StackLayout
             {
@@ -213,6 +220,7 @@ namespace ArabicInterpretation.Pages
                 chapterLayout.Children.Add(view);
             }
 
+            this.scrollView.BackgroundColor = color.BackgroundColor;
             this.scrollView.Content = chapterLayout;
 
             TapGestureRecognizer tapGestureRecognizer = new TapGestureRecognizer();
