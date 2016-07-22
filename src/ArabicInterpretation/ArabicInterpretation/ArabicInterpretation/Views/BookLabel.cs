@@ -25,7 +25,6 @@ namespace ArabicInterpretation.Views
             this.BorderRadius = 1;
             this.BorderWidth = Constants.DefaultBorderWidth;
             this.BorderColor = ColorManager.Text.BookChapter;
-            this.BackgroundColor = ColorManager.Backgrounds.BookChapterBar;
 
             this.Clicked += async (sender, e) =>
             {
@@ -39,8 +38,10 @@ namespace ArabicInterpretation.Views
             Author author,
             bool isNT,
             int bookNumber,
-            string bookName)
+            string bookName,
+            ReadingColor color)
         {
+            this.BackgroundColor = color.SecondBarColor;
             this.Text = bookName;
 
             await this.bookChooserPage.Initialize(

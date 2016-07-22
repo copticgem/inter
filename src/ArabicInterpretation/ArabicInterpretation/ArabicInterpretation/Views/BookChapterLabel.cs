@@ -20,7 +20,6 @@ namespace ArabicInterpretation.Views
             this.Orientation = StackOrientation.Horizontal;
             this.HorizontalOptions = LayoutOptions.FillAndExpand;
             this.VerticalOptions = LayoutOptions.StartAndExpand;
-            this.BackgroundColor = ColorManager.Backgrounds.BookChapterBar;
 
             // Book & chapter layout
             StackLayout bookChapter = new StackLayout
@@ -49,21 +48,26 @@ namespace ArabicInterpretation.Views
         public async Task Initialize(
             ReadingInfo readingInfo,
             BookInfo bookInfo,
-            Dictionary<int, Grid> verses)
+            Dictionary<int, Grid> verses,
+            ReadingColor color)
         {
+            this.BackgroundColor = color.SecondBarColor;
+
             await this.chapterLabel.Initialize(
                 readingInfo: readingInfo,
-                chaptersCount: bookInfo.ChaptersCount);
+                chaptersCount: bookInfo.ChaptersCount,
+                color: color);
 
             await this.bookLabel.Initialize(
                 author: readingInfo.Author,
                 isNT: readingInfo.IsNT,
                 bookNumber: readingInfo.BookNumber, 
-                bookName: bookInfo.Name);
+                bookName: bookInfo.Name,
+                color: color);
 
-            await this.verseLabel.Initialize(verses);
+            await this.verseLabel.Initialize(verses, color);
 
-            this.settingsLabel.Initialize();
+            this.settingsLabel.Initialize(color);
         }
     }
 }

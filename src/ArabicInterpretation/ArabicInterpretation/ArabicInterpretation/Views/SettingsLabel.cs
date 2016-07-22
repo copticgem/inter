@@ -25,7 +25,6 @@ namespace ArabicInterpretation.Views
             this.HorizontalOptions = LayoutOptions.Start;
 
             this.BorderWidth = 0;
-            this.BackgroundColor = ColorManager.Backgrounds.BookChapterBar;
 
             this.Clicked += async (sender, e) =>
             {
@@ -33,8 +32,9 @@ namespace ArabicInterpretation.Views
             };
         }
 
-        public void Initialize()
+        public void Initialize(ReadingColor color)
         {
+            this.BackgroundColor = color.SecondBarColor;
         }
 
         public async Task OnClicked()

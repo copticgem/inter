@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ArabicInterpretation.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -43,6 +44,12 @@ namespace ArabicInterpretation
         }
 
         public static Color Theme;
+
+        public static ReadingColor DefaultReadingColor = new ReadingColor(
+            textColor: Color.Black,
+            backgroundColor: Color.White,
+            firstBarColor: Color.FromRgb(233, 234, 235),
+            secondBarColor: Color.FromRgb(249, 249, 249));
 
         public static class Backgrounds
         {

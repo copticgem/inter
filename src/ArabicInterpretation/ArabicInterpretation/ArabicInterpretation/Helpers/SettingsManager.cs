@@ -82,13 +82,21 @@ namespace ArabicInterpretation.Helpers
             switch (backgroundColor)
             {
                 case ReadingBackgroundColor.White:
-                    return new ReadingColor(Color.Black, Color.White);
+                    return ColorManager.DefaultReadingColor;
                 case ReadingBackgroundColor.Black:
-                    return new ReadingColor(Color.White, Color.Black);
+                    return new ReadingColor(
+                        textColor: Color.White, 
+                        backgroundColor: Color.Black,
+                        firstBarColor: Color.FromRgb(30, 30, 30),
+                        secondBarColor: Color.FromRgb(20, 20, 20));
                 case ReadingBackgroundColor.Sepia:
-                    return new ReadingColor(Color.FromRgb(95, 75, 50), Color.FromRgb(251, 240, 217));
+                    return new ReadingColor(
+                        textColor: Color.FromRgb(95, 75, 50), 
+                        backgroundColor: Color.FromRgb(251, 240, 217),
+                        firstBarColor: Color.FromRgb(240, 225, 193),
+                        secondBarColor: Color.FromRgb(242, 229, 203));
                 default:
-                    return new ReadingColor(Color.Black, Color.White);
+                    return ColorManager.DefaultReadingColor;
             }
         }
     }

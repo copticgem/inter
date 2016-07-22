@@ -25,7 +25,6 @@ namespace ArabicInterpretation.Views
             this.HorizontalOptions = LayoutOptions.End;
 
             this.BorderWidth = 0;
-            this.BackgroundColor = ColorManager.Backgrounds.BookChapterBar;
 
             this.Clicked += async (sender, e) =>
             {
@@ -35,8 +34,11 @@ namespace ArabicInterpretation.Views
             this.verseChooserPage = new VerseChooserPage();
         }
 
-        public async Task Initialize(Dictionary<int, Grid> verses)
+        public async Task Initialize(
+            Dictionary<int, Grid> verses,
+            ReadingColor color)
         {
+            this.BackgroundColor = color.SecondBarColor;
             await this.verseChooserPage.Initialize(verses);
         }
 

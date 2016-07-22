@@ -25,7 +25,6 @@ namespace ArabicInterpretation.Views
             this.BorderRadius = 1;
             this.BorderWidth = Constants.DefaultBorderWidth;
             this.BorderColor = ColorManager.Text.BookChapter;
-            this.BackgroundColor = ColorManager.Backgrounds.BookChapterBar;
 
             this.Clicked += async (sender, e) =>
             {
@@ -35,8 +34,13 @@ namespace ArabicInterpretation.Views
             this.chapterChooserPage = new ChapterChooserPage();
         }
 
-        public async Task Initialize(ReadingInfo readingInfo, int chaptersCount)
+        public async Task Initialize(
+            ReadingInfo readingInfo, 
+            int chaptersCount,
+            ReadingColor color)
         {
+            this.BackgroundColor = color.SecondBarColor;
+
             this.UpdateText(readingInfo.ChapterNumber);
 
             await this.chapterChooserPage.Initialize(

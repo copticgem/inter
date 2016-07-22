@@ -1,4 +1,5 @@
 ﻿using ArabicInterpretation.Helpers;
+using ArabicInterpretation.Model;
 using ArabicInterpretation.Pages;
 using Core;
 using System;
@@ -17,7 +18,6 @@ namespace ArabicInterpretation.Views
 
         public AuthorLabel()
         {
-            this.BackgroundColor = ColorManager.Backgrounds.AuthorBar;
             this.HorizontalOptions = LayoutOptions.FillAndExpand;
             this.VerticalOptions = LayoutOptions.Start;
 
@@ -27,7 +27,6 @@ namespace ArabicInterpretation.Views
             this.button.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button));
 
             this.button.BorderWidth = 0;
-            this.button.BackgroundColor = ColorManager.Backgrounds.AuthorBar;
 
             this.button.Clicked += async (sender, e) =>
             {
@@ -41,8 +40,12 @@ namespace ArabicInterpretation.Views
             string messageTitle,
             Author author,
             bool isNT, 
-            int bookNumber)
+            int bookNumber,
+            ReadingColor color)
         {
+            this.BackgroundColor = color.FirstBarColor;
+            this.button.BackgroundColor = color.FirstBarColor;
+
             await this.authorChooserPage.Initialize(
                 messageTitle,
                 author, 

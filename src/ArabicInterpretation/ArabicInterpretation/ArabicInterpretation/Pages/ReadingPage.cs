@@ -125,14 +125,23 @@ namespace ArabicInterpretation.Pages
             List<BookInfo> booksInfo = await BookNameManager.GetBookNames(readingInfo.IsNT);
             BookInfo bookInfo = booksInfo[readingInfo.BookNumber - 1];
 
-            await this.UpdateAuthorLabel();
+            ReadingColor color = SettingsManager.ToColor(SettingsManager.GetBackgroundColor());
+            this.BackgroundColor = color.BackgroundColor;
 
-            await this.UpdateContent(isFirstTime);
+            await this.authorLabel.Initialize(
+                ReadingPage.AuthorChangedMessage,
+                this.readingInfo.Author,
+                this.readingInfo.IsNT,
+                this.readingInfo.BookNumber,
+                color);
+
+            await this.UpdateContent(isFirstTime, color);
 
             await this.bookChapterLabel.Initialize(
                 readingInfo,
                 bookInfo,
-                this.verses);
+                this.verses,
+                color);
 
             this.ToggleLoading(false);
 
@@ -166,15 +175,6 @@ namespace ArabicInterpretation.Pages
             }
         }
 
-        private async Task UpdateAuthorLabel()
-        {
-            await this.authorLabel.Initialize(
-                ReadingPage.AuthorChangedMessage,
-                this.readingInfo.Author,
-                this.readingInfo.IsNT,
-                this.readingInfo.BookNumber);
-        }
-
         private async Task OnChapterChanged(ChaptersGrid sender, ReadingInfo readingInfo)
         {
             if (this.readingInfo.Author != readingInfo.Author ||
@@ -196,7 +196,7 @@ namespace ArabicInterpretation.Pages
             }
         }
 
-        private async Task UpdateContent(bool isFirstTime)
+        private async Task UpdateContent(bool isFirstTime, ReadingColor color)
         {
             // Update content
             string content = await FileHelper.GetFile(
@@ -205,7 +205,6 @@ namespace ArabicInterpretation.Pages
                 this.readingInfo.BookNumber,
                 this.readingInfo.ChapterNumber);
 
-            ReadingColor color = SettingsManager.ToColor(SettingsManager.GetBackgroundColor());
             List<View> views = ContentFormatter.FormatContent(content, color, out this.verses);
 
             StackLayout chapterLayout = new StackLayout

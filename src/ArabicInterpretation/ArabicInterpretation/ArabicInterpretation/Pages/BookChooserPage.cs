@@ -66,7 +66,8 @@ namespace ArabicInterpretation.Pages
                 BookChooserPage.AuthorChangedMessage,
                 author,
                 isNT,
-                -1);
+                -1,
+                ColorManager.DefaultReadingColor);
 
             await bookChooser.Initialize(
                 author: author,

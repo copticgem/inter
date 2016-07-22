@@ -79,7 +79,8 @@ namespace ArabicInterpretation.Pages
                 ChapterChooserPage.AuthorChangedMessage,
                 author,
                 isNT,
-                bookNumber);
+                bookNumber,
+                ColorManager.DefaultReadingColor);
 
             await this.chaptersGrid.Initialize(
                 shouldPopTwice,
