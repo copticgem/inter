@@ -11,7 +11,7 @@ namespace Formatter
 {
     public static class ContentDownloader
     {
-        const string Author = Constants.Authors.FrTadros;
+        const string Author = Constants.Authors.FrAntonious;
 
         public static void DownloadAll()
         {
@@ -29,7 +29,7 @@ namespace Formatter
                     continue;
                 }
 
-                if (i != 22)
+                if (i != 20)
                 {
                     continue;
                 }
@@ -144,15 +144,46 @@ namespace Formatter
             for (int i = 1; i < 200; i++)
             {
                 string chapterNumber = i.ToString("D2");
+                string fileName;
+
                 if (isMazameer)
                 {
+                    if (i == 119)
+                    {
+                        // Psalm 119 is divided to 22 parts
+                        for (int j = 1; j <= 22; j++)
+                        {
+                            fileName = baseDirectory + @"\" + i + "(" + j + ").html";
+                            if (File.Exists(fileName))
+                            {
+                                // continue;
+                            }
+
+                            string partNumber = j.ToString("D2");
+                            url = urlPrefix + "__01-Chapter-" + chapterNumber + "-" + partNumber + ".html";
+                            content = ContentDownloader.GetPage(url);
+
+                            if (content.Contains("404 File Not Found!"))
+                            {
+                                break;
+                            }
+
+                            // Apply special cases
+                            content = SpecialCases.Original(url, content);
+
+                            File.WriteAllText(fileName, content, Encoding.UTF8);
+
+                            continue;
+                        }
+                    }
+
                     chapterNumber = i.ToString("D3");
                 }
 
-                string fileName = baseDirectory + @"\" + i + ".html";
+                fileName = baseDirectory + @"\" + i + ".html";
                 if (File.Exists(fileName))
                 {
-                    // continue;
+                    continue;
                 }
 
                 Thread.Sleep(TimeSpan.FromSeconds(1));
