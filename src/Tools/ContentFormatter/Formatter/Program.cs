@@ -13,11 +13,11 @@ namespace Formatter
     {
         static void Main(string[] args)
         {
-            // HttpHelpers.FormatOne(Constants.Authors.FrAntonious, true, 6, 0, true);
+            HttpHelpers.FormatOne(Constants.Authors.FrTadros, false, 21, 119, true);
 
             // HttpHelpers.FormatAll(Constants.Authors.FrAntonious, true);
 
-            ContentDownloader.DownloadAll();
+            // ContentDownloader.DownloadAll();
 
             // BookNumbers.Format();
         }

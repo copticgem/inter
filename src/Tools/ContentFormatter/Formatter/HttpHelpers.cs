@@ -25,13 +25,39 @@ namespace Formatter
         {
             string file = @"F:\git\inter\src\Data\Original";
             string type = isNT ? "nt" : "ot";
-            file = Path.Combine(
-                file,
-                author,
-                type,
-                bookNumber.ToString(),
-                chapterNumber + ".html");
 
+            if (!isNT && bookNumber == 21 && chapterNumber == 119)
+            {
+                // Format all parts
+                for (int i = 1; i <= 22; i++)
+                {
+                    string fileName = Path.Combine(
+                        file,
+                        author,
+                        type,
+                        bookNumber.ToString(),
+                        chapterNumber + "(" + i + ").html");
+
+                    FormatInternal(fileName, save);
+                }
+            }
+            else
+            {
+                string fileName = Path.Combine(
+                    file,
+                    author,
+                    type,
+                    bookNumber.ToString(),
+                    chapterNumber + ".html");
+
+                FormatInternal(fileName, save);
+            }
+        }
+
+        private static void FormatInternal(
+            string file,
+            bool save)
+        {
             string page;
 
             string modifiedFile = file.Replace("Original", "Modified");
@@ -78,7 +104,7 @@ namespace Formatter
                 {
                     FormatFile(file, save);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     badFiles++;
                 }
@@ -416,7 +442,7 @@ namespace Formatter
                 input: page,
                 pattern: "{{b}} *{{d}}{{/b}}",
                 replacement: "{{d}}");
-            
+
             return page;
         }
 
