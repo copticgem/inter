@@ -42,6 +42,7 @@
     <Compile Include="Helpers\AuthorManager.cs" />
     <Compile Include="Helpers\ColorManager.cs" />
     <Compile Include="Helpers\ContentFormatter.cs" />
+    <Compile Include="Helpers\DisplayNameHelper.cs" />
     <Compile Include="Helpers\MissingBooksHelper.cs" />
     <Compile Include="Helpers\NumbersHelper.cs" />
     <Compile Include="Helpers\PageData.cs" />

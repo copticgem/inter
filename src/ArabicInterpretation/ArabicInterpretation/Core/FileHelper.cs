@@ -34,6 +34,8 @@ namespace Core
                 throw new InvalidOperationException("Unexpected author: " + author);
             }
 
+            string fileName = chapterNumber.ToString();
+
             // NT and OT
             if (isNT)
             {
@@ -42,9 +44,23 @@ namespace Core
             else
             {
                 path += "ot.";
+
+                if (bookNumber == 21)
+                {
+                    // Psalm 119 has multiple parts
+                    if (chapterNumber >= 119 && chapterNumber <= 140)
+                    {
+                        int partNumber = chapterNumber - 118;
+                        fileName = 119 + "(" + partNumber + ")";
+                    }
+                    else if (chapterNumber > 140)
+                    {
+                        fileName = (chapterNumber - 21).ToString();
+                    }
+                }
             }
 
-            path = DefaultPrefix + path + "_" + bookNumber + "." + chapterNumber + ".txt";
+            path = DefaultPrefix + path + "_" + bookNumber + "." + fileName + ".txt";
 
             return await ReadFile(path);
         }

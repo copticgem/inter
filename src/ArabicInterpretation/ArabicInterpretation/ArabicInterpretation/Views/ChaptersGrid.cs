@@ -67,9 +67,11 @@ namespace ArabicInterpretation.Views
             {
                 Button button = ColorManager.CreateButton();
                 button.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button));
-                button.Text = NumbersHelper.TranslateNumber(i);
 
                 int chapterNumber = i;
+
+                button.Text = DisplayNameHelper.GetChapterDisplayName(isNT, bookNumber, chapterNumber);
+
                 button.Clicked += async (sender, e) =>
                 {
                     await this.OnChapterClicked_Safe(
@@ -120,7 +122,7 @@ namespace ArabicInterpretation.Views
                 isNT,
                 bookNumber,
                 chapterNumber);
-            
+
             Task pop1 = PageTransition.PopModalAsync(true);
 
             // This flag means the call is coming from BooksChooser, so need to pop this page as well

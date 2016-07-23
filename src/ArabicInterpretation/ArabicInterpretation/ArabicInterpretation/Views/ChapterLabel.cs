@@ -41,7 +41,7 @@ namespace ArabicInterpretation.Views
         {
             this.BackgroundColor = color.SecondBarColor;
 
-            this.UpdateText(readingInfo.ChapterNumber);
+            this.UpdateText(readingInfo);
 
             await this.chapterChooserPage.Initialize(
                 shouldPopTwice: false,
@@ -56,15 +56,18 @@ namespace ArabicInterpretation.Views
             await PageTransition.PushModalAsync(this.chapterChooserPage);
         }
 
-        private void UpdateText(int chapterNumber)
+        private void UpdateText(ReadingInfo readingInfo)
         {
-            if (chapterNumber == 0)
+            if (readingInfo.ChapterNumber == 0)
             {
                 this.Text = "مقدمة";
             }
             else
             {
-                this.Text = NumbersHelper.TranslateNumber(chapterNumber);
+                this.Text = DisplayNameHelper.GetChapterDisplayName(
+                    readingInfo.IsNT,
+                    readingInfo.BookNumber,
+                    readingInfo.ChapterNumber);
             }
         }
     }
