@@ -653,7 +653,6 @@
     <EmbeddedResource Include="Resources\Father-Antonious-Fekry\ot\21\116.txt" />
     <EmbeddedResource Include="Resources\Father-Antonious-Fekry\ot\21\117.txt" />
     <EmbeddedResource Include="Resources\Father-Antonious-Fekry\ot\21\118.txt" />
-    <EmbeddedResource Include="Resources\Father-Antonious-Fekry\ot\21\119.txt" />
     <EmbeddedResource Include="Resources\Father-Antonious-Fekry\ot\21\12.txt" />
     <EmbeddedResource Include="Resources\Father-Antonious-Fekry\ot\21\120.txt" />
     <EmbeddedResource Include="Resources\Father-Antonious-Fekry\ot\21\121.txt" />
@@ -2698,6 +2697,52 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Father-Tadros-Yacoub-Malaty\ot\23\0.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Father-Antonious-Fekry\ot\21\119%281%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Antonious-Fekry\ot\21\119%2810%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Antonious-Fekry\ot\21\119%2811%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Antonious-Fekry\ot\21\119%2812%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Antonious-Fekry\ot\21\119%2813%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Antonious-Fekry\ot\21\119%2814%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Antonious-Fekry\ot\21\119%2815%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Antonious-Fekry\ot\21\119%2816%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Antonious-Fekry\ot\21\119%2817%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Antonious-Fekry\ot\21\119%2818%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Antonious-Fekry\ot\21\119%2819%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Antonious-Fekry\ot\21\119%282%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Antonious-Fekry\ot\21\119%2820%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Antonious-Fekry\ot\21\119%2821%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Antonious-Fekry\ot\21\119%2822%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Antonious-Fekry\ot\21\119%283%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Antonious-Fekry\ot\21\119%284%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Antonious-Fekry\ot\21\119%285%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Antonious-Fekry\ot\21\119%286%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Antonious-Fekry\ot\21\119%287%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Antonious-Fekry\ot\21\119%288%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Antonious-Fekry\ot\21\119%289%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Tadros-Yacoub-Malaty\ot\21\119%281%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Tadros-Yacoub-Malaty\ot\21\119%2810%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Tadros-Yacoub-Malaty\ot\21\119%2811%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Tadros-Yacoub-Malaty\ot\21\119%2812%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Tadros-Yacoub-Malaty\ot\21\119%2813%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Tadros-Yacoub-Malaty\ot\21\119%2814%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Tadros-Yacoub-Malaty\ot\21\119%2815%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Tadros-Yacoub-Malaty\ot\21\119%2816%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Tadros-Yacoub-Malaty\ot\21\119%2817%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Tadros-Yacoub-Malaty\ot\21\119%2818%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Tadros-Yacoub-Malaty\ot\21\119%2819%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Tadros-Yacoub-Malaty\ot\21\119%282%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Tadros-Yacoub-Malaty\ot\21\119%2820%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Tadros-Yacoub-Malaty\ot\21\119%2821%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Tadros-Yacoub-Malaty\ot\21\119%2822%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Tadros-Yacoub-Malaty\ot\21\119%283%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Tadros-Yacoub-Malaty\ot\21\119%284%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Tadros-Yacoub-Malaty\ot\21\119%285%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Tadros-Yacoub-Malaty\ot\21\119%286%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Tadros-Yacoub-Malaty\ot\21\119%287%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Tadros-Yacoub-Malaty\ot\21\119%288%29.txt" />
+    <EmbeddedResource Include="Resources\Father-Tadros-Yacoub-Malaty\ot\21\119%289%29.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
 </Project>
