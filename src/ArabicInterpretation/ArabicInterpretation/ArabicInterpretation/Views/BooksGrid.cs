@@ -130,9 +130,7 @@ namespace ArabicInterpretation
 
             await App.Navigation.PushModalAsync(
                 page: chapterChooserPage,
-                animated: false);
-
-            await Task.Yield();
+                animated: true);
 
             await chapterChooserPage.Initialize(
                shouldPopTwice: true,
