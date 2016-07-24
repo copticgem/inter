@@ -12,6 +12,8 @@ namespace ArabicInterpretation.Pages
 {
     class SettingsPage : BasePage
     {
+        StackLayout layout;
+
         CustomPicker fontSizePicker;
         CustomPicker backgroundColorPicker;
 
@@ -21,7 +23,9 @@ namespace ArabicInterpretation.Pages
         public SettingsPage()
             : base("الاعدادات ")
         {
-            StackLayout stackLayout = new StackLayout
+            this.Content = App.LoadingImage;
+
+            this.layout = new StackLayout
             {
                 Orientation = StackOrientation.Vertical,
             };
@@ -52,9 +56,8 @@ namespace ArabicInterpretation.Pages
                 options: backgroundColors,
                 settingName: Constants.Properties.BackgroundColor);
 
-            stackLayout.Children.Add(this.fontSizePicker);
-            stackLayout.Children.Add(this.backgroundColorPicker);
-            this.Content = stackLayout;
+            layout.Children.Add(this.fontSizePicker);
+            layout.Children.Add(this.backgroundColorPicker);
         }
 
         public void Initialize()
@@ -64,6 +67,8 @@ namespace ArabicInterpretation.Pages
 
             this.currentBackgroundColor = SettingsManager.GetBackgroundColor();
             this.backgroundColorPicker.Initialize(currentBackgroundColor.ToString());
+
+            this.Content = this.layout;
         }
 
         protected override void OnDisappearing()

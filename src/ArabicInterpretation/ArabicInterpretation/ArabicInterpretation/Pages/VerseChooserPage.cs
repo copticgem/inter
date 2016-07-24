@@ -11,12 +11,16 @@ namespace ArabicInterpretation.Pages
 {
     public class VerseChooserPage : BasePage
     {
+        StackLayout layout;
+
         VersesGrid versesGrid;
 
         public VerseChooserPage()
             :base("اختر الآية ")
         {
-            StackLayout layout = new StackLayout
+            this.Content = App.LoadingImage;
+
+            this.layout = new StackLayout
             {
                 Orientation = StackOrientation.Vertical,
                 VerticalOptions = LayoutOptions.Start,
@@ -30,13 +34,13 @@ namespace ArabicInterpretation.Pages
             };
 
             layout.Children.Add(scrollView);
-
-            this.Content = layout;
         }
 
         public async Task Initialize(Dictionary<int, Grid> verses)
         {
             await this.versesGrid.Initialize(verses);
+
+            this.Content = layout;
         }
     }
 }

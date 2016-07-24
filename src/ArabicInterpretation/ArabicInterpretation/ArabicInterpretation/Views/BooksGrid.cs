@@ -127,16 +127,19 @@ namespace ArabicInterpretation
             int chaptersCount)
         {
             ChapterChooserPage chapterChooserPage = new ChapterChooserPage();
-            await chapterChooserPage.Initialize(
-                shouldPopTwice: true,
-                author: this.author,
-                isNT: this.isNT,
-                bookNumber: bookNumber,
-                chaptersCount: chaptersCount);
 
-            await PageTransition.PushModalAsync(
+            await App.Navigation.PushModalAsync(
                 page: chapterChooserPage,
                 animated: false);
+
+            await Task.Yield();
+
+            await chapterChooserPage.Initialize(
+               shouldPopTwice: true,
+               author: this.author,
+               isNT: this.isNT,
+               bookNumber: bookNumber,
+               chaptersCount: chaptersCount);
         }
     }
 }

@@ -12,14 +12,18 @@ namespace ArabicInterpretation.Pages
 {
     public class AuthorChooserPage : BasePage
     {
+        StackLayout layout;
+
         AuthorsGrid authorsGrid;
 
         public AuthorChooserPage()
             : base("اختر الكاتب ")
         {
+            this.Content = App.LoadingImage;
+
             this.authorsGrid = new AuthorsGrid();
 
-            StackLayout layout = new StackLayout
+            this.layout = new StackLayout
             {
                 Padding = Constants.DefaultPadding,
                 Orientation = StackOrientation.Vertical,
@@ -27,7 +31,6 @@ namespace ArabicInterpretation.Pages
             };
 
             layout.Children.Add(authorsGrid);
-            this.Content = layout;
         }
 
         public async Task Initialize(
@@ -41,6 +44,8 @@ namespace ArabicInterpretation.Pages
                 currentAuthor,
                 isNT,
                 bookNumber);
+
+            this.Content = this.layout;
         }
     }
 }

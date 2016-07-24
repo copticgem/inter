@@ -13,6 +13,8 @@ namespace ArabicInterpretation.Pages
     {
         private const string AuthorChangedMessage = "ChapterChooserPageAuthorChanged";
 
+        StackLayout layout;
+
         bool shouldPopTwice;
         Author author;
         bool isNT;
@@ -25,7 +27,7 @@ namespace ArabicInterpretation.Pages
         public ChapterChooserPage()
             :base("اختر الاصحاح ")
         {
-            StackLayout layout = new StackLayout
+            this.layout = new StackLayout
             {
                 Orientation = StackOrientation.Vertical,
             };
@@ -41,8 +43,6 @@ namespace ArabicInterpretation.Pages
             };
 
             layout.Children.Add(scrollView);
-
-            this.Content = layout;
 
             // Listen to author changes
             MessagingCenter.Subscribe<AuthorsGrid, Author>(this, ChapterChooserPage.AuthorChangedMessage, async (sender, arg) =>
@@ -60,6 +60,8 @@ namespace ArabicInterpretation.Pages
                         chaptersCount: this.chaptersCount);
                 }
             });
+
+            this.Content = App.LoadingImage;
         }
 
         public async Task Initialize(
@@ -88,6 +90,8 @@ namespace ArabicInterpretation.Pages
                 isNT,
                 bookNumber,
                 chaptersCount);
+
+            this.Content = this.layout;
         }
     }
 }

@@ -15,6 +15,10 @@ namespace ArabicInterpretation.Views
     {
         BookChooserPage bookChooserPage;
 
+        Author author;
+        bool isNT;
+        int bookNumber;
+
         public BookLabel()
         {
             this.TextColor = ColorManager.Text.BookChapter;
@@ -31,7 +35,6 @@ namespace ArabicInterpretation.Views
                 await SynchronizationHelper.ExecuteOnce(this.OnClicked());
             };
 
-            this.bookChooserPage = new BookChooserPage();
         }
 
         public async Task Initialize(
@@ -43,16 +46,20 @@ namespace ArabicInterpretation.Views
         {
             this.BackgroundColor = color.SecondBarColor;
             this.Text = bookName;
+            this.author = author;
+            this.bookNumber = bookNumber;
+            this.isNT = isNT;
+        }
+
+        public async Task OnClicked()
+        {
+            this.bookChooserPage = new BookChooserPage();
+            await App.Navigation.PushModalAsync(this.bookChooserPage);
 
             await this.bookChooserPage.Initialize(
                 author,
                 isNT,
                 bookNumber);
-        }
-
-        public async Task OnClicked()
-        {
-            await PageTransition.PushModalAsync(this.bookChooserPage);
         }
     }
 }

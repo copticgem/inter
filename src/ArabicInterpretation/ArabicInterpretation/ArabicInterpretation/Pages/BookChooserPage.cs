@@ -14,6 +14,8 @@ namespace ArabicInterpretation.Pages
     {
         private const string AuthorChangedMessage = "BookChooserPageAuthorChanged";
 
+        StackLayout layout;
+
         Author author;
         bool isNT;
         int bookNumber;
@@ -24,7 +26,7 @@ namespace ArabicInterpretation.Pages
         public BookChooserPage()
             : base("اختر السفر ")
         {
-            StackLayout layout = new StackLayout
+            this.layout = new StackLayout
             {
                 Orientation = StackOrientation.Vertical,
             };
@@ -35,7 +37,7 @@ namespace ArabicInterpretation.Pages
             this.bookChooser = new BookChooser();
             layout.Children.Add(this.bookChooser);
 
-            this.Content = layout;
+            this.Content = App.LoadingImage;
 
             // Listen to author changes to disable missing books
             MessagingCenter.Subscribe<AuthorsGrid, Author>(this, BookChooserPage.AuthorChangedMessage, async (sender, arg) =>
@@ -73,6 +75,8 @@ namespace ArabicInterpretation.Pages
                 author: author,
                 isNT: isNT,
                 currentBookNumber: bookNumber);
+
+            this.Content = this.layout;
         }
     }
 }

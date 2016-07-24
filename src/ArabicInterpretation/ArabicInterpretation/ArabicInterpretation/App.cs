@@ -14,6 +14,8 @@ namespace ArabicInterpretation
     public class App : Application
     {
         public static INavigation Navigation { get; private set; }
+        
+        public static Image LoadingImage { get; private set; }
 
         private ReadingPage readingPage;
 
@@ -21,6 +23,12 @@ namespace ArabicInterpretation
         {
             ColorManager.Initialize();
             SettingsManager.Initialize();
+
+            LoadingImage = new Image
+            {
+                Source = ImageSource.FromResource("ArabicInterpretation.Resources.loading.png"),
+                VerticalOptions = LayoutOptions.CenterAndExpand
+            };
 
             this.readingPage = new ReadingPage();
             this.MainPage = new NavigationPage(readingPage)
