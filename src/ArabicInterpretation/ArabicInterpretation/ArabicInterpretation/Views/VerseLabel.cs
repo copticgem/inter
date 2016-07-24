@@ -14,6 +14,7 @@ namespace ArabicInterpretation.Views
     public class VerseLabel : Button
     {
         VerseChooserPage verseChooserPage;
+        Dictionary<int, Grid> verses;
 
         public VerseLabel()
         {
@@ -34,17 +35,20 @@ namespace ArabicInterpretation.Views
             this.verseChooserPage = new VerseChooserPage();
         }
 
-        public async Task Initialize(
+        public Task Initialize(
             Dictionary<int, Grid> verses,
             ReadingColor color)
         {
+            this.verses = verses;
             this.BackgroundColor = color.SecondBarColor;
-            await this.verseChooserPage.Initialize(verses);
+            return Task.FromResult(true);
         }
 
         public async Task OnClicked()
         {
             await PageTransition.PushModalAsync(this.verseChooserPage);
+
+            await this.verseChooserPage.Initialize(verses);
         }
     }
 }

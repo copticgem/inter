@@ -42,8 +42,10 @@ namespace ArabicInterpretation.Views
             // There is a bug in xamarin that picker gets disposed when modal is popped
             // so creating it each time here
             this.settingsPage = new SettingsPage();
-            this.settingsPage.Initialize();
+
             await PageTransition.PushModalAsync(this.settingsPage, true);
+
+            this.settingsPage.Initialize();
         }
     }
 }
