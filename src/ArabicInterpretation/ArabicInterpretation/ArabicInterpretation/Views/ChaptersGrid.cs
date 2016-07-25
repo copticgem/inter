@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using static Xamarin.Forms.Grid;
 
 namespace ArabicInterpretation.Views
 {
@@ -17,6 +18,7 @@ namespace ArabicInterpretation.Views
         private const int ButtonsPerRow = 5;
 
         bool shouldPopTwice;
+        Author author;
 
         public ChaptersGrid()
         {
@@ -44,6 +46,7 @@ namespace ArabicInterpretation.Views
             int chaptersCount)
         {
             this.shouldPopTwice = shouldPopTwice;
+            this.author = author;
 
             this.Children.Clear();
 
@@ -54,7 +57,6 @@ namespace ArabicInterpretation.Views
             introButton.Clicked += async (sender, e) =>
             {
                 await this.OnChapterClicked_Safe(
-                    author: author,
                     isNT: isNT,
                     bookNumber: bookNumber,
                     chapterNumber: 0);
@@ -75,7 +77,6 @@ namespace ArabicInterpretation.Views
                 button.Clicked += async (sender, e) =>
                 {
                     await this.OnChapterClicked_Safe(
-                        author: author,
                         isNT: isNT,
                         bookNumber: bookNumber,
                         chapterNumber: chapterNumber);
@@ -94,22 +95,24 @@ namespace ArabicInterpretation.Views
             return Task.FromResult(true);
         }
 
+        public void UpdateAuthor(Author author)
+        {
+            this.author = author;
+        }
+
         private async Task OnChapterClicked_Safe(
-            Author author,
             bool isNT,
             int bookNumber,
             int chapterNumber)
         {
             await SynchronizationHelper.ExecuteOnce(
                 this.OnChapterClicked(
-                    author,
                     isNT,
                     bookNumber,
                     chapterNumber));
         }
 
         private async Task OnChapterClicked(
-            Author author,
             bool isNT,
             int bookNumber,
             int chapterNumber)
@@ -118,7 +121,7 @@ namespace ArabicInterpretation.Views
             MessagingCenter.Send(App.Navigation, ReadingPage.ShowLoadingMessage);
 
             ReadingInfo readingInfo = new ReadingInfo(
-                author,
+                this.author,
                 isNT,
                 bookNumber,
                 chapterNumber);

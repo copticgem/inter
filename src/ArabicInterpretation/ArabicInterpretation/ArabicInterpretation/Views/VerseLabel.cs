@@ -13,7 +13,6 @@ namespace ArabicInterpretation.Views
 {
     public class VerseLabel : Button
     {
-        VerseChooserPage verseChooserPage;
         Dictionary<int, Grid> verses;
 
         public VerseLabel()
@@ -29,10 +28,8 @@ namespace ArabicInterpretation.Views
 
             this.Clicked += async (sender, e) =>
             {
-                await SynchronizationHelper.ExecuteOnce(this.OnClicked());
+                await this.OnClicked();
             };
-
-            this.verseChooserPage = new VerseChooserPage();
         }
 
         public Task Initialize(
@@ -46,9 +43,11 @@ namespace ArabicInterpretation.Views
 
         public async Task OnClicked()
         {
-            await PageTransition.PushModalAsync(this.verseChooserPage);
+            VerseChooserPage verseChooserPage = new VerseChooserPage();
 
-            await this.verseChooserPage.Initialize(verses);
+            await PageTransition.PushModalAsync(verseChooserPage);
+
+            await verseChooserPage.Initialize(verses);
         }
     }
 }

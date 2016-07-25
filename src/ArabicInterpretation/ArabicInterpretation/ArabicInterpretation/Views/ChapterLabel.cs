@@ -50,6 +50,7 @@ namespace ArabicInterpretation.Views
         public async Task OnClicked()
         {
             this.chapterChooserPage = new ChapterChooserPage();
+
             await PageTransition.PushModalAsync(this.chapterChooserPage);
 
             await this.chapterChooserPage.Initialize(

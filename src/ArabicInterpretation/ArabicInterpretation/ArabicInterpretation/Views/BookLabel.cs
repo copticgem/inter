@@ -54,7 +54,8 @@ namespace ArabicInterpretation.Views
         public async Task OnClicked()
         {
             this.bookChooserPage = new BookChooserPage();
-            await App.Navigation.PushModalAsync(this.bookChooserPage);
+
+            await PageTransition.PushModalAsync(this.bookChooserPage);
 
             await this.bookChooserPage.Initialize(
                 author,

@@ -51,13 +51,14 @@ namespace ArabicInterpretation.Pages
                 {
                     this.author = arg;
 
-                    // TODO: No need to initialize all these
-                    await this.Initialize(
-                        shouldPopTwice: this.shouldPopTwice,
-                        author: arg,
-                        isNT: this.isNT,
-                        bookNumber: this.bookNumber,
-                        chaptersCount: this.chaptersCount);
+                    await this.authorLabel.Initialize(
+                        ChapterChooserPage.AuthorChangedMessage,
+                        author,
+                        isNT,
+                        bookNumber,
+                        ColorManager.DefaultReadingColor);
+
+                    this.chaptersGrid.UpdateAuthor(this.author);
                 }
             });
 

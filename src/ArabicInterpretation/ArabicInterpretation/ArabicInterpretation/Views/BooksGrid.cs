@@ -128,7 +128,7 @@ namespace ArabicInterpretation
         {
             ChapterChooserPage chapterChooserPage = new ChapterChooserPage();
 
-            await App.Navigation.PushModalAsync(
+            await PageTransition.PushModalAsync(
                 page: chapterChooserPage,
                 animated: true);
 

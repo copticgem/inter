@@ -34,8 +34,6 @@ namespace ArabicInterpretation.Views
 
         public Task Initialize(Dictionary<int, Grid> verses)
         {
-            this.Children.Clear(); 
-
             var orderedVerses = verses.OrderBy(k => k.Key);
 
             int left = ButtonsPerRow - 1;

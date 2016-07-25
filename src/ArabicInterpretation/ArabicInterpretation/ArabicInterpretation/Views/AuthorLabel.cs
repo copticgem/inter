@@ -13,8 +13,11 @@ namespace ArabicInterpretation.Views
 {
     public class AuthorLabel : StackLayout
     {
-        AuthorChooserPage authorChooserPage;
         Button button;
+        string messageTitle;
+        Author author;
+        bool isNT;
+        int bookNumber;
 
         public AuthorLabel()
         {
@@ -33,31 +36,38 @@ namespace ArabicInterpretation.Views
                 await SynchronizationHelper.ExecuteOnce(this.OnClicked());
             };
 
-            this.authorChooserPage = new AuthorChooserPage();
         }
 
-        public async Task Initialize(
+        public Task Initialize(
             string messageTitle,
             Author author,
             bool isNT, 
             int bookNumber,
             ReadingColor color)
         {
+            this.messageTitle = messageTitle;
+            this.author = author;
+            this.isNT = isNT;
+            this.bookNumber = bookNumber;
+
             this.BackgroundColor = color.FirstBarColor;
             this.button.BackgroundColor = color.FirstBarColor;
-
-            await this.authorChooserPage.Initialize(
-                messageTitle,
-                author, 
-                isNT, 
-                bookNumber);
-
             this.UpdateText(author);
+
+            return Task.FromResult(true);
         }
 
         private async Task OnClicked()
         {
-            await PageTransition.PushModalAsync(this.authorChooserPage);
+            AuthorChooserPage authorChooserPage = new AuthorChooserPage();
+
+            await PageTransition.PushModalAsync(authorChooserPage);
+
+            await authorChooserPage.Initialize(
+                this.messageTitle,
+                this.author,
+                this.isNT,
+                this.bookNumber);
         }
 
         private void UpdateText(Author author)

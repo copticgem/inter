@@ -20,11 +20,12 @@ namespace ArabicInterpretation.Pages
         public const string SettingsChangedMessage = "ReadingPageSettingsChanged";
         public const string ShowLoadingMessage = "ReadingPageShowLoading";
 
+        StackLayout layout;
+
         ReadingInfo readingInfo;
 
         AuthorLabel authorLabel;
         BookChapterLabel bookChapterLabel;
-        Image loadingImage;
 
         Dictionary<int, Grid> verses;
 
@@ -37,7 +38,7 @@ namespace ArabicInterpretation.Pages
         public ReadingPage()
             : base(null)
         {
-            StackLayout layout = new StackLayout
+            this.layout = new StackLayout
             {
                 Orientation = StackOrientation.Vertical,
             };
@@ -48,15 +49,6 @@ namespace ArabicInterpretation.Pages
             this.bookChapterLabel = new BookChapterLabel();
             layout.Children.Add(bookChapterLabel);
 
-            this.loadingImage = new Image
-            {
-                Source = ImageSource.FromResource("ArabicInterpretation.Resources.loading.png"),
-                IsVisible = false,
-                VerticalOptions = LayoutOptions.StartAndExpand
-            };
-
-            layout.Children.Add(this.loadingImage);
-
             this.scrollView = new ScrollView
             {
                 Padding = Constants.ReadingPadding,
@@ -64,7 +56,7 @@ namespace ArabicInterpretation.Pages
 
             layout.Children.Add(scrollView);
 
-            this.Content = layout;
+            this.Content = App.LoadingImage;
 
             // Listen to author changes intended to ReadingPage
             MessagingCenter.Subscribe<AuthorsGrid, Author>(this, AuthorChangedMessage, async (sender, arg) =>
@@ -165,13 +157,11 @@ namespace ArabicInterpretation.Pages
         {
             if (isVisible)
             {
-                this.scrollView.IsVisible = false;
-                this.loadingImage.IsVisible = true;
+                this.Content = App.LoadingImage;
             }
             else
             {
-                this.loadingImage.IsVisible = false;
-                this.scrollView.IsVisible = true;
+                this.Content = this.layout;
             }
         }
 
@@ -183,6 +173,11 @@ namespace ArabicInterpretation.Pages
                 this.readingInfo.ChapterNumber != readingInfo.ChapterNumber)
             {
                 await this.Initialize(readingInfo);
+            }
+            else
+            {
+                // CaptersGrid showed loading, unshowing it here
+                this.ToggleLoading(false);
             }
         }
 
@@ -230,14 +225,6 @@ namespace ArabicInterpretation.Pages
             };
 
             chapterLayout.GestureRecognizers.Add(tapGestureRecognizer);
-
-            View firstView = chapterLayout.Children.FirstOrDefault();
-
-            // For some reason, when app starts, scrollToAsync hangs
-            if (!isFirstTime && firstView != null)
-            {
-                await this.scrollView.ScrollToAsync(firstView, ScrollToPosition.Start, false);
-            }
         }
 
         private void AdjustFullScreen()
