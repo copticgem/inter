@@ -12,7 +12,7 @@ namespace ArabicInterpretation.Helpers
     static class ContentFormatter
     {
         public static List<View> FormatContent(
-            string content, 
+            string content,
             ReadingColor color,
             out Dictionary<int, Grid> verses)
         {
@@ -40,8 +40,24 @@ namespace ArabicInterpretation.Helpers
                         int endIndex = token.IndexOf("}");
                         int verseNumber = int.Parse(token.Substring(3, endIndex - 3));
 
-                        Grid grid = new Grid();
-                        views.Add(grid);
+                        Grid grid;
+
+                        Grid lastGrid = views.LastOrDefault() as Grid;
+                        if (lastGrid != null && lastGrid.ClassId == "v")
+                        {
+                            // Use same object for consecutive verses to avoid multiple spaces in content
+                            grid = lastGrid;
+                        }
+                        else
+                        {
+                            grid = new Grid
+                            {
+                                ClassId = "v"
+                            };
+
+                            views.Add(grid);
+                        }
+
                         if (!verses.ContainsKey(verseNumber))
                         {
                             verses.Add(verseNumber, grid);
@@ -133,7 +149,7 @@ namespace ArabicInterpretation.Helpers
         }
 
         private static Label CreateLabel(
-            StringType type, 
+            StringType type,
             NamedSize fontSize,
             ReadingColor color)
         {
@@ -174,7 +190,7 @@ namespace ArabicInterpretation.Helpers
         }
 
         private static void MergeBoldText(
-            Label boldLabel, 
+            Label boldLabel,
             List<View> views,
             NamedSize fontSize,
             ReadingColor color)
