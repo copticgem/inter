@@ -13,7 +13,6 @@ namespace ArabicInterpretation.Views
 {
     public class ChapterLabel : Button
     {
-        ChapterChooserPage chapterChooserPage;
         ReadingInfo readingInfo;
         int chaptersCount;
 
@@ -34,7 +33,7 @@ namespace ArabicInterpretation.Views
             };
         }
 
-        public async Task Initialize(
+        public Task Initialize(
             ReadingInfo readingInfo, 
             int chaptersCount,
             ReadingColor color)
@@ -45,15 +44,17 @@ namespace ArabicInterpretation.Views
 
             this.readingInfo = readingInfo;
             this.chaptersCount = chaptersCount;
+
+            return Task.FromResult(true);
         }
 
         public async Task OnClicked()
         {
-            this.chapterChooserPage = new ChapterChooserPage();
+            ChapterChooserPage chapterChooserPage = new ChapterChooserPage();
 
-            await PageTransition.PushModalAsync(this.chapterChooserPage);
+            await PageTransition.PushModalAsync(chapterChooserPage);
 
-            await this.chapterChooserPage.Initialize(
+            await chapterChooserPage.Initialize(
                 shouldPopTwice: false,
                 author: readingInfo.Author,
                 isNT: readingInfo.IsNT,

@@ -13,8 +13,6 @@ namespace ArabicInterpretation.Views
 {
     public class SettingsLabel : Button
     {
-        SettingsPage settingsPage;
-
         public SettingsLabel()
         {
             this.TextColor = ColorManager.Text.BookChapter;
@@ -41,11 +39,11 @@ namespace ArabicInterpretation.Views
         {
             // There is a bug in xamarin that picker gets disposed when modal is popped
             // so creating it each time here
-            this.settingsPage = new SettingsPage();
+            SettingsPage settingsPage = new SettingsPage();
 
-            await PageTransition.PushModalAsync(this.settingsPage, true);
+            await PageTransition.PushModalAsync(settingsPage, true);
 
-            this.settingsPage.Initialize();
+            settingsPage.Initialize();
         }
     }
 }
