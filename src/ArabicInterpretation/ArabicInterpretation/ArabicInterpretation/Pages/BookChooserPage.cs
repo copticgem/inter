@@ -39,19 +39,7 @@ namespace ArabicInterpretation.Pages
 
             this.Content = App.LoadingImage;
 
-            // Listen to author changes to disable missing books
-            MessagingCenter.Subscribe<AuthorsGrid, Author>(this, BookChooserPage.AuthorChangedMessage, async (sender, arg) =>
-            {
-                if (this.author != arg)
-                {
-                    this.author = arg;
-
-                    await this.Initialize(
-                        author: arg,
-                        isNT: this.isNT,
-                        bookNumber: this.bookNumber);
-                }
-            });
+            this.SetSubscriptions(true);
         }
 
         public async Task Initialize(
@@ -77,6 +65,36 @@ namespace ArabicInterpretation.Pages
                 currentBookNumber: bookNumber);
 
             this.Content = this.layout;
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            this.SetSubscriptions(false);
+        }
+
+        private void SetSubscriptions(bool isSubscribe)
+        {
+            if (isSubscribe)
+            {
+                // Listen to author changes to disable missing books
+                MessagingCenter.Subscribe<AuthorsGrid, Author>(this, BookChooserPage.AuthorChangedMessage, async (sender, arg) =>
+                {
+                    if (this.author != arg)
+                    {
+                        this.author = arg;
+
+                        await this.Initialize(
+                            author: arg,
+                            isNT: this.isNT,
+                            bookNumber: this.bookNumber);
+                    }
+                });
+            }
+            else
+            {
+                MessagingCenter.Unsubscribe<AuthorsGrid, Author>(this, BookChooserPage.AuthorChangedMessage);
+            }
         }
     }
 }

@@ -25,7 +25,7 @@ namespace ArabicInterpretation.Pages
         ChaptersGrid chaptersGrid;
 
         public ChapterChooserPage()
-            :base("اختر الاصحاح ")
+            : base("اختر الاصحاح ")
         {
             this.layout = new StackLayout
             {
@@ -44,23 +44,7 @@ namespace ArabicInterpretation.Pages
 
             layout.Children.Add(scrollView);
 
-            // Listen to author changes
-            MessagingCenter.Subscribe<AuthorsGrid, Author>(this, ChapterChooserPage.AuthorChangedMessage, async (sender, arg) =>
-            {
-                if (this.author != arg)
-                {
-                    this.author = arg;
-
-                    await this.authorLabel.Initialize(
-                        ChapterChooserPage.AuthorChangedMessage,
-                        author,
-                        isNT,
-                        bookNumber,
-                        ColorManager.DefaultReadingColor);
-
-                    this.chaptersGrid.UpdateAuthor(this.author);
-                }
-            });
+            this.SetSubscriptions(true);
 
             this.Content = App.LoadingImage;
         }
@@ -93,6 +77,40 @@ namespace ArabicInterpretation.Pages
                 chaptersCount);
 
             this.Content = this.layout;
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            this.SetSubscriptions(false);
+        }
+
+        private void SetSubscriptions(bool isSubscribe)
+        {
+            if (isSubscribe)
+            {
+                // Listen to author changes
+                MessagingCenter.Subscribe<AuthorsGrid, Author>(this, ChapterChooserPage.AuthorChangedMessage, async (sender, arg) =>
+                {
+                    if (this.author != arg)
+                    {
+                        this.author = arg;
+
+                        await this.authorLabel.Initialize(
+                            ChapterChooserPage.AuthorChangedMessage,
+                            author,
+                            isNT,
+                            bookNumber,
+                            ColorManager.DefaultReadingColor);
+
+                        this.chaptersGrid.UpdateAuthor(this.author);
+                    }
+                });
+            }
+            else
+            {
+                MessagingCenter.Unsubscribe<AuthorsGrid, Author>(this, ChapterChooserPage.AuthorChangedMessage);
+            }
         }
     }
 }
