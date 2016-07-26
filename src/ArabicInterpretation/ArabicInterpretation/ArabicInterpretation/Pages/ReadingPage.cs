@@ -4,6 +4,7 @@ using ArabicInterpretation.Views;
 using Core;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -146,7 +147,15 @@ namespace ArabicInterpretation.Pages
             if (this.scrollX != 0 || this.scrollY != 0)
             {
                 await Task.Yield();
-                await this.scrollView.ScrollToAsync(this.scrollX, this.scrollY, false);
+
+                try
+                {
+                    // We don't want page loading to be blocked for any reason
+                    await this.scrollView.ScrollToAsync(this.scrollX, this.scrollY, false);
+                }
+                catch (Exception e)
+                {
+                }
 
                 this.scrollX = 0;
                 this.scrollY = 0;

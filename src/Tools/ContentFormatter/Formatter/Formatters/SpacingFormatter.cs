@@ -30,6 +30,12 @@ namespace Formatter.Formatters
                 pattern: string.Format("( |{0})+", unicodeSpace),
                 replacement: " ");
 
+            if (page.StartsWith("{{p}}"))
+            {
+                // Remove leading {{p}}
+                page = page.Substring(5);
+            }
+
             return page;
         }
     }
