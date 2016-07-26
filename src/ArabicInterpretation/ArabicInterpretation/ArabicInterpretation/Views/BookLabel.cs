@@ -13,8 +13,6 @@ namespace ArabicInterpretation.Views
 {
     public class BookLabel : Button
     {
-        BookChooserPage bookChooserPage;
-
         Author author;
         bool isNT;
         int bookNumber;
@@ -37,7 +35,7 @@ namespace ArabicInterpretation.Views
 
         }
 
-        public async Task Initialize(
+        public Task Initialize(
             Author author,
             bool isNT,
             int bookNumber,
@@ -49,15 +47,17 @@ namespace ArabicInterpretation.Views
             this.author = author;
             this.bookNumber = bookNumber;
             this.isNT = isNT;
+
+            return Task.FromResult(true);
         }
 
         public async Task OnClicked()
         {
-            this.bookChooserPage = new BookChooserPage();
+            BookChooserPage bookChooserPage = new BookChooserPage();
 
-            await PageTransition.PushModalAsync(this.bookChooserPage);
+            await PageTransition.PushModalAsync(bookChooserPage);
 
-            await this.bookChooserPage.Initialize(
+            await bookChooserPage.Initialize(
                 author,
                 isNT,
                 bookNumber);
