@@ -316,7 +316,11 @@ namespace ArabicInterpretation.Helpers
                 label.Text = tuple.Item1;
 
                 // This a workaround since there is a bug with grid that it truncates the text
-                StackLayout stack = new StackLayout();
+                StackLayout stack = new StackLayout
+                {
+                    BackgroundColor = color.BackgroundColor
+                };
+
                 stack.Children.Add(label);
 
                 if (gridTuples.Where(t => t.Item2 == tuple.Item2).Count() == 1)
