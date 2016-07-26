@@ -24,9 +24,10 @@ namespace Formatter.Formatters
                 replacement: "{{p}}");
 
             // Remove duplicate spaces
+            char unicodeSpace = (char)160;
             page = Regex.Replace(
                 input: page,
-                pattern: " +",
+                pattern: string.Format("( |{0})+", unicodeSpace),
                 replacement: " ");
 
             return page;
