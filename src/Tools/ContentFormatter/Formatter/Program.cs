@@ -1,6 +1,8 @@
 ﻿using Formatter.Formatters;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -13,9 +15,9 @@ namespace Formatter
     {
         static void Main(string[] args)
         {
-            // HttpHelpers.FormatOne(Constants.Authors.FrAntonious, false, 16, 6, true);
+            // HttpHelpers.FormatOne(Constants.Authors.FrTadros, false, 23, 2, true);
 
-            HttpHelpers.FormatAll(Constants.Authors.FrTadros, true);
+            HttpHelpers.FormatAll(Constants.Authors.FrAntonious, true);
 
             // ContentDownloader.DownloadAll();
 

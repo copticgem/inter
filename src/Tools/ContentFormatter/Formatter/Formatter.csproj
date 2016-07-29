@@ -35,6 +35,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -46,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Constants.cs" />
     <Compile Include="ContentDownloader.cs" />
+    <Compile Include="FileHelper.cs" />
     <Compile Include="Formatters\BookNumbers.cs" />
     <Compile Include="Formatters\NumbersFormatter.cs" />
     <Compile Include="Formatters\SpacingFormatter.cs" />

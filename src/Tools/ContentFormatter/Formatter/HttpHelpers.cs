@@ -11,6 +11,7 @@ using System.Xml;
 using System.Diagnostics;
 using Formatter.Formatters;
 using System.Web;
+using System.IO.Compression;
 
 namespace Formatter
 {
@@ -79,13 +80,7 @@ namespace Formatter
 
             if (save)
             {
-                string newPath = file.Replace(
-                    @"Data\Original\",
-                    @"ArabicInterpretation\ArabicInterpretation\Core\Resources\");
-
-                newPath = Path.ChangeExtension(newPath, ".txt");
-                Directory.CreateDirectory(Path.GetDirectoryName(newPath));
-                File.WriteAllText(newPath, formattedPage, Encoding.UTF8);
+                FileHelper.Save(file, formattedPage);
             }
         }
 
@@ -139,13 +134,7 @@ namespace Formatter
 
             if (save)
             {
-                string newPath = file.Replace(
-                    @"Data\Original\",
-                    @"ArabicInterpretation\ArabicInterpretation\Core\Resources\");
-
-                newPath = Path.ChangeExtension(newPath, ".txt");
-                Directory.CreateDirectory(Path.GetDirectoryName(newPath));
-                File.WriteAllText(newPath, formattedPage, Encoding.UTF8);
+                FileHelper.Save(file, formattedPage);
             }
         }
 

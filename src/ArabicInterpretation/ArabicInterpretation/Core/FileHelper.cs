@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -12,7 +13,7 @@ namespace Core
     {
         private static string DefaultPrefix = "Core.Resources.";
 
-        public static async Task<string> GetFile(
+        public static Task<string> GetFile(
             Author author,
             bool isNT,
             int bookNumber,
@@ -23,11 +24,11 @@ namespace Core
             // Author
             if (author == Author.FrAntonios)
             {
-                path += "Father_Antonious_Fekry.";
+                path += @"Father-Antonious-Fekry\";
             }
             else if (author == Author.FrTadros)
             {
-                path += "Father_Tadros_Yacoub_Malaty.";
+                path += @"Father-Tadros-Yacoub-Malaty\";
             }
             else
             {
@@ -39,11 +40,11 @@ namespace Core
             // NT and OT
             if (isNT)
             {
-                path += "nt.";
+                path += "nt";
             }
             else
             {
-                path += "ot.";
+                path += "ot";
 
                 if (bookNumber == 21)
                 {
@@ -60,9 +61,9 @@ namespace Core
                 }
             }
 
-            path = DefaultPrefix + path + "_" + bookNumber + "." + fileName + ".txt";
+            path = path + @"\" + bookNumber + @"\" + fileName + ".txt";
 
-            return await ReadFile(path);
+            return ReadCompressedFile(path);
         }
 
         public static Task<string> GetIndex(bool isNT)
@@ -87,6 +88,42 @@ namespace Core
                     return await reader.ReadToEndAsync();
                 }
             }
+        }
+
+        private static async Task<string> ReadCompressedFile(string path)
+        {
+            string content = string.Empty;
+            var assembly = typeof(FileHelper).GetTypeInfo().Assembly;
+            using (Stream stream = assembly.GetManifestResourceStream(DefaultPrefix + "data.zip"))
+            {
+                if (stream == null)
+                {
+                    throw new InvalidOperationException("File not found: " + path);
+                }
+
+                using (ZipArchive archive = new ZipArchive(stream, ZipArchiveMode.Read))
+                {
+                    ZipArchiveEntry entry = archive.GetEntry(path);
+                    if (entry == null)
+                    {
+                        throw new InvalidOperationException("Entry not found: " + path);
+                    }
+
+                    using (Stream entryStream = entry.Open())
+                    {
+                        using (StreamReader sr = new StreamReader(entryStream))
+                        {
+                            while (!sr.EndOfStream)
+                            {
+                                // This fails if it's async
+                                content += sr.ReadLine();
+                            }
+                        }
+                    }
+                }
+            }
+
+            return content;
         }
     }
 }
