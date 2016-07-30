@@ -47,7 +47,7 @@ namespace ArabicInterpretation.Helpers
             {
                 chapterLayout.Children.Add(view);
             }
-
+            
             if (this.tapGestureRecognizer != null)
             {
                 this.tapGestureRecognizer.Tapped -= this.tapHandler;

@@ -17,6 +17,7 @@ namespace ArabicInterpretation.Helpers
             out Dictionary<int, Grid> verses)
         {
             verses = new Dictionary<int, Grid>();
+
             List<View> views = new List<View>();
 
             NamedSize fontSize = SettingsManager.ToNamedSize(SettingsManager.GetFontSize());
@@ -96,12 +97,14 @@ namespace ArabicInterpretation.Helpers
                     else if (token == "{{g}}" || token == "{{gltr}}")
                     {
                         int gridEndIndex;
-                        views.Add(GetGrid(
-                            tokens.ToList(),
-                            i,
-                            fontSize,
-                            color,
-                            out gridEndIndex));
+                        Grid grid = GetGrid(
+                            tokens: tokens.ToList(),
+                            gridStartIndex: i,
+                            fontSize: fontSize,
+                            color: color,
+                            gridEndIndex: out gridEndIndex);
+
+                        views.Add(grid);
 
                         // Skip the grid
                         i = gridEndIndex;
@@ -297,7 +300,8 @@ namespace ArabicInterpretation.Helpers
             {
                 ColumnSpacing = 1,
                 RowSpacing = 1,
-                BackgroundColor = color.TextColor
+                BackgroundColor = color.TextColor,
+                InputTransparent = true
             };
 
             for (int i = 0; i < rowCount; i++)
@@ -313,12 +317,14 @@ namespace ArabicInterpretation.Helpers
             foreach (var tuple in gridTuples)
             {
                 Label label = CreateLabel(StringType.Text, fontSize, color);
+                label.InputTransparent = true;
                 label.Text = tuple.Item1;
 
                 // This a workaround since there is a bug with grid that it truncates the text
                 StackLayout stack = new StackLayout
                 {
-                    BackgroundColor = color.BackgroundColor
+                    BackgroundColor = color.BackgroundColor,
+                    InputTransparent = true
                 };
 
                 stack.Children.Add(label);
