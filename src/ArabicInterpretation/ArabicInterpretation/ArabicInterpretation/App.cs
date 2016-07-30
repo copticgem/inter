@@ -15,7 +15,7 @@ namespace ArabicInterpretation
     {
         public static INavigation Navigation { get; private set; }
         
-        public static Image LoadingImage { get; private set; }
+        public static StackLayout LoadingImage { get; private set; }
 
         private ReadingPage readingPage;
 
@@ -24,11 +24,7 @@ namespace ArabicInterpretation
             ColorManager.Initialize();
             SettingsManager.Initialize();
 
-            LoadingImage = new Image
-            {
-                Source = ImageSource.FromResource("ArabicInterpretation.Resources.loading.png"),
-                VerticalOptions = LayoutOptions.CenterAndExpand
-            };
+            LoadingImage = this.CreateLoadingImage();
 
             this.readingPage = new ReadingPage();
             this.MainPage = new NavigationPage(readingPage)
@@ -44,6 +40,30 @@ namespace ArabicInterpretation
             ReadingInfo readingInfo = ReadingPositionManager.GetLastPosition(out x, out y);
 
             readingPage.Initialize(readingInfo, x, y, true).Wait();
+        }
+
+        private StackLayout CreateLoadingImage()
+        {
+            StackLayout layout = new StackLayout
+            {
+                Orientation = StackOrientation.Vertical,
+                VerticalOptions = LayoutOptions.CenterAndExpand,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                BackgroundColor = ColorManager.Backgrounds.Default,
+            };
+
+            Label label = new Label
+            {
+                Text = "جاري التحميل ...",
+                HorizontalTextAlignment = TextAlignment.Center,
+                VerticalOptions = LayoutOptions.Center,
+                TextColor = ColorManager.Text.Default,
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+            };
+
+            layout.Children.Add(label);
+
+            return layout;
         }
 
         protected override void OnStart()
