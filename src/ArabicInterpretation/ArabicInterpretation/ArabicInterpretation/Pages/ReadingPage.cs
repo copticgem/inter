@@ -28,7 +28,8 @@ namespace ArabicInterpretation.Pages
         AuthorLabel authorLabel;
         BookChapterLabel bookChapterLabel;
 
-        Dictionary<int, Grid> verses;
+        ContentManager contentManager;
+        EventHandler tapEventHandler;
 
         ScrollView scrollView;
         double scrollX;
@@ -44,6 +45,7 @@ namespace ArabicInterpretation.Pages
                 Orientation = StackOrientation.Vertical,
             };
 
+            this.contentManager = new ContentManager();
             this.authorLabel = new AuthorLabel();
             layout.Children.Add(this.authorLabel);
 
@@ -58,6 +60,12 @@ namespace ArabicInterpretation.Pages
             layout.Children.Add(scrollView);
 
             this.Content = App.LoadingImage;
+
+            this.tapEventHandler = (s, e) =>
+            {
+                this.isFullScreen = !this.isFullScreen;
+                this.AdjustFullScreen();
+            };
 
             // Listen to author changes intended to ReadingPage
             MessagingCenter.Subscribe<AuthorsGrid, Author>(this, AuthorChangedMessage, async (sender, arg) =>
@@ -74,8 +82,11 @@ namespace ArabicInterpretation.Pages
             // Listen to verse changes
             MessagingCenter.Subscribe<VersesGrid, int>(this, VerseChangedMessage, async (sender, arg) =>
             {
-                Grid verseMarker = this.verses[arg];
+                Grid verseMarker = this.contentManager.Verses[arg];
                 await this.scrollView.ScrollToAsync(verseMarker, ScrollToPosition.Start, false);
+
+                this.isFullScreen = true;
+                this.AdjustFullScreen();
             });
 
             // Listen to show loading
@@ -133,7 +144,7 @@ namespace ArabicInterpretation.Pages
             await this.bookChapterLabel.Initialize(
                 readingInfo,
                 bookInfo,
-                this.verses,
+                this.contentManager.Verses,
                 color);
 
             this.ToggleLoading(false);
@@ -203,37 +214,13 @@ namespace ArabicInterpretation.Pages
         private async Task UpdateContent(bool isFirstTime, ReadingColor color)
         {
             // Update content
-            string content = await FileHelper.GetFile(
-                this.readingInfo.Author,
-                this.readingInfo.IsNT,
-                this.readingInfo.BookNumber,
-                this.readingInfo.ChapterNumber);
-
-            List<View> views = ContentFormatter.FormatContent(content, color, out this.verses);
-
-            StackLayout chapterLayout = new StackLayout
-            {
-                Orientation = StackOrientation.Vertical,
-                Padding = new Thickness(10),
-                HorizontalOptions = LayoutOptions.End,
-            };
-
-            foreach (View view in views)
-            {
-                chapterLayout.Children.Add(view);
-            }
+            this.scrollView.Content = await this.contentManager.GetContent(
+                isFirstTime,
+                color,
+                this.readingInfo,
+                this.tapEventHandler);
 
             this.scrollView.BackgroundColor = color.BackgroundColor;
-            this.scrollView.Content = chapterLayout;
-
-            TapGestureRecognizer tapGestureRecognizer = new TapGestureRecognizer();
-            tapGestureRecognizer.Tapped += (s, e) =>
-            {
-                this.isFullScreen = !this.isFullScreen;
-                this.AdjustFullScreen();
-            };
-
-            chapterLayout.GestureRecognizers.Add(tapGestureRecognizer);
         }
 
         private void AdjustFullScreen()

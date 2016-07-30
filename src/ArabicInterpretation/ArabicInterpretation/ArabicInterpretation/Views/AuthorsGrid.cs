@@ -50,7 +50,7 @@ namespace ArabicInterpretation.Views
                 await this.OnAuthorClicked_Safe(author: Author.FrAntonios);
             };
 
-            frAntonios.Clicked += this.frTadrosHandler;
+            frAntonios.Clicked += this.frAntoniosHandler;
 
             this.Children.Add(frAntonios, 0, 0);
             this.Children.Add(frTadros, 1, 0);
