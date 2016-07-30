@@ -34,12 +34,6 @@ namespace ArabicInterpretation
             };
 
             Navigation = this.MainPage.Navigation;
-
-            double x;
-            double y;
-            ReadingInfo readingInfo = ReadingPositionManager.GetLastPosition(out x, out y);
-
-            readingPage.Initialize(readingInfo, x, y, true).Wait();
         }
 
         private StackLayout CreateLoadingImage()

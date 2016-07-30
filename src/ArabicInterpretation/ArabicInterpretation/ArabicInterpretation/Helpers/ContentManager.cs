@@ -22,7 +22,6 @@ namespace ArabicInterpretation.Helpers
         }
 
         public async Task<StackLayout> GetContent(
-            bool isFirstTime,
             ReadingColor color,
             ReadingInfo readingInfo,
             EventHandler tapHandler)

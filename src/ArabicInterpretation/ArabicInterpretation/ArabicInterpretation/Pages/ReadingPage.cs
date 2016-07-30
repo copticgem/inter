@@ -32,8 +32,6 @@ namespace ArabicInterpretation.Pages
         EventHandler tapEventHandler;
 
         ScrollView scrollView;
-        double scrollX;
-        double scrollY;
 
         bool isFullScreen = true;
 
@@ -118,12 +116,9 @@ namespace ArabicInterpretation.Pages
         public async Task Initialize(
             ReadingInfo readingInfo,
             double x = 0,
-            double y = 0,
-            bool isFirstTime = false)
+            double y = 0)
         {
             this.readingInfo = readingInfo;
-            this.scrollX = x;
-            this.scrollY = y;
 
             // This has internal cache
             List<BookInfo> booksInfo = await BookNameManager.GetBookNames(readingInfo.IsNT);
@@ -139,7 +134,7 @@ namespace ArabicInterpretation.Pages
                 this.readingInfo.BookNumber,
                 color);
 
-            await this.UpdateContent(isFirstTime, color);
+            await this.UpdateContent(color);
 
             await this.bookChapterLabel.Initialize(
                 readingInfo,
@@ -155,21 +150,25 @@ namespace ArabicInterpretation.Pages
 
         protected override async void OnAppearing()
         {
-            if (this.scrollX != 0 || this.scrollY != 0)
+            double x;
+            double y;
+            ReadingInfo readingInfo = ReadingPositionManager.GetLastPosition(out x, out y);
+
+            await this.Initialize(readingInfo, x, y);
+
+            if (x != 0 || y != 0)
             {
                 await Task.Yield();
 
                 try
                 {
                     // We don't want page loading to be blocked for any reason
-                    await this.scrollView.ScrollToAsync(this.scrollX, this.scrollY, false);
+                    await this.scrollView.ScrollToAsync(x, y, false);
                 }
                 catch (Exception e)
                 {
+                    // TODO: Log error
                 }
-
-                this.scrollX = 0;
-                this.scrollY = 0;
             }
         }
 
@@ -211,11 +210,10 @@ namespace ArabicInterpretation.Pages
             }
         }
 
-        private async Task UpdateContent(bool isFirstTime, ReadingColor color)
+        private async Task UpdateContent(ReadingColor color)
         {
             // Update content
             this.scrollView.Content = await this.contentManager.GetContent(
-                isFirstTime,
                 color,
                 this.readingInfo,
                 this.tapEventHandler);

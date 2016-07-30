@@ -198,13 +198,13 @@ namespace ArabicInterpretation.Helpers
             NamedSize fontSize,
             ReadingColor color)
         {
-            if (!views.Any())
+            Span boldSpan = CreateSpan(boldLabel);
+            Label lastLabel = null;
+            if (views.Any())
             {
-                views.Add(boldLabel);
+                lastLabel = views.Last() as Label;
             }
 
-            Span boldSpan = CreateSpan(boldLabel);
-            Label lastLabel = views.Last() as Label;
             if (lastLabel == null || lastLabel.ClassId == "p")
             {
                 // Not a label, add bold as separate label
