@@ -11,8 +11,10 @@ using Xamarin.Forms;
 
 namespace ArabicInterpretation.Views
 {
-    public class VerseLabel : Button
+    public class VerseLabel : Button, IDisposable
     {
+        EventHandler handler;
+
         Dictionary<int, Grid> verses;
 
         public VerseLabel()
@@ -26,10 +28,17 @@ namespace ArabicInterpretation.Views
 
             this.BorderWidth = 0;
 
-            this.Clicked += async (sender, e) =>
+            this.handler = async (sender, e) =>
             {
                 await this.OnClicked();
             };
+
+            this.Clicked += this.handler;
+        }
+
+        public void Dispose()
+        {
+            this.Clicked -= this.handler;
         }
 
         public Task Initialize(

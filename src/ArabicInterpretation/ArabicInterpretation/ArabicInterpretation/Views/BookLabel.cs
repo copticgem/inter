@@ -11,8 +11,10 @@ using Xamarin.Forms;
 
 namespace ArabicInterpretation.Views
 {
-    public class BookLabel : Button
+    public class BookLabel : Button, IDisposable
     {
+        EventHandler handler;
+
         Author author;
         bool isNT;
         int bookNumber;
@@ -28,11 +30,12 @@ namespace ArabicInterpretation.Views
             this.BorderWidth = Constants.DefaultBorderWidth;
             this.BorderColor = ColorManager.Text.BookChapter;
 
-            this.Clicked += async (sender, e) =>
+            this.handler = async (sender, e) =>
             {
                 await SynchronizationHelper.ExecuteOnce(this.OnClicked());
             };
 
+            this.Clicked += this.handler;
         }
 
         public Task Initialize(
@@ -61,6 +64,11 @@ namespace ArabicInterpretation.Views
                 author,
                 isNT,
                 bookNumber);
+        }
+
+        public void Dispose()
+        {
+            this.Clicked -= this.handler;
         }
     }
 }

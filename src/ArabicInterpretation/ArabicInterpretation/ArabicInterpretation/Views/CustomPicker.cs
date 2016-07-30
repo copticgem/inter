@@ -10,13 +10,16 @@ using Xamarin.Forms;
 
 namespace ArabicInterpretation.Views
 {
-    class CustomPicker : StackLayout
+    class CustomPicker : StackLayout, IDisposable
     {
         string title;
         List<OptionItem> options;
 
         Button button;
+        EventHandler buttonHandler;
+
         Picker picker;
+        EventHandler pickerHandler;
 
         public CustomPicker(
             string title,
@@ -34,7 +37,7 @@ namespace ArabicInterpretation.Views
 
             options.ForEach(o => this.picker.Items.Add(o.DisplayName));
 
-            this.picker.SelectedIndexChanged += (sender, args) =>
+            this.pickerHandler = (sender, args) =>
             {
                 if (picker.SelectedIndex != -1)
                 {
@@ -46,6 +49,8 @@ namespace ArabicInterpretation.Views
                 }
             };
 
+            this.picker.SelectedIndexChanged += this.pickerHandler;
+
             // Button
             this.button = new Button
             {
@@ -55,10 +60,12 @@ namespace ArabicInterpretation.Views
                 TextColor = ColorManager.Text.Default
             };
 
-            this.button.Clicked += (sender, e) =>
+            this.buttonHandler = (sender, e) =>
             {
                 this.picker.Focus();
             };
+
+            this.button.Clicked += this.buttonHandler;
 
             this.Children.Add(this.button);
             this.Children.Add(this.picker);
@@ -78,6 +85,12 @@ namespace ArabicInterpretation.Views
                 "{0} [ {1} ]",
                 this.title,
                 displayName);
+        }
+
+        public void Dispose()
+        {
+            this.picker.SelectedIndexChanged -= this.pickerHandler;
+            this.button.Clicked -= this.buttonHandler;
         }
     }
 }

@@ -11,8 +11,10 @@ using Xamarin.Forms;
 
 namespace ArabicInterpretation.Views
 {
-    public class VersesGrid : Grid
+    public class VersesGrid : Grid, IDisposable
     {
+        List<Tuple<Button, EventHandler>> handlers;
+
         private const int ButtonsPerRow = 5;
 
         public VersesGrid()
@@ -30,6 +32,8 @@ namespace ArabicInterpretation.Views
             {
                 this.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) });
             }
+
+            this.handlers = new List<Tuple<Button, EventHandler>>();
         }
 
         public Task Initialize(Dictionary<int, Grid> verses)
@@ -45,10 +49,14 @@ namespace ArabicInterpretation.Views
                 button.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button));
                 button.Text = NumbersHelper.TranslateNumber(verseNumber);
 
-                button.Clicked += async (sender, e) =>
+                EventHandler handler = async (sender, e) =>
                 {
                     await SynchronizationHelper.ExecuteOnce(this.OnVerseClicked(verseNumber: verseNumber));
                 };
+
+                button.Clicked += handler;
+
+                this.handlers.Add(new Tuple<Button, EventHandler>(button, handler));
 
                 int top = (i - 1) / ButtonsPerRow;
                 this.Children.Add(button, left, top);
@@ -68,6 +76,11 @@ namespace ArabicInterpretation.Views
             MessagingCenter.Send(this, ReadingPage.VerseChangedMessage, verseNumber);
 
             await PageTransition.PopModalAsync(true);
+        }
+
+        public void Dispose()
+        {
+            this.handlers.ForEach(t => t.Item1.Clicked -= t.Item2);
         }
     }
 }

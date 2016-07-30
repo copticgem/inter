@@ -8,7 +8,7 @@ using Xamarin.Forms;
 
 namespace ArabicInterpretation.Views
 {
-    public class BookChapterLabel : StackLayout
+    public class BookChapterLabel : StackLayout, IDisposable
     {
         ChapterLabel chapterLabel;
         BookLabel bookLabel;
@@ -68,6 +68,14 @@ namespace ArabicInterpretation.Views
             await this.verseLabel.Initialize(verses, color);
 
             this.settingsLabel.Initialize(color);
+        }
+
+        public void Dispose()
+        {
+            this.bookLabel.Dispose();
+            this.chapterLabel.Dispose();
+            this.settingsLabel.Dispose();
+            this.verseLabel.Dispose();
         }
     }
 }

@@ -42,5 +42,12 @@ namespace ArabicInterpretation.Pages
 
             this.Content = layout;
         }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+
+            this.versesGrid.Dispose();
+        }
     }
 }

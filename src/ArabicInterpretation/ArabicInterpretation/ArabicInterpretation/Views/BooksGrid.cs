@@ -11,8 +11,10 @@ using ArabicInterpretation.Model;
 
 namespace ArabicInterpretation
 {
-    public class BooksGrid : Grid
+    public class BooksGrid : Grid, IDisposable
     {
+        List<Tuple<Button, EventHandler>> buttonHandlers;
+
         Author author;
         bool isNT;
         int selectedBook = -1;
@@ -24,6 +26,7 @@ namespace ArabicInterpretation
         {
             this.isNT = isNT;
             this.buttons = new List<Button>();
+            this.buttonHandlers = new List<Tuple<Button, EventHandler>>();
 
             this.HorizontalOptions = LayoutOptions.FillAndExpand;
             this.ColumnDefinitions = new ColumnDefinitionCollection
@@ -69,10 +72,15 @@ namespace ArabicInterpretation
                 button.HeightRequest = button.Width;
 
                 int bookNumber = i;
-                button.Clicked += async (sender, e) =>
+
+                EventHandler handler = async (sender, e) =>
                 {
                     await SynchronizationHelper.ExecuteOnce(this.OnBookClicked(bookNumber, book.ChaptersCount));
                 };
+
+                button.Clicked += handler;
+
+                this.buttonHandlers.Add(new Tuple<Button, EventHandler>(button, handler));
 
                 int top = (i - 1) / booksPerRow;
                 this.Children.Add(button, left, top);
@@ -138,6 +146,11 @@ namespace ArabicInterpretation
                isNT: this.isNT,
                bookNumber: bookNumber,
                chaptersCount: chaptersCount);
+        }
+
+        public void Dispose()
+        {
+            this.buttonHandlers.ForEach(t => t.Item1.Clicked -= t.Item2);
         }
     }
 }

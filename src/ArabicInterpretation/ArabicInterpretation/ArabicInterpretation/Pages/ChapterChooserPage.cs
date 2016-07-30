@@ -83,6 +83,8 @@ namespace ArabicInterpretation.Pages
         {
             base.OnDisappearing();
             this.SetSubscriptions(false);
+            this.authorLabel.Dispose();
+            this.chaptersGrid.Dispose();
         }
 
         private void SetSubscriptions(bool isSubscribe)

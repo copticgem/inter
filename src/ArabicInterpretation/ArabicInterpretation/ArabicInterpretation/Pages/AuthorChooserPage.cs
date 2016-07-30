@@ -47,5 +47,11 @@ namespace ArabicInterpretation.Pages
 
             this.Content = this.layout;
         }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            this.authorsGrid.Dispose();
+        }
     }
 }

@@ -8,15 +8,21 @@ using Xamarin.Forms;
 
 namespace ArabicInterpretation
 {
-    public class BookChooser : StackLayout
+    public class BookChooser : StackLayout, IDisposable
     {
         bool isNT = false;
 
         ScrollView ntScrollView;
         ScrollView otScrollView;
 
+        BooksGrid ntGrid;
+        BooksGrid otGrid;
+
         Button ntButton;
+        EventHandler ntButtonHandler;
+
         Button otButton;
+        EventHandler otButtonHandler;
 
         public BookChooser()
         {
@@ -33,18 +39,21 @@ namespace ArabicInterpretation
             this.otButton = ColorManager.CreateButton();
             otButton.Text = "العهد القديم";
             otButton.BorderColor = ColorManager.Border.Button;
-
-            ntButton.Clicked += (sender, e) =>
+            this.ntButtonHandler = (sender, e) =>
             {
                 this.OnTestamentSwitchClicked(true);
             };
+
+            ntButton.Clicked += this.ntButtonHandler;
             
-            otButton.Clicked += (sender, e) =>
+            this.otButtonHandler = (sender, e) =>
             {
                 this.SetSelectedButton(otButton);
                 this.SetUnselectedButton(ntButton);
                 this.OnTestamentSwitchClicked(false);
             };
+
+            otButton.Clicked += this.otButtonHandler;
 
             testamentSwitch.Children.Add(ntButton);
             testamentSwitch.Children.Add(otButton);
@@ -53,7 +62,7 @@ namespace ArabicInterpretation
             this.HorizontalOptions = LayoutOptions.CenterAndExpand;
             this.Children.Add(testamentSwitch);
 
-            BooksGrid ntGrid = new BooksGrid(true);
+            this.ntGrid = new BooksGrid(true);
             this.ntScrollView = new ScrollView
             {
                 Padding = Constants.DefaultPadding,
@@ -61,7 +70,7 @@ namespace ArabicInterpretation
                 IsVisible = false,
             };
 
-            BooksGrid otGrid = new BooksGrid(false);
+            this.otGrid = new BooksGrid(false);
             this.otScrollView = new ScrollView
             {
                 Padding = Constants.DefaultPadding,
@@ -128,6 +137,14 @@ namespace ArabicInterpretation
         {
             button.BackgroundColor = ColorManager.Backgrounds.Default;
             button.TextColor = ColorManager.Text.UnSelectedTestament;
+        }
+
+        public void Dispose()
+        {
+            this.ntButton.Clicked -= this.ntButtonHandler;
+            this.otButton.Clicked -= this.otButtonHandler;
+            this.ntGrid.Dispose();
+            this.otGrid.Dispose();
         }
     }
 }

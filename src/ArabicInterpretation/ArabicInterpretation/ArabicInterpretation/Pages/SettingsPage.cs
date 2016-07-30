@@ -74,6 +74,8 @@ namespace ArabicInterpretation.Pages
         protected override void OnDisappearing()
         {
             base.OnDisappearing();
+            this.fontSizePicker.Dispose();
+            this.backgroundColorPicker.Dispose();
 
             FontSize newFontSize = SettingsManager.GetFontSize();
             ReadingBackgroundColor newBackgroundColor = SettingsManager.GetBackgroundColor();

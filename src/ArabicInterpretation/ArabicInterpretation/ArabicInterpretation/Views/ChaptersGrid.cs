@@ -13,8 +13,10 @@ using static Xamarin.Forms.Grid;
 
 namespace ArabicInterpretation.Views
 {
-    public class ChaptersGrid : Grid
+    public class ChaptersGrid : Grid, IDisposable
     {
+        List<Tuple<Button, EventHandler>> handlers;
+
         private const int ButtonsPerRow = 5;
 
         bool shouldPopTwice;
@@ -35,6 +37,8 @@ namespace ArabicInterpretation.Views
             {
                 this.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) });
             }
+
+            this.handlers = new List<Tuple<Button, EventHandler>>();
         }
 
         // TODO: Highlight selected chapter
@@ -54,13 +58,16 @@ namespace ArabicInterpretation.Views
             Button introButton = ColorManager.CreateButton();
             introButton.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button));
             introButton.Text = "مقدمة";
-            introButton.Clicked += async (sender, e) =>
+            EventHandler introButtonHandler = async (sender, e) =>
             {
                 await this.OnChapterClicked_Safe(
                     isNT: isNT,
                     bookNumber: bookNumber,
                     chapterNumber: 0);
             };
+
+            introButton.Clicked += introButtonHandler;
+            this.handlers.Add(new Tuple<Button, EventHandler>(introButton, introButtonHandler));
 
             this.Children.Add(introButton, ButtonsPerRow - 1, 0);
 
@@ -74,13 +81,17 @@ namespace ArabicInterpretation.Views
 
                 button.Text = DisplayNameHelper.GetChapterDisplayName(isNT, bookNumber, chapterNumber);
 
-                button.Clicked += async (sender, e) =>
+                EventHandler handler = async (sender, e) =>
                 {
                     await this.OnChapterClicked_Safe(
                         isNT: isNT,
                         bookNumber: bookNumber,
                         chapterNumber: chapterNumber);
                 };
+
+                button.Clicked += handler;
+
+                this.handlers.Add(new Tuple<Button, EventHandler>(button, handler));
 
                 int top = (i - 1) / ButtonsPerRow;
                 this.Children.Add(button, left, top + 1);
@@ -140,6 +151,11 @@ namespace ArabicInterpretation.Views
             }
 
             MessagingCenter.Send(this, ReadingPage.ChapterChangedMessage, readingInfo);
+        }
+
+        public void Dispose()
+        {
+            this.handlers.ForEach(t => t.Item1.Clicked -= t.Item2);
         }
     }
 }

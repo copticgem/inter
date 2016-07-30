@@ -1,19 +1,23 @@
 ﻿using ArabicInterpretation.Helpers;
 using ArabicInterpretation.Pages;
 using Core;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace ArabicInterpretation.Views
 {
-    public class AuthorsGrid : Grid
+    public class AuthorsGrid : Grid, IDisposable
     {
         // AuthorsGrid can be called from different components, this message will send result to calling one
         string messageTitle;
 
         Button frTadros;
+        EventHandler frTadrosHandler;
+
         Button frAntonios;
+        EventHandler frAntoniosHandler;
 
         public AuthorsGrid()
         {
@@ -29,18 +33,24 @@ namespace ArabicInterpretation.Views
             this.frTadros = ColorManager.CreateButton();
             frTadros.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button));
             frTadros.Text = Constants.AuthorNames.FrTadros;
-            frTadros.Clicked += async (sender, e) =>
+
+            this.frTadrosHandler = async (sender, e) =>
             {
                 await this.OnAuthorClicked_Safe(author: Author.FrTadros);
             };
 
+            frTadros.Clicked += this.frTadrosHandler;
+
             this.frAntonios = ColorManager.CreateButton();
             frAntonios.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button));
             frAntonios.Text = Constants.AuthorNames.FrAntonios;
-            frAntonios.Clicked += async (sender, e) =>
+
+            this.frAntoniosHandler = async (sender, e) =>
             {
                 await this.OnAuthorClicked_Safe(author: Author.FrAntonios);
             };
+
+            frAntonios.Clicked += this.frTadrosHandler;
 
             this.Children.Add(frAntonios, 0, 0);
             this.Children.Add(frTadros, 1, 0);
@@ -104,6 +114,12 @@ namespace ArabicInterpretation.Views
 
             // Send message to caller to update content
             MessagingCenter.Send(this, this.messageTitle, author);
+        }
+
+        public void Dispose()
+        {
+            this.frTadros.Clicked -= this.frTadrosHandler;
+            this.frAntonios.Clicked -= this.frAntoniosHandler;
         }
     }
 }

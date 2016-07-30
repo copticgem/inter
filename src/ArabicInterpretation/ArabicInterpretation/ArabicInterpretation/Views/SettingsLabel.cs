@@ -11,8 +11,10 @@ using Xamarin.Forms;
 
 namespace ArabicInterpretation.Views
 {
-    public class SettingsLabel : Button
+    public class SettingsLabel : Button, IDisposable
     {
+        EventHandler handler;
+
         public SettingsLabel()
         {
             this.TextColor = ColorManager.Text.BookChapter;
@@ -24,10 +26,17 @@ namespace ArabicInterpretation.Views
 
             this.BorderWidth = 0;
 
-            this.Clicked += async (sender, e) =>
+            this.handler = async (sender, e) =>
             {
                 await SynchronizationHelper.ExecuteOnce(this.OnClicked());
             };
+
+            this.Clicked += this.handler;
+        }
+
+        public void Dispose()
+        {
+            this.Clicked -= this.handler;
         }
 
         public void Initialize(ReadingColor color)

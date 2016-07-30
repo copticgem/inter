@@ -11,9 +11,11 @@ using Xamarin.Forms;
 
 namespace ArabicInterpretation.Views
 {
-    public class AuthorLabel : StackLayout
+    public class AuthorLabel : StackLayout, IDisposable
     {
         Button button;
+        EventHandler buttonHandler;
+
         string messageTitle;
         Author author;
         bool isNT;
@@ -31,11 +33,12 @@ namespace ArabicInterpretation.Views
 
             this.button.BorderWidth = 0;
 
-            this.button.Clicked += async (sender, e) =>
+            this.buttonHandler = async (sender, e) =>
             {
                 await SynchronizationHelper.ExecuteOnce(this.OnClicked());
             };
 
+            this.button.Clicked += this.buttonHandler;
         }
 
         public Task Initialize(
@@ -80,6 +83,11 @@ namespace ArabicInterpretation.Views
             {
                 this.button.Text = Constants.AuthorNames.FrTadros;
             }
+        }
+
+        public void Dispose()
+        {
+            this.button.Clicked -= this.buttonHandler;
         }
     }
 }
